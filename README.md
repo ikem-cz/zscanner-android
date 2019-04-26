@@ -5,3 +5,5 @@ zScanner enables doctors to take photos of patient medical records, and of injur
 zScanner is an application developed and used by [IKEM](https://www.ikem.cz/en/), a major Czech hospital, and the largest center of clinical and experimental medicine in the Czech Republic. 
 
 IKEM decided to release this application as an open-source project under MIT licence.
+
+This repository is operated with the help of [TeskaLabs](https://teskalabs.com/).
