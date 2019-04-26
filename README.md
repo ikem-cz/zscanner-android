@@ -6,4 +6,4 @@ zScanner is an application developed and used by [IKEM](https://www.ikem.cz/en/)
 
 IKEM decided to release this application as an open-source project under MIT licence.
 
-This repository is operated with the help of [TeskaLabs](https://teskalabs.com/).
+This open-source project is operated with the help of [TeskaLabs](https://teskalabs.com/).
