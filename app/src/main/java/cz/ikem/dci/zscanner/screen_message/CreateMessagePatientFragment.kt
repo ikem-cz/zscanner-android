@@ -35,8 +35,8 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     private var mValidated = false
 
     override fun onSelected() {
-        activity?.let{
-            val viewModel = ViewModelProviders.of(it).get(CreateMessageViewModel::class.java)
+        activity?.let{ _activity ->
+            val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
             viewModel.currentStep = ModeDispatcher(mViewModel.mode).stepNumberFor(this)
         }
     }
@@ -52,8 +52,8 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     override fun onError(error: VerificationError) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        activity?.let{
-            mViewModel = ViewModelProviders.of(it).get(CreateMessageViewModel::class.java)
+        activity?.let{ _activity ->
+            mViewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
         }
         super.onCreate(savedInstanceState)
     }

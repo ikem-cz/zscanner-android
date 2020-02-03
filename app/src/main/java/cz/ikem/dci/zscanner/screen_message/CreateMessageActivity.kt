@@ -54,7 +54,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
         setContentView(R.layout.activity_create_message)
 
-        mMode = when (intent.extras!!.getString(CREATE_MESSAGE_MODE_KEY)) {
+        mMode = when (intent.extras?.getString(CREATE_MESSAGE_MODE_KEY)) {
             CREATE_MESSAGE_MODE_DOCUMENT -> CreateMessageMode.DOCUMENT
             CREATE_MESSAGE_MODE_EXAM -> CreateMessageMode.EXAM
             CREATE_MESSAGE_MODE_PHOTO -> CreateMessageMode.PHOTO

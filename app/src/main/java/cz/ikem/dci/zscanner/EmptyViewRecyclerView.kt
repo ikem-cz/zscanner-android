@@ -55,7 +55,7 @@ class EmptyViewRecyclerView : androidx.recyclerview.widget.RecyclerView {
         mEmptyView = emptyView
     }
 
-    override fun setAdapter(adapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>?) {
+    override fun setAdapter(adapter: Adapter<*>?) {
         if (getAdapter() != null) {
             getAdapter()!!.unregisterAdapterDataObserver(mDataObserver)
         }
@@ -67,7 +67,7 @@ class EmptyViewRecyclerView : androidx.recyclerview.widget.RecyclerView {
     private fun updateEmptyView() {
         if (mEmptyView != null && adapter != null) {
             val showEmptyView = adapter!!.itemCount == 0
-            mEmptyView!!.visibility = if (showEmptyView) View.VISIBLE else View.GONE
+            mEmptyView?.visibility = if (showEmptyView) View.VISIBLE else View.GONE
             visibility = if (showEmptyView) View.GONE else View.VISIBLE
         }
     }

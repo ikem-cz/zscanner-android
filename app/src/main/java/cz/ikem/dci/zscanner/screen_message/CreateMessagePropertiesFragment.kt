@@ -13,14 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
-import cz.ikem.dci.zscanner.KeyboardCallback
 import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Type
 import kotlinx.android.synthetic.main.fragment_message_properties.*
 import kotlinx.android.synthetic.main.fragment_message_properties.view.*
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class CreateMessagePropertiesFragment : Fragment(), Step {
 

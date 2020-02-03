@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen_jobs.JobsOverviewFragment"
-    >
+    tools:context=".screen_jobs.JobsOverviewFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_margin="3dp">
 
-
-        <TextView
-            android:id="@+id/jobs_empty_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/jobs_overview_no_jobs"
-            style="@style/EmptyView" />
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <cz.ikem.dci.zscanner.EmptyViewRecyclerView
-        android:id="@+id/jobs_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    />
+            <TextView
+                android:id="@+id/jobs_empty_view"
+                style="@style/EmptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/jobs_overview_no_jobs" />
 
-    </LinearLayout>
+            <cz.ikem.dci.zscanner.EmptyViewRecyclerView
+                android:id="@+id/jobs_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

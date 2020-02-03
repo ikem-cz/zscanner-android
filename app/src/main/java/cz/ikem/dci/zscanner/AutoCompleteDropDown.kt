@@ -47,7 +47,7 @@ class AutoCompleteDropDown : AppCompatAutoCompleteTextView {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.getAction()) {
+        when (event.action) {
             MotionEvent.ACTION_UP -> {
                 if (isPopup) {
                     dismissDropDown()
@@ -71,17 +71,13 @@ class AutoCompleteDropDown : AppCompatAutoCompleteTextView {
     }
 
     override fun setCompoundDrawablesWithIntrinsicBounds(left: Drawable?, top: Drawable?, right: Drawable?, bottom: Drawable?) {
-        var right = right
+        var _right = right
         val dropdownIcon = ContextCompat.getDrawable(context, R.drawable.ic_exam)
         if (dropdownIcon != null) {
-            right = dropdownIcon
-            right.mutate().alpha = 66
+            _right = dropdownIcon
+            _right.mutate().alpha = 66
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            super.setCompoundDrawablesRelativeWithIntrinsicBounds(left, top, right, bottom)
-        } else {
-            super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom)
-        }
+        super.setCompoundDrawablesRelativeWithIntrinsicBounds(left, top, _right, bottom)
     }
 
     companion object {

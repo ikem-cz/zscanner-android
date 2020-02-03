@@ -57,7 +57,9 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(activity!!).get(CreateMessageViewModel::class.java)
+        activity?.let{_activity ->
+            mViewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
+        }
         super.onCreate(savedInstanceState)
     }
 

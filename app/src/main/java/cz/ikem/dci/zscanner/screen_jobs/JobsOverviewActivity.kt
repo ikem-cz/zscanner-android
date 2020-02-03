@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.AccelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -167,73 +166,19 @@ class JobsOverviewActivity : AppCompatActivity() {
     private fun closeFabMenu(animate: Boolean = true) {
         isFabMenuOpen = false
         new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_plus2))
-        new_entry_fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-        if (false) {
-            popup_layout_buttons.animate()
-                .setInterpolator(AccelerateInterpolator())
-                .setDuration(150)
-                .translationY(88f)
-        } else {
-            popup_layout_buttons.getLayoutParams().height= getResources().getDimension(R.dimen.fab_group_min).toInt()
-            popup_layout_buttons.requestLayout()
-        }
-        /*
-        getPopupList().forEach {
-            if (animate) {
-                it.animate()
-                        .setInterpolator(AccelerateInterpolator())
-                        .setDuration(150)
-                        .translationY(0f)
-                it.animate()
-                        .alpha(0f)
-                        .withEndAction {
-                            it.visibility = View.GONE
-                        }
-            } else {
-                it.visibility = View.GONE
-                it.translationY = 0f
-            }
-        }
-        */
+        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary));
+        popup_layout_buttons.layoutParams.height= getResources().getDimension(R.dimen.fab_group_min).toInt()
+        popup_layout_buttons.requestLayout()
+
     }
 
     private fun openFabMenu() {
         isFabMenuOpen = true
         new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_close))
-        new_entry_fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.invalid)));
-        popup_layout_buttons.getLayoutParams().height= LinearLayout.LayoutParams.WRAP_CONTENT
+        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
+        popup_layout_buttons.layoutParams.height= LinearLayout.LayoutParams.WRAP_CONTENT
         popup_layout_buttons.requestLayout()
-        /*
-        getPopupList().forEachIndexed { index, view ->
-            view.apply {
-                visibility = View.VISIBLE
-                alpha = 0f
-                animate().alpha(1f)
-                animate()
-                        .setInterpolator(DecelerateInterpolator())
-                        .setDuration(150)
-                        .translationY(-when (index) {
-                            0 -> resources.getDimension(R.dimen.fab_expanding_y)
-                            1 -> resources.getDimension(R.dimen.fab_expanding_y2)
-                            2 -> resources.getDimension(R.dimen.fab_expanding_y3)
-                            else -> throw Exception("Expectation failed")
-                        })
-            }
 
-        }
-        */
-
-        /*if (Utils.tutorialNextStep(2, this)) {
-            Handler().postDelayed({
-                try {
-                    Utils.makeTooltip("Obrázky pořízené aplikací lze zařadit do různých kategorií Zlatokopa.\n\nNa zkoušku zkusíme pořídit fotografii.\n\nKlepněte na ikonu foťáčku.", photo_popup_fab, Gravity.TOP, this) {
-                        Utils.tutorialAdvance(this)
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, e.toString())
-                }
-            }, 250)
-        }*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
