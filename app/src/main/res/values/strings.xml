@@ -21,7 +21,7 @@
     <string name="login_screen_submit">Přihlásit</string>
     <string name="username_prefix">Přihlášený uživatel</string>
 
-    <string name="fragment_patient_hint"><i><small>rodné číslo, příjmení nebo jméno …</small></i></string>
+    <string name="fragment_patient_hint"><i><small>rodné číslo</small></i></string>
 
     <string name="fragment_patient_patient">Vyhledat v kartotéce</string>
     <string name="fragment_patient_mru">… vybrat z historie … </string>

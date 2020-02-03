@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,9 @@ import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Mru
 import cz.ikem.dci.zscanner.webservices.Patient
+import kotlinx.android.synthetic.main.fragment_message_patient.*
 import kotlinx.android.synthetic.main.fragment_message_patient.view.*
+
 
 class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
 
@@ -34,9 +35,10 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     private var mValidated = false
 
     override fun onSelected() {
-        val viewModel = ViewModelProviders.of(activity!!).get(CreateMessageViewModel::class.java)
-        viewModel.currentStep = ModeDispatcher(mViewModel.mode).stepNumberFor(this)
-        return
+        activity?.let{
+            val viewModel = ViewModelProviders.of(it).get(CreateMessageViewModel::class.java)
+            viewModel.currentStep = ModeDispatcher(mViewModel.mode).stepNumberFor(this)
+        }
     }
 
     override fun verifyStep(): VerificationError? {
@@ -50,34 +52,44 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     override fun onError(error: VerificationError) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(activity!!).get(CreateMessageViewModel::class.java)
+        activity?.let{
+            mViewModel = ViewModelProviders.of(it).get(CreateMessageViewModel::class.java)
+        }
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_message_patient, container, false)
 
-        view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_message_patient, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
 
         // setup scan button
-        view.scan_barcode_layout.setOnClickListener {
+        scan_barcode_layout.setOnClickListener {
             listener?.onScanPatientIdButtonPress()
         }
 
-        view.scan_barcode_fab.setOnClickListener {
+        scan_barcode_fab.setOnClickListener {
             listener?.onScanPatientIdButtonPress()
         }
 
-        view.fab_next_step_1.setOnClickListener {
+        fab_next_step_1.setOnClickListener {
             listener?.onProceedButtonPress()
         }
 
-        //
-        val autoCompleteTextView = view.patient_id_edittext
-        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+        patient_id_edittext?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (mViewModel.patientInput.value!!.patientText != p0.toString()) {
+                if (mViewModel.patientInput.value?.patientText != p0.toString()) {
                     mViewModel.patientInput.value = CreateMessageViewModel.PatientInput(null, p0.toString(), null, true)
                 }
             }
@@ -87,23 +99,24 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
         })
 
         // run validation on patientInput change
-        mViewModel.patientInput.observe(this, Observer<CreateMessageViewModel.PatientInput> {
-            if (it.patientText != autoCompleteTextView.text.toString()) {
-                autoCompleteTextView.setText(it.patientText, it.suggest)
-                if (!it.suggest) {
-                    autoCompleteTextView.dismissDropDown()
+        mViewModel.patientInput.observe(this, Observer<CreateMessageViewModel.PatientInput> { patientInput ->
+            if (patientInput.patientText != patient_id_edittext.text.toString().trim()) {
+                patient_id_edittext.setText(patientInput.patientText, patientInput.suggest)
+                if (!patientInput.suggest) {
+                    patient_id_edittext.dismissDropDown()
                 }
             }
         })
 
         // setup autocompletion suggestions callbacks
-        activity?.applicationContext?.let {
-            val adapter = PatientAdapter(it, mViewModel)
-            autoCompleteTextView.apply {
+        activity?.applicationContext?.let {_context ->
+            val adapter = PatientAdapter(_context, mViewModel)
+            patient_id_edittext.apply {
                 setAdapter(adapter)
-                threshold = 3
+                // show suggestions after 6 characters
+                threshold = 6
                 // on dismiss suggestions
-                setOnDismissListener { view.too_many_layout.visibility = View.INVISIBLE }
+                setOnDismissListener { view.too_many_layout?.visibility = View.INVISIBLE }
                 // on suggestion selected
                 setOnItemClickListener { _, _, position, _ ->
                     val acceptedSuggestion = adapter.getItem(position)
@@ -111,32 +124,35 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
                     kbCallback?.hideKeyboard()
                     setText(acceptedSuggestion.getDisplay(), false)
                 }
-                inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             }
         }
 
-        mViewModel.patientInput.observe(this, Observer {
-            if (it.code != null) {
-                mViewModel.startDecodeJob(it.code)
-                mValidated = false
-                view.patient_validated_layout.visibility = View.INVISIBLE
-                view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
-            } else if (it.patientObject != null) {
-                mValidated = true
-                view.patient_validated_layout.visibility = View.VISIBLE
-                view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-            } else {
-                mValidated = false
-                view.patient_validated_layout.visibility = View.INVISIBLE
-                view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+        mViewModel.patientInput.observe(this, Observer { patientInput ->
+            when {
+                patientInput.code != null -> {
+                    mViewModel.startDecodeJob(patientInput.code)
+                    mValidated = false
+                    view.patient_validated_layout.visibility = View.INVISIBLE
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+                }
+                patientInput.patientObject != null -> {
+                    mValidated = true
+                    view.patient_validated_layout.visibility = View.VISIBLE
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                }
+                else -> {
+                    mValidated = false
+                    view.patient_validated_layout.visibility = View.INVISIBLE
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+                }
             }
         })
 
         // show/hide too many results text
         mViewModel.tooManySuggestions.observe(this, Observer<Boolean> { value ->
             when (value) {
-                false -> view.too_many_layout.visibility = View.INVISIBLE
                 true -> view.too_many_layout.visibility = View.VISIBLE
+                false -> view.too_many_layout.visibility = View.INVISIBLE
             }
         })
 
@@ -155,7 +171,7 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
         })
 
         val mruAdapter = MruAdapter(this)
-        view.mru_recyclerview.apply {
+        mru_recyclerview.apply {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
             adapter = mruAdapter
         }
@@ -164,8 +180,6 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
             mruAdapter.items = it
             mruAdapter.notifyDataSetChanged()
         })
-
-        return view
     }
 
     override fun onMruSelected(mru: Mru) {

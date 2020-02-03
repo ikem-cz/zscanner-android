@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:orientation="vertical">
 
@@ -41,57 +41,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/fragment_document_hint_name" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/properties_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/datetime_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/TextLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fragment_document_datetime" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/date_button"
-                            android:layout_width="120dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_height="wrap_content"
-                            android:inputType="none|date"
-                            android:focusableInTouchMode="false"
-                            android:gravity="center"
-                            android:hint="@string/fragment_document_hint_date"
-                            />
-
-                        <EditText
-                            android:id="@+id/time_button"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:inputType="none|time"
-                            android:gravity="center"
-                            android:focusableInTouchMode="false"
-                            android:hint="@string/fragment_document_hint_time"
-                            />
-                    </LinearLayout>
-
-                </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
 

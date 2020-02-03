@@ -19,7 +19,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
     var mSuggestions: List<Patient> = listOf()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var view: View?
+        val view: View?
         view = if (convertView == null) {
             val inflater: LayoutInflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             inflater.inflate(R.layout.patient_suggestion_row, parent, false)!!
@@ -27,7 +27,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
             convertView
         }
 
-        view.suggestion_name_textview.text = mSuggestions[position].name
+      //  view.suggestion_name_textview.text = mSuggestions[position].name // do not show the name on suggestion (will be visible once bid is chosen)
         view.suggestion_bid_textview.text = mSuggestions[position].bid
         return view
 
@@ -49,7 +49,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
 
         private var lastFilteredConstraint : String = ""
 
-        override fun performFiltering(constraint: CharSequence?): Filter.FilterResults {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             lastFilteredConstraint = constraint.toString()
 
@@ -57,34 +57,36 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
             mViewModel.tooManySuggestions.postValue(false)
 
                 try {
-
-                    val filterResults = Filter.FilterResults()
+                    val filterResults = FilterResults()
                     if (constraint != null) {
 
                         val response = HttpClient().getApiServiceBackend().searchPatients(constraint.toString()).execute()
 
                         // Assign the data to the FilterResults
-                        filterResults.values = response.body()!!
-                        filterResults.count = response.body()!!.count()
+                        filterResults.values = response.body()
+                        response.body()?.let {
+                            filterResults.count = it.count()
+                        }
+                        if (response.body() == null) {
+                            filterResults.count = 0
+                        }
                     }
-
                     return filterResults
                 } catch (e: Exception) {
-
-                    return Filter.FilterResults()
+                    return FilterResults()
                 }
         }
 
-        override fun publishResults(constraint: CharSequence?, results: Filter.FilterResults?) {
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
 
             if (constraint.toString() == lastFilteredConstraint) {
                 mViewModel.loadingSuggestions.postValue(false)
-                if (((constraint != null) && (constraint.toString().length >= 3)) && (results == null || results.count == 0)) { // if above completion threshold and cannot suggest anything
+                if (((constraint != null) && (constraint.toString().trim().length >= 6)) && (results == null || results.count == 0)) { // if above completion threshold and cannot suggest anything
                     mViewModel.noSuggestions.postValue(true)
                 } else {
                     mViewModel.noSuggestions.postValue(false)
                 }
-                if ((results != null) && (results.count > 15)) {
+                if ((results != null) && (results.count > 15)) { //show max 15 suggestions
                     mViewModel.tooManySuggestions.postValue(true)
                 } else {
                     mViewModel.tooManySuggestions.postValue(false)
@@ -97,7 +99,6 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
             } else {
                 notifyDataSetInvalidated()
             }
-
         }
 
     }

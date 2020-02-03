@@ -74,17 +74,6 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
         }
     }
 
-    var dateSelected: Boolean = false
-    var timeSelected: Boolean = false
-    val dateTime: MutableLiveData<Date> = MutableLiveData<Date>().apply {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 8)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        cal.set(Calendar.MILLISECOND, 0)
-        value = cal.time
-    }
-
     val name: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
     val undoAction: MutableLiveData<PageActionsQueue.PageAction> = MutableLiveData<PageActionsQueue.PageAction>().apply { value = null }
@@ -132,26 +121,46 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
 
         cleanupHandled = true
 
-        val entry = patientInput.value!!.patientObject!!
-        handleProcessOutput(entry, mode, type.value!!, name.value!!, toSend)
+        val entry = patientInput.value?.patientObject
+        handleProcessOutput(entry, mode, type.value, name.value, toSend)
 
     }
 
-    private fun handleProcessOutput(patient: Patient, mode: CreateMessageMode, type: String, name: String, filePaths: List<String>) {
+    private fun handleProcessOutput(patient: Patient?, mode: CreateMessageMode, type: String?, name: String?, filePaths: List<String>) {
 
         // insert mru
-        MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
+        patient?.let{ _patient ->
+            MruUtils(getApplication<ZScannerApplication>()).addMru(_patient)
+        }
 
-        val dateString = SimpleDateFormat("MM/dd/yyyy HH:mm").format(dateTime.value)
+        // set current date and time as string value
+        val dateString = SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date())
         val numpages = filePaths.count()
 
         // create description string
         val description = run {
-            val allTypes = types.value!!
+            val allTypes = types.value
             val modeDisplayString = zapplication.resources.getString(ModeDispatcher(mode).modeNameResource)
-            val typesDisplayList = allTypes.filter { e -> e.mode == mode }
-            val typeDisplayString = if (typesDisplayList.isNotEmpty()) " - ${typesDisplayList.filter { it -> it.type == type }[0].display}" else ""
+            val typesDisplayList = allTypes?.filter { e -> e.mode == mode }
+            val typeDisplayString = if (!typesDisplayList.isNullOrEmpty()) {
+                " - ${typesDisplayList.filter { it.type == type }[0].display}"
+            } else { "" }
             "${modeDisplayString}${typeDisplayString} - $numpages str."
+        }
+
+        if (patient == null) {
+            Log.e(TAG, "patient is null")
+            return
+        }
+
+        if (type == null){
+            Log.e(TAG, "type is null")
+            return
+        }
+
+        if (name == null){
+            Log.e(TAG, "name is null")
+            return
         }
 
         JobUtils(getApplication<ZScannerApplication>()).addJob(

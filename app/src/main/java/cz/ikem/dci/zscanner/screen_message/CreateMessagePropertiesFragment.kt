@@ -17,6 +17,7 @@ import cz.ikem.dci.zscanner.KeyboardCallback
 import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Type
+import kotlinx.android.synthetic.main.fragment_message_properties.*
 import kotlinx.android.synthetic.main.fragment_message_properties.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,104 +25,77 @@ import java.util.*
 class CreateMessagePropertiesFragment : Fragment(), Step {
 
     private lateinit var mViewModel: CreateMessageViewModel
-    private var kbCallback: KeyboardCallback? = null
-
-    override fun onSelected() {
-        val viewModel = ViewModelProviders.of(activity!!).get(CreateMessageViewModel::class.java)
-        viewModel.currentStep = ModeDispatcher(viewModel.mode).stepNumberFor(this)
-        return
-    }
-
-    override fun verifyStep(): VerificationError? {
-        if (mViewModel.type.value!! == "") {
-            return VerificationError(getString(R.string.err_no_entrytype))
-        }
-        if (!mViewModel.dateSelected || !mViewModel.timeSelected) {
-            return VerificationError(getString(R.string.err_no_datetime))
-        }
-        return null
-    }
-
-    override fun onError(error: VerificationError) {}
+//    private var kbCallback: KeyboardCallback? = null
 
     private var listener: OnCreateMessageViewsInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(activity!!).get(CreateMessageViewModel::class.java)
+        activity?.let{ _activity ->
+            mViewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
+        }
         super.onCreate(savedInstanceState)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_message_properties, container, false)
+        return inflater.inflate(R.layout.fragment_message_properties, container, false)
+    }
 
-        view.fab_next_step_2.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
 
-        view.fab_next_step_2.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fab_next_step_2.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+
+        fab_next_step_2.setOnClickListener {
             listener?.onProceedButtonPress()
         }
 
-        val typeDropDown = view.type_dropdown
-
         mViewModel.types.observe(this, Observer<List<Type>> {
             val adapter = TypesAdapter(activity!!,it, mViewModel.mode)
-            typeDropDown.apply {
+            type_dropdown?.apply {
                 setAdapter(adapter)
                 setOnItemClickListener { _, _, position, _ ->
                     val item = adapter.getItem(position)
                     mViewModel.type.postValue(item.type)
-                    typeDropDown.setText(item.display)
+                    type_dropdown.setText(item.display)
                 }
             }
         })
 
-        view.name_edit_text.addTextChangedListener(object : TextWatcher {
+        name_edit_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 mViewModel.name.postValue(s.toString())
             }
         })
-
-        // date and time pickers
-        view.date_button.setOnClickListener {
-            DatePickerFragment().show(fragmentManager!!, "datePicker")
-        }
-        view.time_button.setOnClickListener {
-            TimePickerFragment().show(fragmentManager!!, "timePicker")
-        }
-        mViewModel.dateTime.observe(this, Observer<Date> { value ->
-            if (mViewModel.dateSelected) {
-                view.date_button.setText(SimpleDateFormat("d.M.yyyy").format(value))
-            } else {
-                view.date_button.setText("")
-            }
-            if (mViewModel.timeSelected) {
-                view.time_button.setText(SimpleDateFormat("HH:mm").format(value))
-            } else {
-                view.time_button.setText("")
-            }
-            updateNextButton()
-        })
-
+        
         mViewModel.type.observe(this, Observer {
             updateNextButton()
         })
-
-        return view
     }
 
-    private fun updateNextButton() {
-        if (mViewModel.timeSelected && mViewModel.timeSelected && mViewModel.type.value!! != "") {
-            view?.fab_next_step_2?.apply {
-                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-            }
-        } else {
-            view?.fab_next_step_2?.apply {
-                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
-            }
+
+    override fun onSelected() {
+        activity?.let{ _activity ->
+            val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
+            viewModel.currentStep = ModeDispatcher(viewModel.mode).stepNumberFor(this)
         }
     }
+
+
+    override fun verifyStep(): VerificationError? {
+        if (mViewModel.type.value!! == "") {
+            return VerificationError(getString(R.string.err_no_entrytype))
+        }
+        return null
+    }
+
+
+    override fun onError(error: VerificationError) {}
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -132,9 +106,24 @@ class CreateMessagePropertiesFragment : Fragment(), Step {
         }
     }
 
+
     override fun onDetach() {
         super.onDetach()
         listener = null
     }
 
+
+    private fun updateNextButton() {
+        if (mViewModel.type.value != "") {
+            view?.fab_next_step_2?.apply {
+                this.isEnabled = true
+                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+            }
+        } else {
+            view?.fab_next_step_2?.apply {
+                this.isEnabled = false
+                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+            }
+        }
+    }
 }
