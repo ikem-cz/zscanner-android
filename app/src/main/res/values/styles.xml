@@ -43,9 +43,9 @@
     </style>
 
     <style name="FAB.Main" parent="Widget.Design.FloatingActionButton">
-        <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_standard</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_standard</item>
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
@@ -75,10 +75,10 @@
 
 
     <style name="Item.Patient" parent="@style/TextAppearance.AppCompat.SearchResult.Subtitle">
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">5dp</item>
-        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+        <item name="android:paddingLeft">@dimen/margin_mini</item>
+        <item name="android:paddingRight">@dimen/margin_mini</item>
     </style>
 
     <style name="DropDownTypeItem" parent="TextAppearance.AppCompat.Tooltip">

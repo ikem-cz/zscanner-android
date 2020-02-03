@@ -175,7 +175,6 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
                 description)
     }
 
-    @Override
     override fun onCleared() {
         if (!cleanupHandled) {
             val toClean = mPageActions.actionsList().asSequence().map { e -> e.page.path }.distinct().toList()

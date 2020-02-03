@@ -20,7 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:orientation="vertical">
 
                 <TextView
@@ -145,7 +145,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="@dimen/margin_mini"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:text="@string/fragment_patient_scan"
                     style="@style/TextLabel"

@@ -53,4 +53,7 @@
     <string name="err_no_photo">Není vybrána ani jedna fotografie.</string>
     <string name="err_no_entrytype">Není určen typ záznamu.</string>
     <string name="err_no_datetime">Není určen datum a čas záznamu.</string>
+
+    <string name="fragment_jobs_overview_history">Historie</string>
+    <string name="fragment_jobs_overview_department">Zadat typ pracoviště</string>
 </resources>

@@ -12,4 +12,5 @@
     <color name="job_type_photo">#0099FF</color>
     <color name="job_type_exam">#663399</color>
     <color name="background_opaque">#ddFaFaFa</color>
+    <color name="colorTranslucent">#00000000</color>
 </resources>
