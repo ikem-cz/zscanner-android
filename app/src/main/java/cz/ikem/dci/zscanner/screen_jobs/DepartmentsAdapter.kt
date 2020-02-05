@@ -76,7 +76,7 @@ class DepartmentsAdapter(
 
         fun bind(item: Department, listener: (Department) -> Unit) = with(itemView) {
             // Views
-            department_text_view.text = item.name
+            department_text_view.text = "${item.id} - ${item.name}"
 
             setOnClickListener { listener(item) }
         }
@@ -88,7 +88,7 @@ class DepartmentsAdapter(
                 object : DiffUtil.ItemCallback<Department>() {
 
                     override fun areItemsTheSame(oldItem: Department, newItem: Department): Boolean {
-                        return oldItem.name == newItem.name
+                        return oldItem.id == newItem.id
                     }
 
                     override fun areContentsTheSame(oldItem: Department, newItem: Department): Boolean {
@@ -102,4 +102,6 @@ class DepartmentsAdapter(
 class Department(
         var id: String? = null,
         var name: String? = null
-) : Serializable
+) : Serializable {
+
+}

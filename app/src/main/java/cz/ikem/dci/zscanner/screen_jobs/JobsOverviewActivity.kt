@@ -50,39 +50,39 @@ class JobsOverviewActivity : AppCompatActivity() {
                     .commitNow()
         }
 
-        resetFabMenu()
+//        resetFabMenu()
+//
+//        new_entry_fab.setOnClickListener {
+//            if (!isFabMenuOpen) {
+//                openFabMenu()
+//            } else {
+//                closeFabMenu()
+//            }
+//        }
 
-        new_entry_fab.setOnClickListener {
-            if (!isFabMenuOpen) {
-                openFabMenu()
-            } else {
-                closeFabMenu()
-            }
-        }
+//        popup_layout_photo.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
+//        }
+//
+//        popup_fab_photo.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
+//        }
+//
+//        popup_layout_exam.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_EXAM)
+//        }
+//
+//        popup_fab_exam.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_EXAM)
+//        }
+//
+//        popup_layout_doc.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
+//        }
 
-        popup_layout_photo.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
-        }
-
-        popup_fab_photo.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
-        }
-
-        popup_layout_exam.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_EXAM)
-        }
-
-        popup_fab_exam.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_EXAM)
-        }
-
-        popup_layout_doc.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
-        }
-
-        popup_fab_doc.setOnClickListener {
-            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
-        }
+//        popup_fab_doc.setOnClickListener {
+//            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
+//        }
 
         val workManager = WorkManager.getInstance()
         workManager.pruneWork()
@@ -157,27 +157,27 @@ class JobsOverviewActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun getPopupList() = listOf<View>(popup_layout_doc, popup_layout_exam, popup_layout_photo)
+//    private fun getPopupList() = listOf<View>(popup_layout_doc, popup_layout_exam, popup_layout_photo)
 
-    private fun resetFabMenu() {
-        closeFabMenu(false)
-    }
+//    private fun resetFabMenu() {
+//        closeFabMenu(false)
+//    }
 
-    private fun closeFabMenu(animate: Boolean = true) {
-        isFabMenuOpen = false
-        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_plus2))
-        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary));
-        popup_layout_buttons.layoutParams.height= getResources().getDimension(R.dimen.fab_group_min).toInt()
-        popup_layout_buttons.requestLayout()
-
-    }
+//    private fun closeFabMenu(animate: Boolean = true) {
+//        isFabMenuOpen = false
+//        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_plus2))
+//        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary));
+//        popup_layout_buttons.layoutParams.height= getResources().getDimension(R.dimen.fab_group_min).toInt()
+//        popup_layout_buttons.requestLayout()
+//
+//    }
 
     private fun openFabMenu() {
         isFabMenuOpen = true
-        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_close))
-        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
-        popup_layout_buttons.layoutParams.height= LinearLayout.LayoutParams.WRAP_CONTENT
-        popup_layout_buttons.requestLayout()
+//        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_close))
+//        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
+//        popup_layout_buttons.layoutParams.height= LinearLayout.LayoutParams.WRAP_CONTENT
+//        popup_layout_buttons.requestLayout()
 
     }
 
@@ -193,7 +193,7 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        resetFabMenu()
+//        resetFabMenu()
     }
 
     override fun onPostResume() {

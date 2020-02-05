@@ -1,6 +1,7 @@
 package cz.ikem.dci.zscanner.screen_jobs
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,8 +10,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_KEY
+import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_PHOTO
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.SendJob
+import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
 import kotlinx.android.synthetic.main.fragment_jobs_overview.*
 import kotlinx.android.synthetic.main.fragment_jobs_overview.view.*
 
@@ -65,22 +69,32 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
     private fun createDepartmentAdapter(context: Context) {
         val departmentAdapter = DepartmentsAdapter(context)
 
-        departmentAdapter.onItemSelected = {
+        departmentAdapter.onItemSelected = {department ->
             //TODO
+
+            val intent = Intent(context, CreateMessageActivity::class.java).apply {
+                putExtras(
+                        Bundle().apply {
+                            putString(CREATE_MESSAGE_MODE_KEY, CREATE_MESSAGE_MODE_PHOTO)
+                            putSerializable(KEY_DEPARTMENT, department)
+                        }
+                )
+            }
+            startActivity(intent)
         }
 
         departments_recycler_view.adapter = departmentAdapter
         departments_recycler_view.layoutManager = LinearLayoutManager(context)
 
         val mockListOfDepartments = mutableListOf<Department>()
-        mockListOfDepartments.add(Department(null, "CHK-AMBDB - Ambulance dětské chirurgie B"))
-        mockListOfDepartments.add(Department(null, "CHK-AMBS -  Chirurgická ambulance Smet.sady"))
-        mockListOfDepartments.add(Department(null, "CHK-JIP1 - JIP I"))
-        mockListOfDepartments.add(Department(null, "CHK-AMBB - Chirurgická ambulance Bory"))
-        mockListOfDepartments.add(Department(null, "CHK-JIP2 - JIP II"))
-        mockListOfDepartments.add(Department(null, "CHK-AMBG - Gastroenterologická ambulance"))
-        mockListOfDepartments.add(Department(null, "CHK-PRIJK - Přijímací kancelář"))
-        mockListOfDepartments.add(Department(null, "CHK-KANC - Kancelář"))
+        mockListOfDepartments.add(Department("CHK-AMBDB", "Ambulance dětské chirurgie B"))
+        mockListOfDepartments.add(Department("CHK-AMBS", "Chirurgická ambulance Smet.sady"))
+        mockListOfDepartments.add(Department("CHK-JIP1", "JIP I"))
+        mockListOfDepartments.add(Department("CHK-AMBB", "Chirurgická ambulance Bory"))
+        mockListOfDepartments.add(Department("CHK-JIP2", "JIP II"))
+        mockListOfDepartments.add(Department("CHK-AMBG", "Gastroenterologická ambulance"))
+        mockListOfDepartments.add(Department("CHK-PRIJK", "Přijímací kancelář"))
+        mockListOfDepartments.add(Department("CHK-KANC", "Kancelář"))
 
         departmentAdapter.submitList(mockListOfDepartments)
 
@@ -89,6 +103,9 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
 //        viewModel.activeLiveData.observe(this, androidx.lifecycle.Observer { list: List<Department>? ->
 //            departmentAdapter.submitList(list)
 //        })
+    }
+    companion object{
+        const val KEY_DEPARTMENT = "department"
     }
 
 }

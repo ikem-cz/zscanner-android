@@ -14,6 +14,7 @@ import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
+import kotlinx.android.synthetic.main.fragment_message_pages.*
 import kotlinx.android.synthetic.main.fragment_message_pages.view.*
 
 
@@ -66,10 +67,15 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_message_pages, container, false)
-        view.fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
+        return inflater.inflate(R.layout.fragment_message_pages, container, false)
+    }
 
-        view.fab_next_send.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+
+        fab_next_send.setOnClickListener {
             mListener?.onProceedButtonPress()
         }
 
@@ -83,28 +89,30 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
         val itemTouchHelper = PagesItemTouchHelper(pagesTouchCallback)
         itemTouchHelper.attachToRecyclerView(mRecyclerView)
 
-        val adapter = PagesAdapter(mViewModel.pageActions.value!!.clone(), context!!)
-        mRecyclerView.adapter = adapter
+        context?.let { _context ->
+            val adapter = PagesAdapter(mViewModel.pageActions.value!!.clone(), _context)
+            mRecyclerView.adapter = adapter
 
-        mViewModel.pageActions.observe(this, Observer<PageActionsQueue> {
-            adapter.syncActionsQueue(mViewModel)
-            if (mViewModel.containsAtLeastOnePage()) {
-                view.fab_next_send.backgroundTintList = ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary));
-            } else {
-                view.fab_next_send.backgroundTintList = ColorStateList.valueOf(getResources().getColor(R.color.invalid));
-            }
-        })
+            mViewModel.pageActions.observe(viewLifecycleOwner, Observer<PageActionsQueue> {
+                adapter.syncActionsQueue(mViewModel)
+                if (mViewModel.containsAtLeastOnePage()) {
+                    fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                } else {
+                    fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+                }
+            })
+        }
 
-        mViewModel.undoAction.observe(this, Observer<PageActionsQueue.PageAction> {
+        mViewModel.undoAction.observe(viewLifecycleOwner, Observer<PageActionsQueue.PageAction> {
             if (mViewModel.undoAction.value != null) {
                 mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Zpět") {
-                            mViewModel.addPage(mViewModel.undoAction.value!!.page.path, mViewModel.undoAction.value!!.target)
+                            mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target)
                         }
-                mSnackbar!!.show()
+                mSnackbar?.show()
             } else {
                 if (mSnackbar != null) {
-                    mSnackbar!!.dismiss()
+                    mSnackbar?.dismiss()
                     mSnackbar = null
                 }
             }
@@ -119,15 +127,14 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
             mListener?.onCapturePagePhotoButtonPress()
         }
 
-        view.gallery_layout.setOnClickListener {
-            mListener?.onAttachButtonPress()
-        }
+//        view.gallery_layout.setOnClickListener {
+//            mListener?.onAttachButtonPress()
+//        }
+//
+//        view.gallery_fab.setOnClickListener {
+//            mListener?.onAttachButtonPress()
+//        }
 
-        view.gallery_fab.setOnClickListener {
-            mListener?.onAttachButtonPress()
-        }
-
-        return view
     }
 
     override fun onAttach(context: Context) {

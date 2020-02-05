@@ -50,7 +50,7 @@ class CreateMessagePropertiesFragment : Fragment(), Step {
             listener?.onProceedButtonPress()
         }
 
-        mViewModel.types.observe(this, Observer<List<Type>> {
+        mViewModel.types.observe(viewLifecycleOwner, Observer<List<Type>> {
             val adapter = TypesAdapter(activity!!,it, mViewModel.mode)
             type_dropdown?.apply {
                 setAdapter(adapter)
@@ -70,7 +70,7 @@ class CreateMessagePropertiesFragment : Fragment(), Step {
             }
         })
         
-        mViewModel.type.observe(this, Observer {
+        mViewModel.type.observe(viewLifecycleOwner, Observer {
             updateNextButton()
         })
     }

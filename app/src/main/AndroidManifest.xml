@@ -38,6 +38,7 @@
         <activity
             android:name=".screen_message.CreateMessageActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".screen_splash_login.SplashLoginActivity"

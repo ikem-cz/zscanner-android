@@ -21,6 +21,7 @@
     <dimen name="bid_width">110dp</dimen>
 
     <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_middle">12dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_mini">4dp</dimen>
     <dimen name="margin_above_fab_button">80dp</dimen>

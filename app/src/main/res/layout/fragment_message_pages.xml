@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,12 @@
     tools:context=".screen_message.CreateMessagePagesFragment">
 
     <LinearLayout
-        android:id="@+id/tutorial_anchor_complete"
-        android:layout_marginRight="26dp"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom|end"
-        android:visibility="invisible"
-        android:orientation="horizontal"/>
-
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttons_coordinator_layout"
         android:orientation="vertical"
         android:layout_margin="@dimen/margin_mini">
 
@@ -36,13 +30,14 @@
             />
 
 
-
     </LinearLayout>
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/buttons_coordinator_layout"
         android:animateLayoutChanges="true">
         <cz.ikem.dci.zscanner.SnackbarDodgeLinearLayout
@@ -54,32 +49,6 @@
             android:background="@color/background_opaque"
             android:orientation="vertical"
             android:paddingTop="8dp">
-
-
-            <LinearLayout
-                android:id="@+id/gallery_layout"
-                style="@style/SmallButtonWithText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextLabel"
-                    android:text="@string/fragment_pages_galery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_mini"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/gallery_fab"
-                    style="@style/Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pic" />
-            </LinearLayout>
-
-
 
             <LinearLayout
                 android:id="@+id/photo_layout"
@@ -93,7 +62,8 @@
                     android:text="@string/fragment_pages_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_mini"
+                    android:layout_marginStart="@dimen/margin_mini"
+                    android:layout_marginEnd="@dimen/margin_mini"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -114,4 +84,4 @@
 
         </cz.ikem.dci.zscanner.SnackbarDodgeLinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,8 +86,15 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
 
     val pageActions: MutableLiveData<PageActionsQueue> = MutableLiveData<PageActionsQueue>().apply { value = mPageActions }
 
-    fun addPage(path: String, position: Int = -1) {
-        val action = PageActionsQueue.PageAction(PageActionsQueue.Page(path), PageActionsQueue.PageActionType.ADDED, position)
+    fun addPage(path: String?, position: Int? = -1) {
+        if (path == null){
+            return
+        }
+        var _position = position
+        if (_position == null){
+            _position = -1
+        }
+        val action = PageActionsQueue.PageAction(PageActionsQueue.Page(path), PageActionsQueue.PageActionType.ADDED, _position)
         mPageActions.add(action)
         undoAction.postValue(null)
         pageActions.postValue(mPageActions)

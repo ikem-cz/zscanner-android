@@ -21,12 +21,12 @@ class ModeDispatcher(val mode: CreateMessageMode) {
     val numberOfSteps: Int
         get() = when (mode) {
             DOCUMENT, EXAM -> 3
-            PHOTO -> 2
+            PHOTO -> 3
         }
 
     fun instantiateStepAt(position: Int): Step =
             when (mode) {
-                DOCUMENT, EXAM -> when (position) {
+                DOCUMENT, EXAM -> when (position) { //disabled for Plzen
                     0 -> CreateMessagePatientFragment()
                     1 -> CreateMessagePropertiesFragment()
                     2 -> CreateMessagePagesFragment()
@@ -37,6 +37,7 @@ class ModeDispatcher(val mode: CreateMessageMode) {
                 PHOTO -> when (position) {
                     0 -> CreateMessagePatientFragment()
                     1 -> CreateMessagePagesFragment()
+                    2 -> CreateMessagePropertiesFragment()
                     else -> {
                         throw AssertionError("Expectation failed")
                     }
@@ -56,6 +57,7 @@ class ModeDispatcher(val mode: CreateMessageMode) {
                 PHOTO -> when (step) {
                     is CreateMessagePatientFragment -> 0
                     is CreateMessagePagesFragment -> 1
+                    is CreateMessagePropertiesFragment -> 2
                     else -> {
                         throw AssertionError("Expectation failed")
                     }
@@ -75,6 +77,7 @@ class ModeDispatcher(val mode: CreateMessageMode) {
                 PHOTO -> when (position) {
                     0 -> R.string.new_job_patient
                     1 -> R.string.new_job_pages
+                    2 -> R.string.new_job_document_properties
                     else -> {
                         throw AssertionError("Expectation failed")
                     }

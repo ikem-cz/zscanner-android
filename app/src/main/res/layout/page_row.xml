@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--android:layout_height="@dimen/list_item_height"
+<?xml version="1.0" encoding="utf-8"?><!--android:layout_height="@dimen/list_item_height"
 android:layout_marginLeft="@dimen/margin_medium"
 android:layout_marginRight="@dimen/margin_medium"-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,12 +13,21 @@ android:layout_marginRight="@dimen/margin_medium"-->
         app:cardElevation="@dimen/elevation_standard"
         app:cardUseCompatPadding="true">
 
-
-        <ImageView
-            android:id="@+id/page_imageview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/page_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+            <EditText
+                android:id="@+id/note_to_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/popisny_nazev_nepovinny" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

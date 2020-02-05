@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.page_row.view.*
 import java.io.File
 import java.io.FileOutputStream
 
+
 class PagesAdapter(private var mActions: PageActionsQueue, val context: Context) : androidx.recyclerview.widget.RecyclerView.Adapter<PagesAdapter.ViewHolder>() {
 
     private val TAG = PagesAdapter::class.java.simpleName
@@ -36,9 +37,16 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
         imageView.setImageBitmap(bitmap)
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
         imageView.adjustViewBounds = true
+
+
+        val additionalNote = holder.mItemView.note_to_photo
+
+
     }
 
     class ViewHolder(val mItemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mItemView)
+
+
 
     fun syncActionsQueue(viewModel: CreateMessageViewModel) {
         val currentPageActions = viewModel.pageActionsQueue

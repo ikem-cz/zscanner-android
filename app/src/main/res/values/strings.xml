@@ -35,7 +35,7 @@
     <string name="fragment_document_hint_name"><i><small>popisný název (nepovinný)</small></i></string>
 
     <string name="fragment_pages_galery">Vybrat z galerie</string>
-    <string name="fragment_pages_camera">… nebo vyfotit</string>
+    <string name="fragment_pages_camera">Vyfotit</string>
     <string name="fragment_pages_instruction">žádné vybrané fotografie</string>
 
     <string name="new_job_patient">%1$s - výběr pacienta</string>
@@ -56,4 +56,5 @@
 
     <string name="fragment_jobs_overview_history">Historie</string>
     <string name="fragment_jobs_overview_department">Zadat typ pracoviště</string>
+    <string name="popisny_nazev_nepovinny">Popisný název (nepovinný)</string>
 </resources>

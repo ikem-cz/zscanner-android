@@ -37,106 +37,106 @@
         </FrameLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:gravity="bottom|end">
-            <!-- "@dimen/fab_group_min"-->
-            <LinearLayout
-                android:id="@+id/popup_layout_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                android:background="@color/background_opaque"
-                android:orientation="vertical"
-                android:paddingTop="8dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:animateLayoutChanges="true"-->
+<!--            android:gravity="bottom|end">-->
+<!--            &lt;!&ndash; "@dimen/fab_group_min"&ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/popup_layout_buttons"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:animateLayoutChanges="true"-->
+<!--                android:background="@color/background_opaque"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingTop="8dp">-->
 
-                <LinearLayout
-                    android:id="@+id/popup_layout_doc"
-                    style="@style/SmallButtonWithText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/popup_layout_doc"-->
+<!--                    style="@style/SmallButtonWithText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_mini"
-                        android:text="@string/job_type_doc"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/job_type_doc" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="@dimen/margin_mini"-->
+<!--                        android:text="@string/job_type_doc"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--                        android:textColor="@color/job_type_doc" />-->
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/popup_fab_doc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Small"
-                        app:backgroundTint="@color/job_type_doc"
-                        app:srcCompat="@drawable/ic_document" />
+<!--                    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                        android:id="@+id/popup_fab_doc"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        style="@style/Button.Small"-->
+<!--                        app:backgroundTint="@color/job_type_doc"-->
+<!--                        app:srcCompat="@drawable/ic_document" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:id="@+id/popup_layout_exam"
-                    style="@style/SmallButtonWithText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/popup_layout_exam"-->
+<!--                    style="@style/SmallButtonWithText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_mini"
-                        android:text="@string/job_type_exam"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/job_type_exam" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="@dimen/margin_mini"-->
+<!--                        android:text="@string/job_type_exam"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--                        android:textColor="@color/job_type_exam" />-->
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/popup_fab_exam"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Small"
-                        app:backgroundTint="@color/job_type_exam"
-                        app:srcCompat="@drawable/ic_exam2" />
-                </LinearLayout>
+<!--                    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                        android:id="@+id/popup_fab_exam"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        style="@style/Button.Small"-->
+<!--                        app:backgroundTint="@color/job_type_exam"-->
+<!--                        app:srcCompat="@drawable/ic_exam2" />-->
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:id="@+id/popup_layout_photo"
-                    style="@style/SmallButtonWithText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/popup_layout_photo"-->
+<!--                    style="@style/SmallButtonWithText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_mini"
-                        android:text="@string/job_type_photo"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/job_type_photo" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="@dimen/margin_mini"-->
+<!--                        android:text="@string/job_type_photo"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--                        android:textColor="@color/job_type_photo" />-->
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/popup_fab_photo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Button.Small"
-                        app:backgroundTint="@color/job_type_photo"
-                        app:srcCompat="@drawable/ic_photo2" />
+<!--                    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                        android:id="@+id/popup_fab_photo"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        style="@style/Button.Small"-->
+<!--                        app:backgroundTint="@color/job_type_photo"-->
+<!--                        app:srcCompat="@drawable/ic_photo2" />-->
 
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/new_entry_fab"
-                    style="@style/FAB.Main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_plus2" />
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/new_entry_fab"-->
+<!--                    style="@style/FAB.Main"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:srcCompat="@drawable/ic_plus2" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -26,6 +26,8 @@ import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Type
+import cz.ikem.dci.zscanner.screen_jobs.Department
+import cz.ikem.dci.zscanner.screen_jobs.JobsOverviewFragment.Companion.KEY_DEPARTMENT
 import kotlinx.android.synthetic.main.activity_create_message.*
 import java.io.File
 import java.io.FileOutputStream
@@ -44,6 +46,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     private lateinit var mMode: CreateMessageMode
     private var mCurrentPhotoPath: String? = null // on photo capture result contains file uri
 
+    private lateinit var department: Department
+
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(this.findViewById<View>(android.R.id.content).windowToken, 0)
@@ -60,6 +64,11 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
             CREATE_MESSAGE_MODE_PHOTO -> CreateMessageMode.PHOTO
             else -> throw Exception()
         }
+
+        department = (intent.extras?.getSerializable(KEY_DEPARTMENT) as? Department) ?: throw Exception()
+
+
+
 
         mViewModel = ViewModelProviders.of(this, CreateMessageViewModelFactory(application, mMode)).get(CreateMessageViewModel::class.java)
 
@@ -96,17 +105,19 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                 super.onActivityResult(requestCode, resultCode, data)
             }
         } else if ((requestCode == REQUEST_CODE_PHOTO) && (resultCode == Activity.RESULT_OK)) {
-            addPhotoToViewModel(mCurrentPhotoPath!!)
-        } else if ((requestCode == REQUEST_CODE_PICK_PHOTO) && (resultCode == Activity.RESULT_OK)) {
-            // copy selected file to storage dir
-            val target = createImageFile()
-            val from = this.contentResolver.openInputStream(data!!.data!!)
-            val to = FileOutputStream(target)
-            ByteStreams.copy(from, to)
-            from.close()
-            to.flush()
-            to.close()
-            addPhotoToViewModel(target.absolutePath)
+            mCurrentPhotoPath?.let{
+                addPhotoToViewModel(it)
+            }
+//        } else if ((requestCode == REQUEST_CODE_PICK_PHOTO) && (resultCode == Activity.RESULT_OK)) {
+//            // copy selected file to storage dir
+//            val target = createImageFile()
+//            val from = this.contentResolver.openInputStream(data!!.data!!)
+//            val to = FileOutputStream(target)
+//            ByteStreams.copy(from, to)
+//            from.close()
+//            to.flush()
+//            to.close()
+//            addPhotoToViewModel(target.absolutePath)
         } else {
             //if (resultCode == Activity.RESULT_CANCELED) Toast.makeText(this, "Přerušeno uživatelem", Toast.LENGTH_SHORT).show()
             super.onActivityResult(requestCode, resultCode, data)
@@ -128,7 +139,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
 
     override fun onAttachButtonPress() {
-        startPickPhoto()
+//        startPickPhoto()
     }
 
 
@@ -142,8 +153,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
         } else {
             AlertDialog.Builder(this)
                 .setMessage(getString(R.string.finish_prompt_text))
-                .setNegativeButton(getString(R.string.finish_prompt_button_pos), { _, _ -> finish() })
-                .setPositiveButton(getString(R.string.finish_prompt_button_neg), null)
+                .setNegativeButton(getString(R.string.finish_prompt_button_pos)) { _, _ -> finish() }
+                    .setPositiveButton(getString(R.string.finish_prompt_button_neg), null)
                 .show()
         }
         mViewModel.undoAction.postValue( null )
@@ -234,14 +245,14 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
         }
     }
 
-    private fun startPickPhoto() {
-        val intent = Intent()
-        // Show only images, no videos or anything else
-        intent.type = "image/jpeg"
-        intent.action = Intent.ACTION_GET_CONTENT
-        // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_PICK_PHOTO)
-    }
+//    private fun startPickPhoto() {
+//        val intent = Intent()
+//        // Show only images, no videos or anything else
+//        intent.type = "image/jpeg"
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        // Always show the chooser (if there are multiple options available)
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_PICK_PHOTO)
+//    }
 
     // creates temporary file and sets mCurrentPhotoPath to full path
     private fun createImageFile(): File {
