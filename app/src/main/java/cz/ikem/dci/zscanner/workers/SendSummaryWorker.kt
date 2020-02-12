@@ -21,7 +21,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
         val instance = inputData.getString(KEY_CORRELATION_ID)!!
 
-        // summary sending task bid must contain substring "-S" -- is used for progress indicator calculations in JobsOverviewAdapter
+        // summary sending task externalId must contain substring "-S" -- is used for progress indicator calculations in JobsOverviewAdapter
         val taskid = (instance.substring(0, 6)) + "-S"
 
         Log.d(TAG, "SendSummaryWorker ${taskid} starts")

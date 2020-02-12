@@ -66,7 +66,9 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
                     throw Exception("Cancelled")
                 }
                 noSuggestions.postValue(false)
-                patientInput.postValue(PatientInput(response.body(), response.body()!!.getDisplay(), null, false))
+
+                val body = response.body() ?: throw Exception("response.body() was null")
+                patientInput.postValue(PatientInput(body, body.getDisplay(), null, false))
             } catch (e: Exception) {
                 Log.d(TAG, "Decode job failed for $code")
                 noSuggestions.postValue(true)

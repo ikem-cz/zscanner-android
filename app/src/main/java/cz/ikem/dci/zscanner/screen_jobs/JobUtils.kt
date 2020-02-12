@@ -27,7 +27,7 @@ class JobUtils(private val context: Context) {
 
         val sendJob = SendJob(instanceId,
                 timestamp,
-                patient.zid,
+                patient.internalId,
                 documentMode,
                 documentType,
                 documentName,
@@ -36,7 +36,7 @@ class JobUtils(private val context: Context) {
                 toSend.count() + 1,
                 listOf(),
                 intDescr,
-                "${patient.bid} ${patient.name}"
+                "${patient.externalId} ${patient.name}"
         )
 
         dispatch {
@@ -47,7 +47,7 @@ class JobUtils(private val context: Context) {
         val sendSummaryWorkerData = Data.Builder()
                 .putString(KEY_DOC_MODE, ModeDispatcher(documentMode).modeId)
                 .putString(KEY_DOC_TYPE, documentType)
-                .putString(KEY_PAT_ID, patient.zid)
+                .putString(KEY_PAT_ID, patient.internalId)
                 .putString(KEY_CORRELATION_ID, instanceId)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)

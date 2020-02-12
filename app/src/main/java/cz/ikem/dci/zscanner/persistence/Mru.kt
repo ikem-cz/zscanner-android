@@ -11,10 +11,10 @@ data class Mru(
         var id: Int,
         @ColumnInfo(name = "timestamp")
         var timestamp: Long,
-        @ColumnInfo(name = "zid")
-        var zid: String?,
+        @ColumnInfo(name = "internalId")
+        var internalId: String?,
         @ColumnInfo(name = "nameOrEntered")
         var name: String,
-        @ColumnInfo(name = "bid")
-        var bid: String?
+        @ColumnInfo(name = "externalId")
+        var externalId: String?
 )

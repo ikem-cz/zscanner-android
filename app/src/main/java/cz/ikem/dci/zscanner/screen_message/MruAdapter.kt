@@ -1,6 +1,5 @@
 package cz.ikem.dci.zscanner.screen_message
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ class MruAdapter(val callback: MruSelectionCallback) : androidx.recyclerview.wid
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mru = items[position]
         holder.mItemView.mru_name_textview.text = mru.name
-        holder.mItemView.mru_bid_textview.text = mru.bid
+        holder.mItemView.mru_bid_textview.text = mru.externalId
         holder.mItemView.setOnClickListener {
             callback.onMruSelected(mru)
         }

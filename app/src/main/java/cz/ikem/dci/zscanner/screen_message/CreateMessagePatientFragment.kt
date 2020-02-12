@@ -99,7 +99,7 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
         })
 
         // run validation on patientInput change
-        mViewModel.patientInput.observe(this, Observer<CreateMessageViewModel.PatientInput> { patientInput ->
+        mViewModel.patientInput.observe(viewLifecycleOwner, Observer<CreateMessageViewModel.PatientInput> { patientInput ->
             if (patientInput.patientText != patient_id_edittext.text.toString().trim()) {
                 patient_id_edittext.setText(patientInput.patientText, patientInput.suggest)
                 if (!patientInput.suggest) {
@@ -113,8 +113,8 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
             val adapter = PatientAdapter(_context, mViewModel)
             patient_id_edittext.apply {
                 setAdapter(adapter)
-                // show suggestions after 6 characters
-                threshold = 6
+                // show suggestions after 9 characters
+                threshold = 9
                 // on dismiss suggestions
                 setOnDismissListener { view.too_many_layout?.visibility = View.INVISIBLE }
                 // on suggestion selected
@@ -127,7 +127,7 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
             }
         }
 
-        mViewModel.patientInput.observe(this, Observer { patientInput ->
+        mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
             when {
                 patientInput.code != null -> {
                     mViewModel.startDecodeJob(patientInput.code)
@@ -149,21 +149,21 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
         })
 
         // show/hide too many results text
-        mViewModel.tooManySuggestions.observe(this, Observer<Boolean> { value ->
+        mViewModel.tooManySuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
             when (value) {
                 true -> view.too_many_layout.visibility = View.VISIBLE
                 false -> view.too_many_layout.visibility = View.INVISIBLE
             }
         })
 
-        mViewModel.loadingSuggestions.observe(this, Observer<Boolean> { value ->
+        mViewModel.loadingSuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
             when (value) {
                 true -> view.progress_bar.visibility = View.VISIBLE
                 false -> view.progress_bar.visibility = View.INVISIBLE
             }
         })
 
-        mViewModel.noSuggestions.observe(this, Observer<Boolean> { value ->
+        mViewModel.noSuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
             when (value) {
                 true -> view.no_patient_layout.visibility = View.VISIBLE
                 false -> view.no_patient_layout.visibility = View.INVISIBLE
@@ -176,14 +176,14 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
             adapter = mruAdapter
         }
 
-        mViewModel.mrus.observe(this, Observer<List<Mru>> {
+        mViewModel.mrus.observe(viewLifecycleOwner, Observer<List<Mru>> {
             mruAdapter.items = it
             mruAdapter.notifyDataSetChanged()
         })
     }
 
     override fun onMruSelected(mru: Mru) {
-        val patient = Patient(mru.bid!!, mru.name, mru.zid!!)
+        val patient = Patient(mru.externalId!!, mru.name, mru.internalId!!)
         mViewModel.patientInput.value = CreateMessageViewModel.PatientInput(patient, patient.getDisplay(), null, false)
         kbCallback?.hideKeyboard()
     }

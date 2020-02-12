@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-@Database(entities = [Mru::class], version = 5, exportSchema = false)
+@Database(entities = [Mru::class], version = 6, exportSchema = false)
 abstract class MruDatabase : RoomDatabase() {
 
     abstract fun mruDao(): MruDao

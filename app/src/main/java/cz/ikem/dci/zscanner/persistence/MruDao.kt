@@ -19,8 +19,8 @@ interface MruDao {
     @Query("delete from mru")
     fun deleteAll()
 
-    @Query("delete from mru where bid = :bid")
-    fun deleteByBid(bid: String)
+    @Query("delete from mru where externalId = :externalId")
+    fun deleteByExternalId(externalId: String)
 
     @Query("select count(*) from mru")
     fun count(): Int
@@ -42,7 +42,7 @@ interface MruDao {
     @Transaction
     fun smartInsert(mru: Mru) {
         if (mru.id != null) {
-            deleteByBid(mru.bid!!)
+            deleteByExternalId(mru.externalId!!)
         }
         insert(mru)
         while (count() > MAX_MRUS) {

@@ -25,7 +25,7 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
         val instance = inputData.getString(KEY_CORRELATION_ID)!!
 
-        // page sending task bid must contain substring "-P-" -- is used for progress indicator calculations in JobsOverviewAdapter
+        // page sending task externalId must contain substring "-P-" -- is used for progress indicator calculations in JobsOverviewAdapter
         val taskid = (instance.substring(0, 6)) + "-P-" + inputData.getInt(KEY_PAGE_NUMBER, -1)
 
         Log.d(TAG, "SendPageWorker ${taskid} starts")

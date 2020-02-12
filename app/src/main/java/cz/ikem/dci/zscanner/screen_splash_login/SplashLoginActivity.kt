@@ -97,7 +97,7 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
 
                 if ((prevloginstate != LoginViewModel.LoginState.SUBMITTED) && (loginstate == LoginViewModel.LoginState.SUBMITTED)) {
 
-                    //val errortext = findViewById<TextView>(R.bid.errorTextView)
+                    //val errortext = findViewById<TextView>(R.externalId.errorTextView)
                     //errortext.visibility = View.INVISIBLE
 
                     var oldalpha = 0f
@@ -128,7 +128,7 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
 
                 if ((prevloginstate == LoginViewModel.LoginState.SUBMITTED) && (loginstate == LoginViewModel.LoginState.LOGIN_FAILED)) {
 
-                    //val errortext = findViewById<TextView>(R.bid.errorTextView)
+                    //val errortext = findViewById<TextView>(R.externalId.errorTextView)
                     //errortext.visibility = View.VISIBLE
                     val currentFragment = supportFragmentManager.fragments.last()
                     FailedLoginDialogFragment().showAlert(currentFragment)

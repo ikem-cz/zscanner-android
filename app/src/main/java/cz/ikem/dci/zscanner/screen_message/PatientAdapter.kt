@@ -27,8 +27,8 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
             convertView
         }
 
-      //  view.suggestion_name_textview.text = mSuggestions[position].name // do not show the name on suggestion (will be visible once bid is chosen)
-        view.suggestion_bid_textview.text = mSuggestions[position].bid
+      //  view.suggestion_name_textview.text = mSuggestions[position].name // do not show the name on suggestion (will be visible once externalId is chosen)
+        view.suggestion_bid_textview.text = mSuggestions[position].externalId
         return view
 
     }

@@ -9,7 +9,7 @@ import cz.ikem.dci.zscanner.webservices.Patient
 class MruUtils(private val context: Context) {
 
     fun addMru(patient: Patient) {
-        val mru = Mru(0, System.currentTimeMillis(), patient.zid, patient.name, patient.bid)
+        val mru = Mru(0, System.currentTimeMillis(), patient.internalId, patient.name, patient.externalId)
 
         dispatch {
             val repository = Repositories(context).mruRepository
