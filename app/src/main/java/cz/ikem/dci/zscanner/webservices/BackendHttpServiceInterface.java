@@ -15,17 +15,17 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface BackendHttpServiceInterface {
-    @GET("api-zscanner/v3/documenttypes")
+    @GET("v3/documenttypes")
     Call<List<JsonObject>> getDocumentTypes();
 
-    @GET("api-zscanner/v3/folders/search")
+    @GET("v3/folders/search")
     Call<List<Patient>> searchPatients(@Query("query") String entered);
 
-    @GET("api-zscanner/v3/folders/decode")
+    @GET("v3/folders/decode")
     Call<Patient> decodePatient(@Query("query") String code);
 
     @Multipart
-    @POST("api-zscanner/v3/documents/summary")
+    @POST("v3/documents/summary")
     Call<ResponseBody> postDocumentSummary(
             @Part("correlation") RequestBody correlation,
             @Part("folderInternalId") RequestBody cardid,
@@ -38,7 +38,7 @@ public interface BackendHttpServiceInterface {
     );
 
     @Multipart
-    @POST("api-zscanner/v2/documents/page")
+    @POST("v3/documents/page")
     Call<ResponseBody> postDocumentPage(
             @Part("correlation") RequestBody correlation,
             @Part("page") RequestBody pageNum,
