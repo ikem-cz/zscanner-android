@@ -6,8 +6,6 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.persistence.Type
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
-import cz.ikem.dci.zscanner.screen_message.ModeDispatcher
 import cz.ikem.dci.zscanner.webservices.HttpClient
 
 class RefreshDocumentTypesWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx, workerParams) {
@@ -24,17 +22,11 @@ class RefreshDocumentTypesWorker(ctx: Context, workerParams: WorkerParameters) :
 
             val res = HttpClient().getApiServiceBackend().documentTypes.execute()
 
-            val allowedTypeStrings = CreateMessageMode.values().map {
-                ModeDispatcher(it).modeId
+            val types = res.body()?.map { e ->
+                Type(e.get("id").asString, e.get("display").asString)
             }
 
-            val types = res.body()!!.filter {
-                allowedTypeStrings.contains(it.get("mode").asString)
-            }.map {
-                e -> Type(0, e.get("type").asString, ModeDispatcher(e.get("mode").asString).mode, e.get("display").asString)
-            }
-
-            repository.updateTypesTransaction(types)
+            types?.let{ repository.updateTypesTransaction(types) }
 
             Log.d(TAG, "RefreshDocumentTypesWorker terminating ..")
 

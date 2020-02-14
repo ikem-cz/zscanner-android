@@ -11,9 +11,9 @@ import cz.ikem.dci.zscanner.persistence.Type
 import android.widget.TextView
 
 
-class TypesAdapter(private val mContext: Context, typesDef: List<Type>, val mode: CreateMessageMode) : BaseAdapter(), Filterable {
+class TypesAdapter(private val mContext: Context, typesDef: List<Type>) : BaseAdapter(), Filterable {
 
-    val typesDefFiltered = typesDef.filter { type -> type.mode == mode }
+    val typesDefFiltered = typesDef
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         convertView?.let {

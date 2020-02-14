@@ -29,7 +29,7 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
     //region Step callbacks
 
     override fun onSelected() {
-        mViewModel.currentStep = ModeDispatcher(mViewModel.mode).stepNumberFor(this)
+        mViewModel.currentStep = ModeDispatcher().stepNumberFor(this)
         /*if (Utils.tutorialNextStep(4, activity)) {
             Handler().postDelayed({
                 Utils.makeTooltip("Teď přidáme nějaké obrázky !", pages_recyclerview, Gravity.BOTTOM, activity, showArrow = false, modal = true) {

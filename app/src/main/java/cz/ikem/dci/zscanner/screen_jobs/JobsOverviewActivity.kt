@@ -3,12 +3,9 @@ package cz.ikem.dci.zscanner.screen_jobs
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
-import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,9 +18,7 @@ import cz.ikem.dci.zscanner.screen_about.AboutActivity
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
 import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
 import cz.ikem.dci.zscanner.workers.RefreshDepartmentsWorker
-import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
 import kotlinx.android.synthetic.main.activity_jobs_overview.*
-import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 
@@ -32,8 +27,6 @@ class JobsOverviewActivity : AppCompatActivity() {
     private val TAG = JobsOverviewActivity::class.java.simpleName
 
     private lateinit var sharedPreferences: SharedPreferences
-
-    private var isFabMenuOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,40 +114,13 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     }
 
+    //TODO delete?
     private fun launchActivity(mode:String) {
-        val intent = Intent(this, CreateMessageActivity::class.java).apply {
-            putExtras(
-                    Bundle().apply {
-                        putString(CREATE_MESSAGE_MODE_KEY, mode)
-                    }
-            )
-        }
+        val intent = Intent(this, CreateMessageActivity::class.java)
         startActivity(intent)
     }
 
-//    private fun getPopupList() = listOf<View>(popup_layout_doc, popup_layout_exam, popup_layout_photo)
 
-//    private fun resetFabMenu() {
-//        closeFabMenu(false)
-//    }
-
-//    private fun closeFabMenu(animate: Boolean = true) {
-//        isFabMenuOpen = false
-//        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_plus2))
-//        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary));
-//        popup_layout_buttons.layoutParams.height= getResources().getDimension(R.dimen.fab_group_min).toInt()
-//        popup_layout_buttons.requestLayout()
-//
-//    }
-
-    private fun openFabMenu() {
-        isFabMenuOpen = true
-//        new_entry_fab.setImageDrawable(resources.getDrawable(R.drawable.ic_close))
-//        new_entry_fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid));
-//        popup_layout_buttons.layoutParams.height= LinearLayout.LayoutParams.WRAP_CONTENT
-//        popup_layout_buttons.requestLayout()
-
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -166,10 +132,6 @@ class JobsOverviewActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        resetFabMenu()
-    }
 
     override fun onPostResume() {
         super.onPostResume()

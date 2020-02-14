@@ -2,8 +2,6 @@ package cz.ikem.dci.zscanner.persistence
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
-import cz.ikem.dci.zscanner.screen_message.ModeDispatcher
 
 class Converters {
 
@@ -17,14 +15,14 @@ class Converters {
         return Gson().fromJson(str, Array<String>::class.java).toList()
     }
 
-    @TypeConverter
-    fun modeToString(mode: CreateMessageMode): String {
-        return ModeDispatcher(mode).modeId
-    }
-
-    @TypeConverter
-    fun stringToMode(modeId: String): CreateMessageMode {
-        return ModeDispatcher(modeId).mode
-    }
+//    @TypeConverter
+//    fun tyoeToString(mode: CreateMessageMode): String {
+//        return ModeDispatcher(mode).modeId
+//    }
+//
+//    @TypeConverter
+//    fun stringToType(modeId: String): CreateMessageMode {
+//        return ModeDispatcher(modeId).mode
+//    }
 
 }

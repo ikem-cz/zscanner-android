@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_KEY
-import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_PHOTO
+import cz.ikem.dci.zscanner.KEY_DEPARTMENT
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.SendJob
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
-import cz.ikem.dci.zscanner.webservices.HttpClient
 import kotlinx.android.synthetic.main.fragment_jobs_overview.*
 import kotlinx.android.synthetic.main.fragment_jobs_overview.view.*
 
@@ -77,7 +75,6 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
             val intent = Intent(context, CreateMessageActivity::class.java).apply {
                 putExtras(
                         Bundle().apply {
-                            putString(CREATE_MESSAGE_MODE_KEY, CREATE_MESSAGE_MODE_PHOTO)
                             putSerializable(KEY_DEPARTMENT, department)
                         }
                 )
@@ -93,8 +90,4 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
             departmentAdapter.submitList(list)
         })
     }
-    companion object{
-        const val KEY_DEPARTMENT = "department"
-    }
-
 }

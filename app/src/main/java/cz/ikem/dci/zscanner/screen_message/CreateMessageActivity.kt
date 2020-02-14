@@ -26,7 +26,6 @@ import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.Type
-import cz.ikem.dci.zscanner.screen_jobs.JobsOverviewFragment.Companion.KEY_DEPARTMENT
 import kotlinx.android.synthetic.main.activity_create_message.*
 import java.io.File
 import java.io.IOException
@@ -41,7 +40,6 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     //endregion
 
     private lateinit var mViewModel: CreateMessageViewModel
-    private lateinit var mMode: CreateMessageMode
     private var mCurrentPhotoPath: String? = null // on photo capture result contains file uri
 
     private lateinit var department: Department
@@ -56,16 +54,11 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
         setContentView(R.layout.activity_create_message)
 
-        mMode =  CreateMessageMode.PHOTO
-
         department = (intent.extras?.getSerializable(KEY_DEPARTMENT) as? Department) ?: throw Exception()
 
+        mViewModel = ViewModelProviders.of(this, CreateMessageViewModelFactory(application)).get(CreateMessageViewModel::class.java)
 
-
-
-        mViewModel = ViewModelProviders.of(this, CreateMessageViewModelFactory(application, mMode)).get(CreateMessageViewModel::class.java)
-
-        stepper_layout.adapter = CreateMessageStepAdapter(supportFragmentManager, this, mMode)
+        stepper_layout.adapter = CreateMessageStepAdapter(supportFragmentManager, this)
         stepper_layout.currentStepPosition = mViewModel.currentStep
         stepper_layout.setListener(this)
         stepper_layout.setShowBottomNavigation(false)
@@ -178,7 +171,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
     override fun onStepSelected(position: Int) {
         // set appbar title
-        supportActionBar?.setTitle(getString(ModeDispatcher(mMode).stepTitleAt(position),getString(ModeDispatcher(mMode).modeNameResource)))
+        supportActionBar?.title = getString(ModeDispatcher().stepTitleAt(position))
         // hide keyboard on step change
         val view = this.currentFocus
         if (view != null) {

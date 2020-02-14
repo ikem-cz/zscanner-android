@@ -4,14 +4,14 @@ import android.content.Context
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 
-class CreateMessageStepAdapter(fm: androidx.fragment.app.FragmentManager, ctx: Context, private val mode: CreateMessageMode) : AbstractFragmentStepAdapter(fm, ctx) {
+class CreateMessageStepAdapter(fm: androidx.fragment.app.FragmentManager, ctx: Context) : AbstractFragmentStepAdapter(fm, ctx) {
 
     override fun createStep(position: Int): Step {
-        return ModeDispatcher(mode).instantiateStepAt(position)
+        return ModeDispatcher().instantiateStepAt(position)
     }
 
     override fun getCount(): Int {
-        return ModeDispatcher(mode).numberOfSteps
+        return ModeDispatcher().numberOfSteps
     }
 
 }

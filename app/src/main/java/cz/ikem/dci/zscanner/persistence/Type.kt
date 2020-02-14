@@ -3,18 +3,23 @@ package cz.ikem.dci.zscanner.persistence
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
-import cz.ikem.dci.zscanner.screen_message.ModeDispatcher
 
 @Entity(tableName = "document_type")
 data class Type(
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @ColumnInfo(name = "id")
-        val id: Int,
-        @ColumnInfo(name = "type")
-        val type: String,
-        @ColumnInfo(name = "mode")
-        val mode: CreateMessageMode,
+        val id: String,
+        @ColumnInfo(name = "display")
+        val display: String,
+        @ColumnInfo(name = "subtype")
+        val subtype: String? = null
+)
+
+@Entity(tableName = "document_sub_type")
+data class SubType(
+        @PrimaryKey
+        @ColumnInfo(name = "id")
+        val id: String,
         @ColumnInfo(name = "display")
         val display: String
 )

@@ -37,7 +37,7 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     override fun onSelected() {
         activity?.let{ _activity ->
             val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
-            viewModel.currentStep = ModeDispatcher(mViewModel.mode).stepNumberFor(this)
+            viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
         }
     }
 

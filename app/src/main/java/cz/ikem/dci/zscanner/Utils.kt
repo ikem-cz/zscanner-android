@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

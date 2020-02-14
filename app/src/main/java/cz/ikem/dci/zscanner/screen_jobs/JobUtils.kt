@@ -7,8 +7,6 @@ import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.Utils.Companion.dispatch
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.persistence.SendJob
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
-import cz.ikem.dci.zscanner.screen_message.ModeDispatcher
 import cz.ikem.dci.zscanner.webservices.Patient
 import cz.ikem.dci.zscanner.workers.DirectoryCleanupWorker
 import cz.ikem.dci.zscanner.workers.PageFilesCleanupWorker
@@ -26,7 +24,6 @@ class JobUtils(private val context: Context) {
     fun addJob(instanceId: String,
                timestamp: Long,
                patient: Patient,
-               documentMode: CreateMessageMode,
                documentType: String,
                documentName: String,
                dateString: String,
@@ -37,7 +34,6 @@ class JobUtils(private val context: Context) {
         val sendJob = SendJob(instanceId,
                 timestamp,
                 patient.internalId,
-                documentMode,
                 documentType,
                 documentName,
                 dateString,
@@ -54,7 +50,6 @@ class JobUtils(private val context: Context) {
         }
 
         val sendSummaryWorkerData = Data.Builder()
-                .putString(KEY_DOC_TYPE, ModeDispatcher(documentMode).modeId)
                 .putString(KEY_DOC_SUB_TYPE, documentType)
                 .putString(KEY_PAT_ID, patient.internalId)
                 .putString(KEY_CORRELATION_ID, instanceId)

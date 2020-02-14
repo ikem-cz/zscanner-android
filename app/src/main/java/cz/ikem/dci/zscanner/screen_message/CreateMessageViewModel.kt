@@ -15,13 +15,13 @@ import java.lang.AssertionError
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateMessageViewModelFactory(private val zapplication: Application, private val mode: CreateMessageMode) : ViewModelProvider.Factory {
+class CreateMessageViewModelFactory(private val zapplication: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return CreateMessageViewModel(zapplication, mode) as T
+        return CreateMessageViewModel(zapplication) as T
     }
 }
 
-class CreateMessageViewModel(private val zapplication: Application, val mode: CreateMessageMode) : AndroidViewModel(zapplication) {
+class CreateMessageViewModel(private val zapplication: Application) : AndroidViewModel(zapplication) {
 
     private val TAG = CreateMessageViewModel::class.java.simpleName
 
@@ -131,11 +131,11 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
         cleanupHandled = true
 
         val entry = patientInput.value?.patientObject
-        handleProcessOutput(entry, mode, type.value, name.value, toSend)
+        handleProcessOutput(entry, type.value, name.value, toSend)
 
     }
 
-    private fun handleProcessOutput(patient: Patient?, mode: CreateMessageMode, type: String?, name: String?, filePaths: List<String>) {
+    private fun handleProcessOutput(patient: Patient?, type: String?, name: String?, filePaths: List<String>) {
 
         // insert mru
         patient?.let{ _patient ->
@@ -149,12 +149,10 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
         // create description string
         val description = run {
             val allTypes = types.value
-            val modeDisplayString = zapplication.resources.getString(ModeDispatcher(mode).modeNameResource)
-            val typesDisplayList = allTypes?.filter { e -> e.mode == mode }
-            val typeDisplayString = if (!typesDisplayList.isNullOrEmpty()) {
-                " - ${typesDisplayList.filter { it.type == type }[0].display}"
+            val typeDisplayString = if (!allTypes.isNullOrEmpty()) {
+                " - ${allTypes.filter { it.display == type }[0].display}"
             } else { "" }
-            "${modeDisplayString}${typeDisplayString} - $numpages str."
+            "$typeDisplayString - $numpages str."
         }
 
         if (patient == null) {
@@ -176,7 +174,6 @@ class CreateMessageViewModel(private val zapplication: Application, val mode: Cr
                 correlationId,
                 System.currentTimeMillis(),
                 patient,
-                mode,
                 type,
                 name,
                 dateString,

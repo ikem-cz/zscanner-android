@@ -5,6 +5,7 @@ const val REQUEST_CODE_PHOTO = 0xF010
 const val REQUEST_CODE_PICK_PHOTO = 0x113
 const val REQUEST_CODE_PERMISSIONS = 0x5AD
 
+const val KEY_DEPARTMENT = "department"
 const val KEY_DOC_TYPE = "doctype"
 const val KEY_DOC_SUB_TYPE = "docsubtype"
 const val KEY_PAT_ID = "patid"
@@ -34,13 +35,3 @@ const val PREF_LOGGED_IN = "LOGGED_IN"
 const val PREF_USERNAME = "USERNAME"
 const val PREF_FIRST_TIME_PROMPTED = "FIRST_TIME_RUN"
 const val PREF_TUTORIAL_NEXT_STEP = "TUTORIAL_NEXT"
-
-const val CREATE_MESSAGE_MODE_KEY = "CreateMessageMode"
-const val CREATE_MESSAGE_MODE_PHOTO = "photo"
-const val CREATE_MESSAGE_MODE_EXAM = "exam"
-const val CREATE_MESSAGE_MODE_DOCUMENT = "doc"
-
-// Konsatnty zasilane Zlatokopem - pri zmene nutno zmenit i na backendu
-const val MESSAGE_PHOTO_MODEID = "foto"
-const val MESSAGE_EXAM_MODEID = "exam"
-const val MESSAGE_DOCUMENT_MODEID = "doc"

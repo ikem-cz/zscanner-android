@@ -3,7 +3,6 @@ package cz.ikem.dci.zscanner.persistence
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import cz.ikem.dci.zscanner.screen_message.CreateMessageMode
 
 @Entity(tableName = "send_jobs")
 data class SendJob(
@@ -14,8 +13,8 @@ data class SendJob(
         var timestamp: Long,
         @ColumnInfo(name = "patient_id")
         var patientId: String,
-        @ColumnInfo(name = "document_mode")
-        var docMode: CreateMessageMode,
+//        @ColumnInfo(name = "document_mode")
+//        var docMode: CreateMessageType,
         @ColumnInfo(name = "document_type")
         var docType: String,
         @ColumnInfo(name = "document_name")

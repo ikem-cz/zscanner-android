@@ -51,16 +51,17 @@ class CreateMessagePropertiesFragment : Fragment(), Step {
         }
 
         mViewModel.types.observe(viewLifecycleOwner, Observer<List<Type>> {
-            val adapter = TypesAdapter(activity!!,it, mViewModel.mode)
-            type_dropdown?.apply {
-                setAdapter(adapter)
-                setOnItemClickListener { _, _, position, _ ->
-                    val item = adapter.getItem(position)
-                    mViewModel.type.postValue(item.type)
-                    type_dropdown.setText(item.display)
+            activity?.let { _activity ->
+                val adapter = TypesAdapter(_activity, it)
+                type_dropdown?.apply {
+                    setAdapter(adapter)
+                    setOnItemClickListener { _, _, position, _ ->
+                        val item = adapter.getItem(position)
+                        mViewModel.type.postValue(item.display)
+                        type_dropdown.setText(item.display)
+                    }
                 }
-            }
-        })
+            }})
 
         name_edit_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -79,7 +80,7 @@ class CreateMessagePropertiesFragment : Fragment(), Step {
     override fun onSelected() {
         activity?.let{ _activity ->
             val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
-            viewModel.currentStep = ModeDispatcher(viewModel.mode).stepNumberFor(this)
+            viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
         }
     }
 

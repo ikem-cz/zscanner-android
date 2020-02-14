@@ -23,19 +23,17 @@ class RefreshDepartmentsWorker(context: Context, workerParams: WorkerParameters)
 
             val response = HttpClient().getApiServiceBackend().departments.execute()
 
-            val listOfDepartments = mutableListOf<Department>()
-            val departments = response.body()
-            departments?.forEach { departmentJson ->
-                listOfDepartments.add(Department(departmentJson["id"].asString, departmentJson["display"].asString))
+            val departments = response.body()?.map{ departmentJson ->
+                Department(departmentJson.get("id").asString, departmentJson.get("display").asString)
             }
 
-            repository.updateDepartmentsTransaction(listOfDepartments)
+            departments?.let{ repository.updateDepartmentsTransaction(it) }
 
-            Log.d(TAG, "RefreshDocumentTypesWorker terminating ..")
+            Log.d(TAG, "RefreshDepartmentsWorker terminating ..")
 
             return Result.success()
 
-        } catch (ex: Exception) {
+        } catch (exception: Exception) {
 
             return Result.retry()
 

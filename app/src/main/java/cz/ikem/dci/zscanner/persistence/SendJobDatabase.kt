@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [SendJob::class], version = 6, exportSchema = false)
+@Database(entities = [SendJob::class], version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class SendJobDatabase : RoomDatabase() {
 
