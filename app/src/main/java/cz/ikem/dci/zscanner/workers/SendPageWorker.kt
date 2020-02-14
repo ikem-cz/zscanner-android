@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.KEY_CORRELATION_ID
+import cz.ikem.dci.zscanner.KEY_DOCUMENT_NOTE
 import cz.ikem.dci.zscanner.KEY_PAGE_FILE
 import cz.ikem.dci.zscanner.KEY_PAGE_NUMBER
 import cz.ikem.dci.zscanner.persistence.Repositories
@@ -36,8 +37,12 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         if (pageInt == -1) {
             throw Exception("Assertion error")
         }
-
         val pagenum = RequestBody.create(MediaType.parse("text/plain"), pageInt.toString())
+
+
+        val note = inputData.getString(KEY_DOCUMENT_NOTE) ?: ""
+        val description = RequestBody.create(MediaType.parse("text/plain"), note)
+
 
         try {
 
@@ -53,10 +58,13 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                     )
             val filePartList = listOf(filePart)
 
+
+
             val res = HttpClient().getApiServiceBackend().postDocumentPage(
+                    filePartList,
                     correlation,
                     pagenum,
-                    filePartList
+                    description
             ).execute()
 
 

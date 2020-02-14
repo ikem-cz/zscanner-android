@@ -5,11 +5,12 @@ const val REQUEST_CODE_PHOTO = 0xF010
 const val REQUEST_CODE_PICK_PHOTO = 0x113
 const val REQUEST_CODE_PERMISSIONS = 0x5AD
 
-const val KEY_DOC_MODE = "doctype"
-const val KEY_DOC_TYPE = "docsubtype"
+const val KEY_DOC_TYPE = "doctype"
+const val KEY_DOC_SUB_TYPE = "docsubtype"
 const val KEY_PAT_ID = "patid"
 const val KEY_DATE_STRING = "datestring"
 const val KEY_CORRELATION_ID = "correlation"
+const val KEY_DOCUMENT_NOTE = "doc_description"
 const val KEY_NUM_PAGES = "num_pages"
 const val KEY_PAGE_NUMBER = "page_number"
 const val KEY_PAGE_FILE = "page_file"
@@ -18,6 +19,7 @@ const val KEY_DIRECTORY = "folder"
 
 const val WORKTAG_SENDING_JOB = "cz.ikem.dci.zscanner.work.sending-job"
 const val WORKTAG_REFRESH_DOCUMENT_TYPES = "cz.ikem.dci.zscanner.work.tag-refresh-document-types"
+const val WORKTAG_REFRESH_DEPARTMENTS = "cz.ikem.dci.zscanner.work.tag-refresh-departments" //todo should it say ikem?
 
 const val ACTION_LOGIN_OK = "cz.ikem.dci.zscanner.LOGIN_OK"
 const val ACTION_LOGIN_FAILED = "cz.ikem.dci.zscanner.LOGIN_FAILED"

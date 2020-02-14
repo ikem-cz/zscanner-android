@@ -20,17 +20,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.common.io.ByteStreams
 import com.google.zxing.integration.android.IntentIntegrator
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.*
+import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.Type
-import cz.ikem.dci.zscanner.screen_jobs.Department
 import cz.ikem.dci.zscanner.screen_jobs.JobsOverviewFragment.Companion.KEY_DEPARTMENT
 import kotlinx.android.synthetic.main.activity_create_message.*
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,12 +56,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
         setContentView(R.layout.activity_create_message)
 
-        mMode = when (intent.extras?.getString(CREATE_MESSAGE_MODE_KEY)) {
-            CREATE_MESSAGE_MODE_DOCUMENT -> CreateMessageMode.DOCUMENT
-            CREATE_MESSAGE_MODE_EXAM -> CreateMessageMode.EXAM
-            CREATE_MESSAGE_MODE_PHOTO -> CreateMessageMode.PHOTO
-            else -> throw Exception()
-        }
+        mMode =  CreateMessageMode.PHOTO
 
         department = (intent.extras?.getSerializable(KEY_DEPARTMENT) as? Department) ?: throw Exception()
 
@@ -93,31 +86,21 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
         // return from barcode scan
         if (requestCode == REQUEST_CODE_BARCODE) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-                if (result != null) {
+            if (result != null) {
                 if (result.contents == null) {
                     Log.v(TAG, "Barcode scanning cancelled")
                 } else {
                     Log.v(TAG, "Scanned: ${result.contents}")
                     //mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(MaybePatient( result.contents ), true, true))
-                    mViewModel.patientInput.postValue( CreateMessageViewModel.PatientInput( null, result.contents, result.contents, false) )
+                    mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(null, result.contents, result.contents, false))
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         } else if ((requestCode == REQUEST_CODE_PHOTO) && (resultCode == Activity.RESULT_OK)) {
-            mCurrentPhotoPath?.let{
+            mCurrentPhotoPath?.let {
                 addPhotoToViewModel(it)
             }
-//        } else if ((requestCode == REQUEST_CODE_PICK_PHOTO) && (resultCode == Activity.RESULT_OK)) {
-//            // copy selected file to storage dir
-//            val target = createImageFile()
-//            val from = this.contentResolver.openInputStream(data!!.data!!)
-//            val to = FileOutputStream(target)
-//            ByteStreams.copy(from, to)
-//            from.close()
-//            to.flush()
-//            to.close()
-//            addPhotoToViewModel(target.absolutePath)
         } else {
             //if (resultCode == Activity.RESULT_CANCELED) Toast.makeText(this, "Přerušeno uživatelem", Toast.LENGTH_SHORT).show()
             super.onActivityResult(requestCode, resultCode, data)

@@ -22,7 +22,7 @@ abstract class MruDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context, scope: Lazy<CoroutineScope>): MruDatabase {
             synchronized(this) {
-                if (MruDatabase.mInstance == null) {
+                if (mInstance == null) {
                     // Create database here
                     val instance = Room.databaseBuilder(
                             context.applicationContext,
@@ -30,7 +30,7 @@ abstract class MruDatabase : RoomDatabase() {
                             "mru"
                     )
                             .fallbackToDestructiveMigration()
-                            .addCallback(MruDatabase.MruDatabaseCallback(scope))
+                            .addCallback(MruDatabaseCallback(scope))
                             .build()
 
                     mInstance = instance
@@ -49,7 +49,7 @@ abstract class MruDatabase : RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            MruDatabase.mInstance?.let { database ->
+            mInstance?.let { database ->
                 scope.value.launch {
                     populateDatabase(database.mruDao())
                 }

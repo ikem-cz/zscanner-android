@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cz.ikem.dci.zscanner.R
+import cz.ikem.dci.zscanner.persistence.Department
 import kotlinx.android.synthetic.main.department_row.view.*
-import java.io.Serializable
 
 
 class DepartmentsAdapter(
@@ -76,7 +76,7 @@ class DepartmentsAdapter(
 
         fun bind(item: Department, listener: (Department) -> Unit) = with(itemView) {
             // Views
-            department_text_view.text = "${item.id} - ${item.name}"
+            department_text_view.text = "${item.id} - ${item.display}"
 
             setOnClickListener { listener(item) }
         }
@@ -96,12 +96,4 @@ class DepartmentsAdapter(
                     }
                 }
     }
-}
-
-
-class Department(
-        var id: String? = null,
-        var name: String? = null
-) : Serializable {
-
 }

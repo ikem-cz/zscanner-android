@@ -23,7 +23,16 @@ class JobUtils(private val context: Context) {
     /**
      *  Create and schedule sendjob of create message process result
      */
-    fun addJob(instanceId: String, timestamp: Long, patient: Patient, documentMode: CreateMessageMode, documentType: String, documentName: String, dateString: String, toSend: List<String>, intDescr: String) {
+    fun addJob(instanceId: String,
+               timestamp: Long,
+               patient: Patient,
+               documentMode: CreateMessageMode,
+               documentType: String,
+               documentName: String,
+               dateString: String,
+               toSend: List<String>,
+               intDescr: String
+    ) {
 
         val sendJob = SendJob(instanceId,
                 timestamp,
@@ -45,13 +54,14 @@ class JobUtils(private val context: Context) {
         }
 
         val sendSummaryWorkerData = Data.Builder()
-                .putString(KEY_DOC_MODE, ModeDispatcher(documentMode).modeId)
-                .putString(KEY_DOC_TYPE, documentType)
+                .putString(KEY_DOC_TYPE, ModeDispatcher(documentMode).modeId)
+                .putString(KEY_DOC_SUB_TYPE, documentType)
                 .putString(KEY_PAT_ID, patient.internalId)
                 .putString(KEY_CORRELATION_ID, instanceId)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)
                 .putString(KEY_NAME, documentName)
+                .putString(KEY_DOCUMENT_NOTE, "note") //todo remove placeholder
                 .build()
         val sendSummaryWorker = OneTimeWorkRequest.Builder(SendSummaryWorker::class.java)
                 .addTag(WORKTAG_SENDING_JOB)
@@ -66,6 +76,7 @@ class JobUtils(private val context: Context) {
                     .putString(KEY_CORRELATION_ID, instanceId)
                     .putInt(KEY_PAGE_NUMBER, index)
                     .putString(KEY_PAGE_FILE, e)
+                    .putString(KEY_DOCUMENT_NOTE, "note") //todo remove placeholder
                     .build()
         }
         val sendPageWorkers = sendPageWorkerDatas.map { e ->

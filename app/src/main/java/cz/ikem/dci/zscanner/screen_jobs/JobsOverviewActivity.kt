@@ -20,8 +20,10 @@ import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.screen_about.AboutActivity
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
 import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
+import cz.ikem.dci.zscanner.workers.RefreshDepartmentsWorker
 import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
 import kotlinx.android.synthetic.main.activity_jobs_overview.*
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 
@@ -50,54 +52,27 @@ class JobsOverviewActivity : AppCompatActivity() {
                     .commitNow()
         }
 
-//        resetFabMenu()
-//
-//        new_entry_fab.setOnClickListener {
-//            if (!isFabMenuOpen) {
-//                openFabMenu()
-//            } else {
-//                closeFabMenu()
-//            }
-//        }
-
-//        popup_layout_photo.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
-//        }
-//
-//        popup_fab_photo.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_PHOTO)
-//        }
-//
-//        popup_layout_exam.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_EXAM)
-//        }
-//
-//        popup_fab_exam.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_EXAM)
-//        }
-//
-//        popup_layout_doc.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
-//        }
-
-//        popup_fab_doc.setOnClickListener {
-//            launchActivity(CREATE_MESSAGE_MODE_DOCUMENT)
-//        }
-
         val workManager = WorkManager.getInstance()
         workManager.pruneWork()
 
-        // enqueue refresh document types worker
-        workManager.beginUniqueWork(
-                WORKTAG_REFRESH_DOCUMENT_TYPES,
-                ExistingWorkPolicy.KEEP,
-                OneTimeWorkRequest.Builder(RefreshDocumentTypesWorker::class.java)
-                        .setConstraints(
-                                Constraints.Builder()
-                                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
-                        .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
-                        .build())
-                .enqueue()
+//        // enqueue refresh document types worker
+//        workManager.beginUniqueWork(
+//                WORKTAG_REFRESH_DOCUMENT_TYPES,
+//                ExistingWorkPolicy.KEEP,
+//                OneTimeWorkRequest.Builder(RefreshDocumentTypesWorker::class.java)
+//                        .setConstraints(
+//                                Constraints.Builder()
+//                                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
+//                        .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+//                        .build())
+//                .enqueue()
+
+
+        // enqueue refresh departments worker
+        val refreshDepartments = PeriodicWorkRequest.Builder(RefreshDepartmentsWorker::class.java, 1, TimeUnit.HOURS) // TODO decide how often
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+                .build()
+        workManager.enqueue(refreshDepartments)
 
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val username = sharedPreferences.getString(PREF_USERNAME, "")

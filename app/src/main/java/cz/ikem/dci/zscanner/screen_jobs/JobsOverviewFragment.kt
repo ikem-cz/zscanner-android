@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_KEY
 import cz.ikem.dci.zscanner.CREATE_MESSAGE_MODE_PHOTO
 import cz.ikem.dci.zscanner.R
+import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.SendJob
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
+import cz.ikem.dci.zscanner.webservices.HttpClient
 import kotlinx.android.synthetic.main.fragment_jobs_overview.*
 import kotlinx.android.synthetic.main.fragment_jobs_overview.view.*
 
@@ -51,7 +53,7 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
                 setEmptyView(it.jobs_empty_view)
             }
         }
-        mViewModel.storedSendJobs.observe(this, Observer<List<SendJob>> { list ->
+        mViewModel.storedSendJobs.observe(viewLifecycleOwner, Observer<List<SendJob>> { list ->
             if (list != null) {
                 Log.d(TAG, "Observed ${list.size} jobs.")
             }
@@ -86,23 +88,10 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
         departments_recycler_view.adapter = departmentAdapter
         departments_recycler_view.layoutManager = LinearLayoutManager(context)
 
-        val mockListOfDepartments = mutableListOf<Department>()
-        mockListOfDepartments.add(Department("CHK-AMBDB", "Ambulance dětské chirurgie B"))
-        mockListOfDepartments.add(Department("CHK-AMBS", "Chirurgická ambulance Smet.sady"))
-        mockListOfDepartments.add(Department("CHK-JIP1", "JIP I"))
-        mockListOfDepartments.add(Department("CHK-AMBB", "Chirurgická ambulance Bory"))
-        mockListOfDepartments.add(Department("CHK-JIP2", "JIP II"))
-        mockListOfDepartments.add(Department("CHK-AMBG", "Gastroenterologická ambulance"))
-        mockListOfDepartments.add(Department("CHK-PRIJK", "Přijímací kancelář"))
-        mockListOfDepartments.add(Department("CHK-KANC", "Kancelář"))
-
-        departmentAdapter.submitList(mockListOfDepartments)
-
-        //TODO add view model
-//        val viewModel = DepartmentViewModel()
-//        viewModel.activeLiveData.observe(this, androidx.lifecycle.Observer { list: List<Department>? ->
-//            departmentAdapter.submitList(list)
-//        })
+        val departmentViewModel: DepartmentViewModel = ViewModelProviders.of(this).get(DepartmentViewModel::class.java)
+        departmentViewModel.storedDepartments.observe(viewLifecycleOwner, androidx.lifecycle.Observer { list: List<Department>? ->
+            departmentAdapter.submitList(list)
+        })
     }
     companion object{
         const val KEY_DEPARTMENT = "department"

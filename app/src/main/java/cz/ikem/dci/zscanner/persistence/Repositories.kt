@@ -15,6 +15,7 @@ class Repositories(val app: Context) {
     val typeRepository: TypeRepository
     val jobsRepository: SendJobRepository
     val mruRepository: MruRepository
+    val departmentRepository: DepartmentRepository
 
     init {
 
@@ -26,6 +27,9 @@ class Repositories(val app: Context) {
 
         val mruDao = MruDatabase.getDatabase(app, initializationScope).mruDao()
         mruRepository = MruRepository(mruDao)
+
+        val departmentsDao = DepartmentDatabase.getDatabase(app).departmentDao()
+        departmentRepository = DepartmentRepository(departmentsDao)
 
     }
 

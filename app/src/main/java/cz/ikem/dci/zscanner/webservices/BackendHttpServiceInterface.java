@@ -15,33 +15,36 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface BackendHttpServiceInterface {
-    @GET("v3/documenttypes")
+    @GET("/medicalc/v3.1/departments")
+    Call<List<JsonObject>> getDepartments();
+
+    @GET("/medicalc/v3.1/documenttypes")
     Call<List<JsonObject>> getDocumentTypes();
 
-    @GET("v3/folders/search")
+    @GET("/medicalc/v3.1/folders/search")
     Call<List<Patient>> searchPatients(@Query("query") String entered);
 
-    @GET("v3/folders/decode")
+    @GET("/medicalc/v3.1/folders/decode")
     Call<Patient> decodePatient(@Query("query") String code);
 
     @Multipart
-    @POST("v3/documents/summary")
+    @POST("/medicalc/v3.1/documents/summary")
     Call<ResponseBody> postDocumentSummary(
             @Part("correlation") RequestBody correlation,
             @Part("folderInternalId") RequestBody cardid,
-            @Part("documentMode") RequestBody mode,
             @Part("documentType") RequestBody type,
+            @Part("documentSubType") RequestBody subtype,
             @Part("pages") RequestBody numPages,
             @Part("datetime") RequestBody datetime,
-            @Part("name") RequestBody name,
-            @Part("notes") RequestBody notes
+            @Part("name") RequestBody name
     );
 
     @Multipart
-    @POST("v3/documents/page")
+    @POST("/medicalc/v3.1/documents/page")
     Call<ResponseBody> postDocumentPage(
+            @Part ("page") List<MultipartBody.Part> images,
             @Part("correlation") RequestBody correlation,
-            @Part("page") RequestBody pageNum,
-            @Part List<MultipartBody.Part> images
+            @Part("pageIndex") RequestBody pageNum,
+            @Part ("description") RequestBody additionalNote
     );
 }
