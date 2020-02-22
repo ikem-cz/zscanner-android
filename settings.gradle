@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':seacat'
+project(':seacat').projectDir = new File('SeaCat-Android-G3/seacat')

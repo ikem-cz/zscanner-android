@@ -98,4 +98,5 @@ dependencies {
     // A simple library based on PopupWindow to create Tooltips on Android. 💚
     // https://github.com/douglasjunior/android-simple-tooltip
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.2'
+    implementation project(path: ':seacat')
 }
