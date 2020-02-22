@@ -19,7 +19,7 @@ class ZScannerApplication : Application() {
             .setExecutor(Executors.newFixedThreadPool(2))
             .build()
 
-        seacat = SeaCat(this, "http://10.0.2.2:8080/seacat/seacat")
+        seacat = SeaCat(this, "https://zscanner.seacat.io/seacat")
 
         WorkManager.initialize(this, configuration)
     }
