@@ -3,7 +3,6 @@ package cz.ikem.dci.zscanner
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.teskalabs.seacat.android.client.SeaCatClient
 import java.util.concurrent.Executors
 
 class ZScannerApplication : Application() {
@@ -18,9 +17,6 @@ class ZScannerApplication : Application() {
 
         WorkManager.initialize(this, configuration)
 
-        // Enable SeaCat
-        SeaCatClient.initialize(applicationContext) {
-        }
         super.onCreate()
     }
 

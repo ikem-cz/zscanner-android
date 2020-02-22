@@ -91,7 +91,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0'
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation project(':SeaCatClient')
 
     implementation 'com.google.firebase:firebase-core:17.0.1'
     // Crashlytics

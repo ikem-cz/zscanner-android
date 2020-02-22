@@ -1,1 +1,1 @@
-include ':app', ':SeaCatClient'
+include ':app'

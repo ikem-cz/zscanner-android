@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.work.*
-import com.teskalabs.seacat.android.client.SeaCatClient
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.screen_about.AboutActivity
@@ -86,7 +85,6 @@ class JobsOverviewActivity : AppCompatActivity() {
                                 JobUtils(this).nukeAllJobs()
                                 val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
                                 sharedPreferences.edit().putBoolean(PREF_LOGGED_IN, false).apply()
-                                SeaCatClient.reset()
                                 val intent = Intent(this, SplashLoginActivity::class.java)
                                 startActivity(intent)
                                 finish()

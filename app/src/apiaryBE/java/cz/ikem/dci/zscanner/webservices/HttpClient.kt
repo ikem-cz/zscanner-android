@@ -40,7 +40,6 @@ class HttpClient {
             synchronized(this) {
                 if (mApiServiceAuth == null) {
                     val client = OkHttpClient.Builder()
-                            .addInterceptor(SeaCatInterceptor())
                             .callTimeout(500, TimeUnit.MILLISECONDS)
                             .build()
                     val retrofit = Retrofit.Builder()

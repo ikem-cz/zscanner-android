@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.teskalabs.seacat.android.client.SeaCatClient
 import cz.ikem.dci.zscanner.ACTION_LOGIN_FAILED
 import cz.ikem.dci.zscanner.ACTION_LOGIN_OK
 import cz.ikem.dci.zscanner.R
@@ -22,13 +21,10 @@ import cz.ikem.dci.zscanner.screen_splash_login.LoginFragment.LoginFragmentCallb
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
-class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBroadcastReceiver.LoginCallback, SeaCatBroadcastReceiver.SeaCatCallback {
+class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBroadcastReceiver.LoginCallback {
 
     private val TAG = SplashLoginActivity::class.java.simpleName
 
-    private lateinit var mHandler: Handler
-
-    private lateinit var mSeaCatReceiver: SeaCatBroadcastReceiver
     private lateinit var mLoginReceiver: LoginBroadcastReceiver
 
     private lateinit var mViewModel: LoginViewModel
@@ -46,7 +42,6 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
 
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-        mSeaCatReceiver = SeaCatBroadcastReceiver(this)
         mLoginReceiver = LoginBroadcastReceiver(this)
 
         if (savedInstanceState == null) {
@@ -167,30 +162,11 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
         }
         registerReceiver(mLoginReceiver, intentFilter)
 
-        val intentFilterSeaCat = IntentFilter().apply {
-            addCategory(SeaCatClient.CATEGORY_SEACAT)
-            addAction(SeaCatClient.ACTION_SEACAT_STATE_CHANGED)
-            addAction(SeaCatClient.ACTION_SEACAT_CLIENTID_CHANGED)
-        }
-        registerReceiver(mSeaCatReceiver, intentFilterSeaCat)
-
-        // trigger initial state delivery
-        mHandler = Handler()
-        mHandler.postDelayed(
-                {
-                    Log.d(TAG, "Requesting initial SeaCat state broadcast")
-                    SeaCatClient.broadcastState()
-                }, 500)
     }
 
     override fun onDestroy() {
         unregisterReceiver(mLoginReceiver)
-        unregisterReceiver(mSeaCatReceiver)
         super.onDestroy()
-    }
-
-    override fun OnSeaCatIPConnected() {
-        mViewModel.seacatstate = LoginViewModel.SeaCatState.IP_CONNECTED
     }
 
     override fun OnLoginOk() {
@@ -201,16 +177,6 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
         mViewModel.loginstate = LoginViewModel.LoginState.LOGIN_FAILED
     }
 
-    override fun OnSeaCatReady() {
-        mViewModel.seacatstate = LoginViewModel.SeaCatState.READY
-    }
-
-    override fun OnClientIdChanged() {
-    }
-
-    override fun OnSeaCatEstabilished() {
-        mViewModel.seacatstate = LoginViewModel.SeaCatState.ESTABILISHED
-    }
 
     override fun submitCredentials(username: String, password: String) {
         Log.d(TAG, "submitCredentials()")
@@ -221,7 +187,6 @@ class SplashLoginActivity : AppCompatActivity(), LoginFragmentCallback, LoginBro
         } else {
             mViewModel.loginstate = LoginViewModel.LoginState.SUBMITTED
             mViewModel.username = username
-            SeaCatAuthenticator.startLogin(username, password, this)
         }
     }
 }
