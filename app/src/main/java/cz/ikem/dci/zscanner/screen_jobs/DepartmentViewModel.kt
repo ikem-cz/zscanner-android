@@ -10,5 +10,5 @@ class DepartmentViewModel(application: Application) : AndroidViewModel(applicati
     private val TAG = DepartmentViewModel::class.java.simpleName
 
     val storedDepartments: LiveData<List<Department>> = Repositories(application).departmentRepository.allDepartments
-
+    var chosenDepartment: MutableLiveData<Department> = MutableLiveData()
 }

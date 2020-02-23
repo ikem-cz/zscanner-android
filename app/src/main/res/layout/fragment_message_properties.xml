@@ -1,56 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".screen_message.CreateMessageTypeFragment">
 
-    <ScrollView
+    <TextView
+        android:id="@+id/other_photo_types_text"
+        style="@style/TextLabel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:text="TYPE"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-                <TextView
-                    android:id="@+id/type_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TextLabel"
-                    android:text="@string/fragment_document_type" />
-
-                <cz.ikem.dci.zscanner.AutoCompleteDropDown
-                    android:id="@+id/type_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/fragment_document_hint_type"
-                    />
-                <EditText
-                    android:id="@+id/name_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/fragment_document_hint_name" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/document_types_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_standard"
+        app:layout_constraintBottom_toTopOf="@+id/fab_next_step_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/other_photo_types_text"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_next_step_2"
         style="@style/FAB.Main"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_navigate_next2" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

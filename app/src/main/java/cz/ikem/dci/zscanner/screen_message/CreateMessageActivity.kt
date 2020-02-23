@@ -13,26 +13,30 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.work.*
 import com.google.zxing.integration.android.IntentIntegrator
-import com.stepstone.stepper.StepperLayout
-import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.*
+import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Department
-import cz.ikem.dci.zscanner.persistence.Type
-import kotlinx.android.synthetic.main.activity_create_message.*
+import cz.ikem.dci.zscanner.persistence.DocumentType
+import cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment.Companion.EXTRA_DEPARTMENT
+import cz.ikem.dci.zscanner.webservices.HttpClient
+import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
-class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteractionListener, StepperLayout.StepperListener, KeyboardCallback {
+
+class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteractionListener, KeyboardCallback {
 
     //region constants
     private val TAG = CreateMessageActivity::class.java.simpleName
@@ -42,7 +46,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     private lateinit var mViewModel: CreateMessageViewModel
     private var mCurrentPhotoPath: String? = null // on photo capture result contains file uri
 
-    private lateinit var department: Department
+    lateinit var department: Department
 
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -58,13 +62,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
         mViewModel = ViewModelProviders.of(this, CreateMessageViewModelFactory(application)).get(CreateMessageViewModel::class.java)
 
-        stepper_layout.adapter = CreateMessageStepAdapter(supportFragmentManager, this)
-        stepper_layout.currentStepPosition = mViewModel.currentStep
-        stepper_layout.setListener(this)
-        stepper_layout.setShowBottomNavigation(false)
-
-
-        mViewModel.types.observe(this, Observer<List<Type>> {
+        mViewModel.storedTypes.observe(this, Observer<List<DocumentType>> {
             // "Force types field observation for later synchronous access
             Log.v(TAG, "Types observed")
         })
@@ -73,6 +71,30 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
+
+
+val departmentId = department.id
+
+        val departmentData = Data.Builder()
+        //Add department as parameter in Data class.
+        departmentData.putString(EXTRA_DEPARTMENT, departmentId)
+
+        // enqueue refresh types worker
+        val workManager = WorkManager.getInstance()
+        workManager.pruneWork()
+        workManager.beginUniqueWork(
+                WORKTAG_REFRESH_DOCUMENT_TYPES,
+                ExistingWorkPolicy.KEEP,
+                OneTimeWorkRequest.Builder(RefreshDocumentTypesWorker::class.java)
+                        .setConstraints(
+                                Constraints.Builder()
+                                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
+                        .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+                        .setInputData(departmentData.build())
+                        .build())
+                .enqueue()
+
+      //  Log.d(TAG, "Url = ${HttpClient().getApiServiceBackend().getDocumentTypes(departmentId).request().url()}")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,82 +135,39 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
         startPhotoCapture()
     }
 
-
-    override fun onAttachButtonPress() {
-//        startPickPhoto()
-    }
-
-
-    override fun onProceedButtonPress() {
-        stepper_layout.proceed()
-    }
-
-    private fun onBack() {
-        if (mViewModel.currentStep > 0) {
-            stepper_layout.currentStepPosition = mViewModel.currentStep - 1
-        } else {
-            AlertDialog.Builder(this)
-                .setMessage(getString(R.string.finish_prompt_text))
-                .setNegativeButton(getString(R.string.finish_prompt_button_pos)) { _, _ -> finish() }
-                    .setPositiveButton(getString(R.string.finish_prompt_button_neg), null)
-                .show()
-        }
-        mViewModel.undoAction.postValue( null )
-    }
+//    private fun onBack() {
+//        if (mViewModel.currentStep > 0) {
+//            stepper_layout.currentStepPosition = mViewModel.currentStep - 1
+//        } else {
+//            AlertDialog.Builder(this)
+//                .setMessage(getString(R.string.finish_prompt_text))
+//                .setNegativeButton(getString(R.string.finish_prompt_button_pos)) { _, _ -> finish() }
+//                    .setPositiveButton(getString(R.string.finish_prompt_button_neg), null)
+//                .show()
+//        }
+//        mViewModel.undoAction.postValue( null )
+//    }
 
     override fun onBackPressed() {
-        onBack()
+        findNavController(R.id.nav_host_fragment).navigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        //TODO handle the navigate up on first screen
+
         return when (item.itemId) {
             android.R.id.home -> {
-                onBack()
+           //     finish()
+                findNavController(R.id.nav_host_fragment).navigateUp()
+                mViewModel.undoAction.postValue( null )
+//                onBack()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    //endregion
-
-    //region StepperListener implementation
-
-    /**
-     *  Called when stepper process complete
-     */
-    override fun onCompleted(completeButton: View?) {
-        mViewModel.onProcessEnd()
-        finish()
-    }
-
-    /**
-     *  Called when back button pressed on first step
-     */
-    override fun onReturn() {
-        finish()
-    }
-
-    override fun onStepSelected(position: Int) {
-        // set appbar title
-        supportActionBar?.title = getString(ModeDispatcher().stepTitleAt(position))
-        // hide keyboard on step change
-        val view = this.currentFocus
-        if (view != null) {
-            hideKeyboard()
-        }
-    }
-
-    /**
-     *  Called on step verification error
-     */
-    override fun onError(verificationError: VerificationError?) {
-        // just propagate error message to a toast
-        Toast.makeText(this, verificationError?.errorMessage, Toast.LENGTH_SHORT).show()
-    }
-
-
-    //endregion
 
 
     //region photo utility functions
@@ -220,15 +199,6 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
             requestPhotoPermissions()
         }
     }
-
-//    private fun startPickPhoto() {
-//        val intent = Intent()
-//        // Show only images, no videos or anything else
-//        intent.type = "image/jpeg"
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        // Always show the chooser (if there are multiple options available)
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_PICK_PHOTO)
-//    }
 
     // creates temporary file and sets mCurrentPhotoPath to full path
     private fun createImageFile(): File {

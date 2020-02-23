@@ -63,6 +63,10 @@ class JobsOverviewActivity : AppCompatActivity() {
 
         // enqueue refresh departments worker
         val refreshDepartments = PeriodicWorkRequest.Builder(RefreshDepartmentsWorker::class.java, 1, TimeUnit.HOURS) // TODO decide how often
+                .setConstraints(Constraints
+                        .Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build())
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
                 .build()
         workManager.enqueue(refreshDepartments)
@@ -115,7 +119,7 @@ class JobsOverviewActivity : AppCompatActivity() {
     }
 
     //TODO delete?
-    private fun launchActivity(mode:String) {
+    private fun launchCreateMessageActivity() {
         val intent = Intent(this, CreateMessageActivity::class.java)
         startActivity(intent)
     }

@@ -30,7 +30,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
         try {
 
-            val patid = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_PAT_ID))
+            val patid = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_FOLDER_INTERNAL_ID))
             val type = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_TYPE))
             val subType = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_SUB_TYPE))
             val date = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DATE_STRING))
@@ -38,7 +38,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
             val note = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOCUMENT_NOTE))
 
 
-            Log.d(TAG, "SendSummaryWorker ${taskid} data: ${inputData.getString(KEY_PAT_ID)} ${inputData.getString(KEY_DOC_TYPE)} " +
+            Log.d(TAG, "SendSummaryWorker ${taskid} data: ${inputData.getString(KEY_FOLDER_INTERNAL_ID)} ${inputData.getString(KEY_DOC_TYPE)} " +
                     "${inputData.getString(KEY_DOC_SUB_TYPE)} ${inputData.getString(KEY_DATE_STRING)} ${inputData.getString(KEY_NAME)}")
 
             val numpagesInt = inputData.getInt(KEY_NUM_PAGES, -1)

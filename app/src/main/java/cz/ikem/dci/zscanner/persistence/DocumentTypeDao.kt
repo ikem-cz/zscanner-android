@@ -7,21 +7,21 @@ import androidx.room.Query
 import androidx.room.Transaction
 
 @Dao
-interface TypeDao {
+interface DocumentTypeDao {
 
     @Query("select * from document_type")
-    fun getAllDTs(): LiveData<List<Type>>
+    fun getAllDTs(): LiveData<List<DocumentType>>
 
     @Insert
-    fun insert(dt: Type)
+    fun insert(dt: DocumentType)
 
     @Query("delete from document_type")
     fun deleteAll()
 
     @Transaction
-    fun updateTypesTransaction(types: List<Type>) {
+    fun updateDocumentTypesTransaction(documentTypes: List<DocumentType>) {
         deleteAll()
-        types.forEach {
+        documentTypes.forEach {
             insert(it)
         }
     }
@@ -30,11 +30,11 @@ interface TypeDao {
     fun count(): Int
 
     @Transaction
-    fun updateTypesTransactionIfEmpty(types: List<Type>) {
+    fun updateDocumentTypesTransactionIfEmpty(documentTypes: List<DocumentType>) {
         val cnt = count()
         if (cnt == 0) {
             deleteAll()
-            types.forEach {
+            documentTypes.forEach {
                 insert(it)
             }
         }

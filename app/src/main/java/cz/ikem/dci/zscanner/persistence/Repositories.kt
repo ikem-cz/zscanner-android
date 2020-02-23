@@ -12,15 +12,19 @@ class Repositories(val app: Context) {
             CoroutineScope(Job() + Dispatchers.IO)
         }
 
-    val typeRepository: TypeRepository
+    val docTypeRepository: DocumentTypeRepository
+    val docSubTypeRepository: DocumentSubTypeRepository
     val jobsRepository: SendJobRepository
     val mruRepository: MruRepository
     val departmentRepository: DepartmentRepository
 
     init {
 
-        val documentTypeDao = TypeDatabase.getDatabase(app, initializationScope).documentTypeDao()
-        typeRepository = TypeRepository(documentTypeDao)
+        val documentTypeDao = DocumentTypeDatabase.getDatabase(app, initializationScope).documentTypeDao()
+        docTypeRepository = DocumentTypeRepository(documentTypeDao)
+
+        val documentSubTypeDao = DocumentSubTypeDatabase.getDatabase(app, initializationScope).documentSubTypeDao()
+        docSubTypeRepository = DocumentSubTypeRepository(documentSubTypeDao)
 
         val jobsDao = SendJobDatabase.getDatabase(app).sendJobDao()
         jobsRepository = SendJobRepository(jobsDao)

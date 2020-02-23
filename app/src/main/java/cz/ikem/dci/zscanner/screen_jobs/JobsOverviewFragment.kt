@@ -23,10 +23,12 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
     private val TAG = JobsOverviewFragment::class.java.simpleName
 
     private lateinit var mViewModel: JobsOverviewViewModel
+    private lateinit var departmentViewModel: DepartmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this).get(JobsOverviewViewModel::class.java)
+        departmentViewModel = ViewModelProviders.of(this).get(DepartmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,8 +72,6 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
         val departmentAdapter = DepartmentsAdapter(context)
 
         departmentAdapter.onItemSelected = {department ->
-            //TODO
-
             val intent = Intent(context, CreateMessageActivity::class.java).apply {
                 putExtras(
                         Bundle().apply {
@@ -79,13 +79,13 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
                         }
                 )
             }
-            startActivity(intent)
+            departmentViewModel.chosenDepartment.value = department
+             startActivity(intent)
         }
 
         departments_recycler_view.adapter = departmentAdapter
         departments_recycler_view.layoutManager = LinearLayoutManager(context)
 
-        val departmentViewModel: DepartmentViewModel = ViewModelProviders.of(this).get(DepartmentViewModel::class.java)
         departmentViewModel.storedDepartments.observe(viewLifecycleOwner, androidx.lifecycle.Observer { list: List<Department>? ->
             departmentAdapter.submitList(list)
         })

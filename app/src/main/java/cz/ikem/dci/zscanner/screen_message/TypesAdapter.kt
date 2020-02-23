@@ -4,56 +4,76 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
-import cz.ikem.dci.zscanner.persistence.Type
-import android.widget.TextView
+import cz.ikem.dci.zscanner.persistence.DocumentType
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import cz.ikem.dci.zscanner.R
+import kotlinx.android.synthetic.main.item_row.view.*
 
 
-class TypesAdapter(private val mContext: Context, typesDef: List<Type>) : BaseAdapter(), Filterable {
+class TypesAdapter(
+        val context: Context
+) : ListAdapter<DocumentType, TypesAdapter.ViewHolder>(diffCallback) {
 
-    val typesDefFiltered = typesDef
+    /** Callback when user click on holder */
+    var onItemSelected: (item: DocumentType) -> Unit = {}
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        convertView?.let {
-            (convertView as TextView).text = typesDefFiltered[position].display
-            return convertView
-        } ?: run {
-            val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(android.R.layout.simple_list_item_1, null) as TextView
-            view.text = typesDefFiltered[position].display
-            return view
-        }
+    /**
+     * Holds selected item index
+     *
+     * Null means that none is selected.
+     **/
+    var selectedRow: Int? = null
+        private set
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_row, parent, false)
+
+        return ViewHolder(itemView)
     }
 
-    override fun getItem(position: Int): Type {
-        return typesDefFiltered[position]
-    }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun onBindViewHolder(holderReceipt: ViewHolder, position: Int) {
+        val item = getItem(position)
 
-    override fun getCount(): Int {
-        return typesDefFiltered.size
-    }
-
-    private val mFilter: Filter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence?): FilterResults {
-            return Filter.FilterResults().apply {
-                values = typesDefFiltered
-                count = typesDefFiltered.size
-            }
-        }
-
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+        holderReceipt.bind(item) {
+            selectedRow = if (selectedRow == position) null else position
             notifyDataSetChanged()
+            onItemSelected(it)
         }
-
     }
 
-    override fun getFilter(): Filter {
-        return mFilter
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+
+        holder.itemView.clearAnimation()
+    }
+
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        fun bind(item: DocumentType, listener: (DocumentType) -> Unit) = with(itemView) {
+            // Views
+            item_text_view.text = item.display
+
+            setOnClickListener { listener(item) }
+        }
+    }
+
+
+    companion object {
+        var diffCallback: DiffUtil.ItemCallback<DocumentType> =
+                object : DiffUtil.ItemCallback<DocumentType>() {
+
+                    override fun areItemsTheSame(oldItem: DocumentType, newItem: DocumentType): Boolean {
+                        return oldItem.id == newItem.id
+                    }
+
+                    override fun areContentsTheSame(oldItem: DocumentType, newItem: DocumentType): Boolean {
+                        return oldItem.equals(newItem)
+                    }
+                }
     }
 }

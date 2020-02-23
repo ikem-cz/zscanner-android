@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/createMessagePatientFragment">
+
+    <fragment
+        android:id="@+id/createMessagePatientFragment"
+        android:name="cz.ikem.dci.zscanner.screen_message.CreateMessagePatientFragment"
+        android:label="CreateMessagePatientFragment"
+        tools:layout="@layout/fragment_message_patient">
+        <action
+            android:id="@+id/action_createMessagePatientFragment_to_createMessagePagesFragment"
+            app:destination="@id/createMessagePagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMessagePagesFragment"
+        android:name="cz.ikem.dci.zscanner.screen_message.CreateMessagePagesFragment"
+        android:label="fragment_message_pages"
+        tools:layout="@layout/fragment_message_pages">
+        <action
+            android:id="@+id/action_createMessagePagesFragment_to_createMessageTypeFragment"
+            app:destination="@id/createMessageTypeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMessageTypeFragment"
+        android:name="cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment"
+        android:label="CreateMessageTypeFragment"
+        tools:layout="@layout/fragment_message_properties">
+        <action
+            android:id="@+id/action_createMessageTypeFragment_to_createMessageSubTypeFragment"
+            app:destination="@id/createMessageSubTypeFragment" />
+        <argument
+            android:name="subtypes"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMessageSubTypeFragment"
+        android:name="cz.ikem.dci.zscanner.screen_message.CreateMessageSubTypeFragment"
+        android:label="CreateMessageSubTypeFragment" >
+        <argument
+            android:name="subtypes"
+            app:argType="string" />
+    </fragment>
+</navigation>

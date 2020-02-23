@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.KEY_CORRELATION_ID
 import cz.ikem.dci.zscanner.KEY_DOCUMENT_NOTE
 import cz.ikem.dci.zscanner.KEY_PAGE_FILE
-import cz.ikem.dci.zscanner.KEY_PAGE_NUMBER
+import cz.ikem.dci.zscanner.KEY_PAGE_INDEX
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import okhttp3.MediaType
@@ -27,12 +27,12 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         val instance = inputData.getString(KEY_CORRELATION_ID)!!
 
         // page sending task externalId must contain substring "-P-" -- is used for progress indicator calculations in JobsOverviewAdapter
-        val taskid = (instance.substring(0, 6)) + "-P-" + inputData.getInt(KEY_PAGE_NUMBER, -1)
+        val taskid = (instance.substring(0, 6)) + "-P-" + inputData.getInt(KEY_PAGE_INDEX, -1)
 
         Log.d(TAG, "SendPageWorker ${taskid} starts")
 
         val correlation = RequestBody.create(MediaType.parse("text/plain"), instance)
-        val pageInt = inputData.getInt(KEY_PAGE_NUMBER, -1)
+        val pageInt = inputData.getInt(KEY_PAGE_INDEX, -1)
 
         if (pageInt == -1) {
             throw Exception("Assertion error")
