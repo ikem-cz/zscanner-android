@@ -7,6 +7,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.KEY_SUB_TYPE
 import cz.ikem.dci.zscanner.KEY_TYPE
+import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.persistence.DocumentType
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.screen_jobs.DepartmentViewModel
@@ -32,8 +33,7 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
 
             department?.let {
 
-                val response = HttpClient().getApiServiceBackend().getDocumentTypes(department).execute()
-                Log.e("DEBUGGING", "RefreshDocumentTypesWorker, doWork: HttpClient().getApiServiceBackend().getDocumentTypes(department).execute().message() = ${HttpClient().getApiServiceBackend().getDocumentTypes(department).execute().message()}")
+                val response = HttpClient().getApiServiceBackend(applicationContext as ZScannerApplication).getDocumentTypes(department).execute()
                 if (response.code() != 200) {
                     return Result.retry()
                 }

@@ -61,7 +61,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     private fun dispatchDecodeJob(code: String) {
         decodeJob = CoroutineScope(Dispatchers.Default).launch {
             try {
-                val response = HttpClient().getApiServiceBackend().decodePatient(code).execute()
+                val response = HttpClient().getApiServiceBackend(getApplication()).decodePatient(code).execute()
                 if (!isActive) {
                     throw Exception("Cancelled")
                 }

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import cz.ikem.dci.zscanner.R
+import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.webservices.Patient
 import kotlinx.android.synthetic.main.patient_suggestion_row.view.*
@@ -58,7 +59,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
                     val filterResults = FilterResults()
                     if (constraint != null) {
 
-                        val response = HttpClient().getApiServiceBackend().searchPatients(constraint.toString()).execute()
+                        val response = HttpClient().getApiServiceBackend(mContext.applicationContext as ZScannerApplication).searchPatients(constraint.toString()).execute()
 
                         // Assign the data to the FilterResults
                         filterResults.values = response.body()
