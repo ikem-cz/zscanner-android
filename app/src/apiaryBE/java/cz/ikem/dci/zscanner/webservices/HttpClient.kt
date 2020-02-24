@@ -29,7 +29,7 @@ class HttpClient {
                     val retrofit = Retrofit.Builder()
                             .addConverterFactory(GsonConverterFactory.create())
                             .client(client)
-                            .baseUrl("https://915e28d6-526f-4846-988a-a5e08c316744.mock.pstmn.io/").build()
+                            .baseUrl("https://private-anon-73174cb693-zscannermedicalc.apiary-mock.com").build()
                     mApiServiceBackend = retrofit.create(BackendHttpServiceInterface::class.java)
                 }
                 return mApiServiceBackend!!

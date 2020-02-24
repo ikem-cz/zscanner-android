@@ -5,11 +5,16 @@ apply plugin: 'kotlin-kapt'
 //apply plugin: 'io.fabric'
 //apply plugin: 'com.google.gms.google-services'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion 28
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     defaultConfig {
         applicationId "cz.ikem.dci.zscanner"
@@ -99,4 +104,8 @@ dependencies {
     // https://github.com/douglasjunior/android-simple-tooltip
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.2'
     implementation project(path: ':seacat')
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 }

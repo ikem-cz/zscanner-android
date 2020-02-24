@@ -19,7 +19,7 @@ public interface BackendHttpServiceInterface {
     Call<List<JsonObject>> getDepartments();
 
     @GET("/medicalc/v3.1/documenttypes")
-    Call<List<JsonObject>> getDocumentTypes();
+    Call<JsonObject> getDocumentTypes(@Query("department") String department);
 
     @GET("/medicalc/v3.1/folders/search")
     Call<List<Patient>> searchPatients(@Query("query") String entered);

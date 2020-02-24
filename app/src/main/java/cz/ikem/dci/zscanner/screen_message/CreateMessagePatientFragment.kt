@@ -5,12 +5,15 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.KeyboardCallback
@@ -19,6 +22,7 @@ import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Mru
 import cz.ikem.dci.zscanner.webservices.Patient
+import kotlinx.android.synthetic.main.activity_create_message.*
 import kotlinx.android.synthetic.main.fragment_message_patient.*
 import kotlinx.android.synthetic.main.fragment_message_patient.view.*
 
@@ -37,7 +41,7 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
     override fun onSelected() {
         activity?.let{ _activity ->
             val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
-            viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
+           //TODO viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
         }
     }
 
@@ -84,7 +88,9 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
         }
 
         fab_next_step_1.setOnClickListener {
-            listener?.onProceedButtonPress()
+            val action = CreateMessagePatientFragmentDirections.actionCreateMessagePatientFragmentToCreateMessagePagesFragment()
+            findNavController().navigate(action)
+
         }
 
         patient_id_edittext?.addTextChangedListener(object : TextWatcher {

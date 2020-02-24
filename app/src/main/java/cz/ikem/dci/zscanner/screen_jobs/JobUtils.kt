@@ -51,7 +51,7 @@ class JobUtils(private val context: Context) {
 
         val sendSummaryWorkerData = Data.Builder()
                 .putString(KEY_DOC_SUB_TYPE, documentType)
-                .putString(KEY_PAT_ID, patient.internalId)
+                .putString(KEY_FOLDER_INTERNAL_ID, patient.internalId)
                 .putString(KEY_CORRELATION_ID, instanceId)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)
@@ -69,7 +69,7 @@ class JobUtils(private val context: Context) {
         val sendPageWorkerDatas = toSend.mapIndexed { index, e ->
             Data.Builder()
                     .putString(KEY_CORRELATION_ID, instanceId)
-                    .putInt(KEY_PAGE_NUMBER, index)
+                    .putInt(KEY_PAGE_INDEX, index)
                     .putString(KEY_PAGE_FILE, e)
                     .putString(KEY_DOCUMENT_NOTE, "note") //todo remove placeholder
                     .build()

@@ -34,11 +34,13 @@
             android:name=".screen_jobs.JobsOverviewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".screen_message.CreateMessageActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".screen_jobs.JobsOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".screen_splash_login.SplashLoginActivity"

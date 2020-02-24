@@ -2,23 +2,21 @@ package cz.ikem.dci.zscanner.screen_message
 
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.stepstone.stepper.Step
-import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import kotlinx.android.synthetic.main.fragment_message_pages.*
 import kotlinx.android.synthetic.main.fragment_message_pages.view.*
 
 
-class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
+class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
     private var mListener: OnCreateMessageViewsInteractionListener? = null
     private lateinit var mViewModel: CreateMessageViewModel
@@ -28,32 +26,20 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
 
     //region Step callbacks
 
-    override fun onSelected() {
-        mViewModel.currentStep = ModeDispatcher().stepNumberFor(this)
-        /*if (Utils.tutorialNextStep(4, activity)) {
-            Handler().postDelayed({
-                Utils.makeTooltip("Teď přidáme nějaké obrázky !", pages_recyclerview, Gravity.BOTTOM, activity, showArrow = false, modal = true) {
-                    Utils.makeTooltip("Obrázky lze buď načíst z galerie Vašeho fotoaparátu pomocí tohoto tlačítka ...", gallery_fab, Gravity.TOP, activity, showArrow = true, modal = true) {
-                        Utils.makeTooltip("... anebo přímo vyfotit", photo_fab, Gravity.START, activity, showArrow = true, modal = true) {
-                            Utils.makeTooltip("Nyní vyfoťte nějakou fotografii.", pages_recyclerview, Gravity.BOTTOM, activity, showArrow = false, modal = true) {
-                                Utils.tutorialAdvance(activity)
-                            }
-                        }
-                    }
-                }
-            }, 500)
-        }*/
-        return
-    }
-
-    override fun verifyStep(): VerificationError? {
-        if (!mViewModel.containsAtLeastOnePage()) {
-            return VerificationError(getString(R.string.err_no_photo))
-        }
-        return null
-    }
-
-    override fun onError(error: VerificationError) {}
+//    override fun onSelected() {
+//        mViewModel.currentStep = ModeDispatcher().stepNumberFor(this)
+//
+//        return
+//    }
+//
+//    override fun verifyStep(): VerificationError? {
+//        if (!mViewModel.containsAtLeastOnePage()) {
+//            return VerificationError(getString(R.string.err_no_photo))
+//        }
+//        return null
+//    }
+//
+//    override fun onError(error: VerificationError) {}
 
     //endregion
 
@@ -73,10 +59,11 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+
+        fab_next_send.isEnabled = false
 
         fab_next_send.setOnClickListener {
-            mListener?.onProceedButtonPress()
+           findNavController().navigate(R.id.action_createMessagePagesFragment_to_createMessageTypeFragment)
         }
 
         // initialize recycler view
@@ -95,11 +82,8 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
 
             mViewModel.pageActions.observe(viewLifecycleOwner, Observer<PageActionsQueue> {
                 adapter.syncActionsQueue(mViewModel)
-                if (mViewModel.containsAtLeastOnePage()) {
-                    fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-                } else {
-                    fab_next_send.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
-                }
+
+                fab_next_send.isEnabled = mViewModel.containsAtLeastOnePage()
             })
         }
 
@@ -126,14 +110,6 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment(), Step {
         view.photo_fab.setOnClickListener {
             mListener?.onCapturePagePhotoButtonPress()
         }
-
-//        view.gallery_layout.setOnClickListener {
-//            mListener?.onAttachButtonPress()
-//        }
-//
-//        view.gallery_fab.setOnClickListener {
-//            mListener?.onAttachButtonPress()
-//        }
 
     }
 

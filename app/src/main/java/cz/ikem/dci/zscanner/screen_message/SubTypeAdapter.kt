@@ -1,4 +1,4 @@
-package cz.ikem.dci.zscanner.screen_jobs
+package cz.ikem.dci.zscanner.screen_message
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,17 +8,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cz.ikem.dci.zscanner.R
-import cz.ikem.dci.zscanner.persistence.Department
+import cz.ikem.dci.zscanner.persistence.DocumentSubType
 import kotlinx.android.synthetic.main.item_row.view.*
 
 
-class DepartmentsAdapter(
+class SubTypeAdapter(
         val context: Context
-) : ListAdapter<Department, DepartmentsAdapter.ViewHolder>(diffCallback) {
+) : ListAdapter<DocumentSubType, SubTypeAdapter.ViewHolder>(diffCallback) {
 
     /** Callback when user click on holder */
-    var onItemSelected: (item: Department) -> Unit = {}
-
+    var onItemSelected: (item: DocumentSubType) -> Unit = {}
 
     /**
      * Holds selected item index
@@ -55,9 +54,9 @@ class DepartmentsAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Department, listener: (Department) -> Unit) = with(itemView) {
+        fun bind(item: DocumentSubType, listener: (DocumentSubType) -> Unit) = with(itemView) {
             // Views
-            item_text_view.text = "${item.id} - ${item.display}"
+            item_text_view.text = item.display
 
             setOnClickListener { listener(item) }
         }
@@ -65,14 +64,14 @@ class DepartmentsAdapter(
 
 
     companion object {
-        var diffCallback: DiffUtil.ItemCallback<Department> =
-                object : DiffUtil.ItemCallback<Department>() {
+        var diffCallback: DiffUtil.ItemCallback<DocumentSubType> =
+                object : DiffUtil.ItemCallback<DocumentSubType>() {
 
-                    override fun areItemsTheSame(oldItem: Department, newItem: Department): Boolean {
+                    override fun areItemsTheSame(oldItem: DocumentSubType, newItem: DocumentSubType): Boolean {
                         return oldItem.id == newItem.id
                     }
 
-                    override fun areContentsTheSame(oldItem: Department, newItem: Department): Boolean {
+                    override fun areContentsTheSame(oldItem: DocumentSubType, newItem: DocumentSubType): Boolean {
                         return oldItem.equals(newItem)
                     }
                 }

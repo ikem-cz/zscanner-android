@@ -6,12 +6,12 @@ import androidx.lifecycle.*
 import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.persistence.Mru
 import cz.ikem.dci.zscanner.persistence.Repositories
-import cz.ikem.dci.zscanner.persistence.Type
+import cz.ikem.dci.zscanner.persistence.DocumentSubType
+import cz.ikem.dci.zscanner.persistence.DocumentType
 import cz.ikem.dci.zscanner.screen_jobs.JobUtils
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.webservices.Patient
 import kotlinx.coroutines.*
-import java.lang.AssertionError
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,10 +30,10 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     private var cleanupHandled: Boolean = false
 
-    // always contains all types -- move elsewhere?
-    var types: LiveData<List<Type>> = Repositories(zapplication).typeRepository.allTypes
 
-    var currentStep: Int = 0
+    var storedTypes: LiveData<List<DocumentType>> = Repositories(zapplication).docTypeRepository.allDocumentTypes
+    var storedSubTypes: LiveData<List<DocumentSubType>> = Repositories(zapplication).docSubTypeRepository.allDocumentSubTypes
+
 
     // always contains all mrus -- move elsewhere?
     val mrus: LiveData<List<Mru>> = Repositories(zapplication).mruRepository.mru()
@@ -148,7 +148,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
         // create description string
         val description = run {
-            val allTypes = types.value
+            val allTypes = storedTypes.value
             val typeDisplayString = if (!allTypes.isNullOrEmpty()) {
                 " - ${allTypes.filter { it.display == type }[0].display}"
             } else { "" }
