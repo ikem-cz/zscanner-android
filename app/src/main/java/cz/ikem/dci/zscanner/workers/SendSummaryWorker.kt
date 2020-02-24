@@ -48,7 +48,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
             val numpages = RequestBody.create(MediaType.parse("text/plain"), numpagesInt.toString())
 
-            val res = HttpClient().getApiServiceBackend(applicationContext as ZScannerApplication).postDocumentSummary(
+            val res = HttpClient().getApiServiceBackend(applicationContext).postDocumentSummary(
                     correlation,
                     patid,
                     type,

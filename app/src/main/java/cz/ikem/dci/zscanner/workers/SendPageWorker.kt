@@ -57,7 +57,7 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
 
 
-            val res = HttpClient().getApiServiceBackend(applicationContext as ZScannerApplication).postDocumentPage(
+            val res = HttpClient().getApiServiceBackend(applicationContext).postDocumentPage(
                     filePartList,
                     correlation,
                     pagenum,
