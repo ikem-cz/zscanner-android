@@ -168,8 +168,8 @@ class MasterKey(val biometrics: Biometrics) {
         val cyphertext_iv = ByteArray(12)
         cyphertext.get(cyphertext_iv, 0, cyphertext_iv.size)
 
-        val cyphertext_arr = ByteArray(cyphertext.limit() - cyphertext.position())
-        cyphertext.get(cyphertext_arr, 0, cyphertext_arr.size)
+        val cyphertext_arr = ByteArray(8 + cyphertext.limit() - cyphertext.position())
+        cyphertext.get(cyphertext_arr, 0, cyphertext_arr.size - 8)
 
         val keyPair = getKeyPair()!!
 
@@ -196,6 +196,11 @@ class MasterKey(val biometrics: Biometrics) {
                     )
                 }
             }
+
+            catch (e: GeneralSecurityException) {
+                plaintext.position(0)
+            }
+
             finally {
                 lock.lock()
                 condition.signalAll()

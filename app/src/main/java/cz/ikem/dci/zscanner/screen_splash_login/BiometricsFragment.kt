@@ -29,6 +29,9 @@ class BiometricsFragment(val app: ZScannerApplication, val access_token: String)
                 app.accessToken = plaintext.array()
             } else {
                 app.accessToken = null
+
+
+
             }
 
             (activity as SplashLoginActivity?)?.makeProgess()
