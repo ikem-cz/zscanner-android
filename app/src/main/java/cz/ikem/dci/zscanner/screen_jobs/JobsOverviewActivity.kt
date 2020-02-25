@@ -167,6 +167,8 @@ class JobsOverviewActivity : AppCompatActivity() {
 
 
     private fun logout() {
+        val app = applicationContext as ZScannerApplication
+        app.accessToken = null
 
         // Call the logout remotely ... but ignore the result (for now).
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)

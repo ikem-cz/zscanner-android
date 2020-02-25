@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
+import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.nio.ByteBuffer
 
 class BiometricsFragment(val app: ZScannerApplication, val access_token: String) : androidx.fragment.app.Fragment() {
 
-    val mainHandler = Handler(Looper.getMainLooper())
     lateinit var fragmentView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -29,10 +29,9 @@ class BiometricsFragment(val app: ZScannerApplication, val access_token: String)
                 app.accessToken = plaintext.array()
             } else {
                 app.accessToken = null
-
-
-
+                //TODO: Tell to the user that the biometry failed ...
             }
+            HttpClient().reset()
 
             (activity as SplashLoginActivity?)?.makeProgess()
         }).start()
