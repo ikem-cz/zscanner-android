@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -135,33 +136,27 @@ val departmentId = department.id
         startPhotoCapture()
     }
 
-//    private fun onBack() {
-//        if (mViewModel.currentStep > 0) {
-//            stepper_layout.currentStepPosition = mViewModel.currentStep - 1
-//        } else {
-//            AlertDialog.Builder(this)
-//                .setMessage(getString(R.string.finish_prompt_text))
-//                .setNegativeButton(getString(R.string.finish_prompt_button_pos)) { _, _ -> finish() }
-//                    .setPositiveButton(getString(R.string.finish_prompt_button_neg), null)
-//                .show()
-//        }
-//        mViewModel.undoAction.postValue( null )
-//    }
+    private fun onBack() {
+        if (findNavController(R.id.nav_host_fragment).currentDestination?.label != "CreateMessagePatientFragment") {
+            findNavController(R.id.nav_host_fragment).navigateUp()
+        } else {
+            AlertDialog.Builder(this)
+                .setMessage(getString(R.string.finish_prompt_text))
+                .setNegativeButton(getString(R.string.finish_prompt_button_negative)) { _, _ -> finish() }
+                    .setNeutralButton(getString(R.string.finish_prompt_button_neutral), null)
+                .show()
+        }
+        mViewModel.undoAction.postValue( null )
+    }
 
     override fun onBackPressed() {
-        findNavController(R.id.nav_host_fragment).navigateUp()
+        onBack()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        //TODO handle the navigate up on first screen
-
         return when (item.itemId) {
             android.R.id.home -> {
-           //     finish()
-                findNavController(R.id.nav_host_fragment).navigateUp()
-                mViewModel.undoAction.postValue( null )
-//                onBack()
+                onBack()
                 true
             }
             else -> super.onOptionsItemSelected(item)

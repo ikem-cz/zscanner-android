@@ -31,7 +31,7 @@ const val KEY_DIRECTORY = "folder"
 
 const val WORKTAG_SENDING_JOB = "cz.ikem.dci.zscanner.work.sending-job"
 const val WORKTAG_REFRESH_DOCUMENT_TYPES = "cz.ikem.dci.zscanner.work.tag-refresh-document-types"
-const val WORKTAG_REFRESH_DEPARTMENTS = "cz.ikem.dci.zscanner.work.tag-refresh-departments" //todo should it say ikem?
+const val WORKTAG_REFRESH_DEPARTMENTS = "cz.ikem.dci.zscanner.work.tag-refresh-departments"
 
 const val PROGRESS_INDICATOR_PAGE_WEIGHT = 100
 const val PROGRESS_INDICATOR_SUMMARY_WEIGHT = 12

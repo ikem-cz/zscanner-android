@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -34,7 +35,6 @@ class CreateMessageSubTypeFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
 
-
     }
 
 
@@ -51,7 +51,8 @@ class CreateMessageSubTypeFragment : Fragment() {
 
         parseSubTypeJson(subtypesJson) { subtypes, error ->
             if (error != null) {
-                //todo handle
+                //TODO change the text to something more reasonable
+                Toast.makeText(context, "Error when parsing subtypes to List<DocumentSubType>", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "Error when parsing subtypes to List<DocumentSubType>")
                 return@parseSubTypeJson
             }
@@ -63,8 +64,7 @@ class CreateMessageSubTypeFragment : Fragment() {
             }
         }
 
-//TODO extract string
-        other_photo_types_text?.text = "SUBTYPE"
+        document_types_text?.text = getString(R.string.fragment_document_sub_type)
 
     }
 
@@ -83,7 +83,7 @@ class CreateMessageSubTypeFragment : Fragment() {
     }
 
 
-    private fun parseSubTypeJson (subtypes: String, completion: (subtypes: List<DocumentSubType>?, error: Error?) -> Unit){
+    private fun parseSubTypeJson(subtypes: String, completion: (subtypes: List<DocumentSubType>?, error: Error?) -> Unit) {
 
         //todo try and catch
 
@@ -115,28 +115,5 @@ class CreateMessageSubTypeFragment : Fragment() {
 
         subTypesAdapter.submitList(subtypes)
     }
-
-
-
-
-
-    //    override fun onSelected() {
-//        activity?.let { _activity ->
-//            val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
-//            //TODO   viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
-//        }
-//    }
-//
-//
-//    override fun verifyStep(): VerificationError? {
-//        if (mViewModel.type.value!! == "") {
-//            return VerificationError(getString(R.string.err_no_entrytype))
-//        }
-//        return null
-//    }
-//
-//
-//    override fun onError(error: VerificationError) {}
-
 
 }

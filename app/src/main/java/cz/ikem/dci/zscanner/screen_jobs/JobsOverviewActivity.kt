@@ -52,21 +52,8 @@ class JobsOverviewActivity : AppCompatActivity() {
         val workManager = WorkManager.getInstance()
         workManager.pruneWork()
 
-//        // enqueue refresh document types worker
-//        workManager.beginUniqueWork(
-//                WORKTAG_REFRESH_DOCUMENT_TYPES,
-//                ExistingWorkPolicy.KEEP,
-//                OneTimeWorkRequest.Builder(RefreshDocumentTypesWorker::class.java)
-//                        .setConstraints(
-//                                Constraints.Builder()
-//                                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
-//                        .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
-//                        .build())
-//                .enqueue()
-
-
         // enqueue refresh departments worker
-        val refreshDepartments = PeriodicWorkRequest.Builder(RefreshDepartmentsWorker::class.java, 1, TimeUnit.HOURS) // TODO decide how often
+        val refreshDepartments = PeriodicWorkRequest.Builder(RefreshDepartmentsWorker::class.java, 2, TimeUnit.HOURS) // TODO decide how often
                 .setConstraints(Constraints
                         .Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -115,10 +102,10 @@ class JobsOverviewActivity : AppCompatActivity() {
     }
 
     //TODO delete?
-    private fun launchCreateMessageActivity() {
-        val intent = Intent(this, CreateMessageActivity::class.java)
-        startActivity(intent)
-    }
+//    private fun launchCreateMessageActivity() {
+//        val intent = Intent(this, CreateMessageActivity::class.java)
+//        startActivity(intent)
+//    }
 
 
 

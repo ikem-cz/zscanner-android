@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_message_patient.*
 import kotlinx.android.synthetic.main.fragment_message_patient.view.*
 
 
-class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
+class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
     private val TAG = CreateMessagePatientFragment::class.java.simpleName
 
@@ -38,31 +39,12 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
 
     private var mValidated = false
 
-    override fun onSelected() {
-        activity?.let{ _activity ->
-            val viewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
-           //TODO viewModel.currentStep = ModeDispatcher().stepNumberFor(this)
-        }
-    }
-
-    override fun verifyStep(): VerificationError? {
-        return if (!mValidated) {
-            VerificationError(getString(R.string.err_invalid_patient))
-        } else {
-            null
-        }
-    }
-
-    override fun onError(error: VerificationError) {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         activity?.let{ _activity ->
             mViewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
         }
         super.onCreate(savedInstanceState)
     }
-
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +71,13 @@ class CreateMessagePatientFragment : Fragment(), Step, MruSelectionCallback {
 
         fab_next_step_1.setOnClickListener {
             val action = CreateMessagePatientFragmentDirections.actionCreateMessagePatientFragmentToCreateMessagePagesFragment()
+            if(!mValidated){
+                val errorText = getString(R.string.err_invalid_patient)
+                Log.d(TAG, "step not validated due to $errorText")
+                Toast.makeText(context, errorText, Toast.LENGTH_SHORT)
+                        .show()
+                return@setOnClickListener
+            }
             findNavController().navigate(action)
 
         }
