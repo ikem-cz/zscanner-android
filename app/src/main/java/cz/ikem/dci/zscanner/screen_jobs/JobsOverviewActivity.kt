@@ -101,6 +101,9 @@ class JobsOverviewActivity : AppCompatActivity() {
                 R.id.menu_repeat_tutorial -> {
                     startTutorial()
                 }
+                R.id.menu_lock -> {
+                    lock()
+                }
             }
 
             it.isChecked = true
@@ -183,6 +186,16 @@ class JobsOverviewActivity : AppCompatActivity() {
             .remove(PREF_USERNAME)
             .remove(PREF_ACCESS_TOKEN)
             .apply()
+
+        val intent = Intent(this, SplashLoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+
+    private fun lock() {
+        val app = applicationContext as ZScannerApplication
+        app.accessToken = null
 
         val intent = Intent(this, SplashLoginActivity::class.java)
         startActivity(intent)

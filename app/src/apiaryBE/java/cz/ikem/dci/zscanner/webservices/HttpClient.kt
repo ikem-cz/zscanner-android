@@ -36,6 +36,5 @@ class HttpClient {
                 return mApiServiceBackend!!
             }
         }
-
     }
 }

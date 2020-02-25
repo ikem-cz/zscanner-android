@@ -33,7 +33,7 @@ class SplashLoginActivity : AppCompatActivity() {
         val app = application as ZScannerApplication
 
         // If we don't have a SeaCat certificate, wait for that in a splash screen
-        if (app.seacat.identity.certificate == null) {
+        if (checkIfReady(app) == false) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, SplashFragment())
                 .commit()
@@ -41,9 +41,18 @@ class SplashLoginActivity : AppCompatActivity() {
         }
 
         // If we don't have an access token, then go to login fragment
-        if (sharedPreferences.getString(PREF_ACCESS_TOKEN, null) == null) {
+        val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, null)
+        if (access_token == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, LoginFragment())
+                .commit()
+            return
+        }
+
+        // If we don't have the in-memory access token, get it
+        if (app.accessToken == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, BiometricsFragment(app, access_token))
                 .commit()
             return
         }
