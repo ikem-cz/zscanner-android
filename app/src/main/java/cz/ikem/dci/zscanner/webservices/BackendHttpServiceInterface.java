@@ -60,6 +60,7 @@ public interface BackendHttpServiceInterface {
     @FormUrlEncoded
     @POST("/medicalc/v3.1/logout")
     Call<ResponseBody> postLogout(
+            @Field("access_token") String access_token
     );
 
 }
