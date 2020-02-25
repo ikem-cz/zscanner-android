@@ -30,9 +30,9 @@ class FailedLoginDialogFragment : DialogFragment() {
         val message = args.getString(KEY_MESSAGE, "")
 
         return AlertDialog.Builder(context!!)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK") { dialog, _ -> dialog?.cancel() }
-                .create()
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog?.cancel() }
+            .create()
     }
 }

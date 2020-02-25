@@ -21,7 +21,7 @@ class RefreshDepartmentsWorker(context: Context, workerParams: WorkerParameters)
 
             val repository = Repositories(applicationContext).departmentRepository
 
-            val response = HttpClient().getApiServiceBackend().departments.execute()
+            val response = HttpClient().getApiServiceBackend(applicationContext).departments.execute()
 
             val departments = response.body()?.map{ departmentJson ->
                 Department(departmentJson.get("id").asString, departmentJson.get("display").asString)

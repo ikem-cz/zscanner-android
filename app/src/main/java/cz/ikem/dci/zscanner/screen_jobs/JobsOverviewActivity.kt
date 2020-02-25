@@ -16,8 +16,13 @@ import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.screen_about.AboutActivity
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
 import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
+import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.workers.RefreshDepartmentsWorker
 import kotlinx.android.synthetic.main.activity_jobs_overview.*
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 
@@ -85,14 +90,7 @@ class JobsOverviewActivity : AppCompatActivity() {
                 R.id.menu_logout -> {
                     AlertDialog.Builder(this)
                             .setMessage(getString(R.string.logout_prompt_text))
-                            .setNegativeButton(getString(R.string.logout_prompt_button_pos)) { _, _ ->
-                                JobUtils(this).nukeAllJobs()
-                                val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
-                                sharedPreferences.edit().putBoolean(PREF_LOGGED_IN, false).apply()
-                                val intent = Intent(this, SplashLoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
+                            .setNegativeButton(getString(R.string.logout_prompt_button_pos)) { _, _ -> logout() }
                             .setPositiveButton(getString(R.string.logout_prompt_button_neg), null)
                             .show()
                 }
@@ -164,5 +162,31 @@ class JobsOverviewActivity : AppCompatActivity() {
         }*/
     }
 
-}
 
+    private fun logout() {
+
+        // Call the logout remotely ... but ignore the result (for now).
+        sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, "")
+        HttpClient().getApiServiceBackend(this).postLogout(access_token).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            }
+        })
+
+        JobUtils(this).nukeAllJobs()
+
+        val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit()
+            .remove(PREF_USERNAME)
+            .remove(PREF_ACCESS_TOKEN)
+            .apply()
+
+        val intent = Intent(this, SplashLoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+}

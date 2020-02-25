@@ -33,16 +33,13 @@ const val WORKTAG_SENDING_JOB = "cz.ikem.dci.zscanner.work.sending-job"
 const val WORKTAG_REFRESH_DOCUMENT_TYPES = "cz.ikem.dci.zscanner.work.tag-refresh-document-types"
 const val WORKTAG_REFRESH_DEPARTMENTS = "cz.ikem.dci.zscanner.work.tag-refresh-departments" //todo should it say ikem?
 
-const val ACTION_LOGIN_OK = "cz.ikem.dci.zscanner.LOGIN_OK"
-const val ACTION_LOGIN_FAILED = "cz.ikem.dci.zscanner.LOGIN_FAILED"
-
 const val PROGRESS_INDICATOR_PAGE_WEIGHT = 100
 const val PROGRESS_INDICATOR_SUMMARY_WEIGHT = 12
 
 const val MAX_MRUS = 3
 
 const val SHARED_PREF_KEY = "ZSCANNER_SHARED_PREFS"
-const val PREF_LOGGED_IN = "LOGGED_IN"
 const val PREF_USERNAME = "USERNAME"
+const val PREF_ACCESS_TOKEN = "ACCESS_TOKEN"
 const val PREF_FIRST_TIME_PROMPTED = "FIRST_TIME_RUN"
 const val PREF_TUTORIAL_NEXT_STEP = "TUTORIAL_NEXT"

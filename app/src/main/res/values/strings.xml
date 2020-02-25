@@ -6,7 +6,7 @@
     <string name="drawer_logout">Odhlásit</string>
     <string name="drawer_tutorial">Průvodce</string>
 
-    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS IKEM Zlatokop.\n\n© 2019 Datové centrum IKEM</string>
+    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS.\n\n© 2019-2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
 
     <string name="job_type_doc">dokument</string>
     <string name="job_type_photo">fotografie</string>
