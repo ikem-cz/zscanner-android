@@ -88,7 +88,10 @@ class JobsOverviewActivity : AppCompatActivity() {
                             .setNegativeButton(getString(R.string.logout_prompt_button_pos)) { _, _ ->
                                 JobUtils(this).nukeAllJobs()
                                 val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
-                                sharedPreferences.edit().putBoolean(PREF_LOGGED_IN, false).apply()
+                                sharedPreferences.edit()
+                                    .remove(PREF_USERNAME)
+                                    .remove(PREF_ACCESS_TOKEN)
+                                    .apply()
                                 val intent = Intent(this, SplashLoginActivity::class.java)
                                 startActivity(intent)
                                 finish()
