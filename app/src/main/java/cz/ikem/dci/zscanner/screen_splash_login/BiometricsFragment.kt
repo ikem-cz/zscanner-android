@@ -29,7 +29,7 @@ class BiometricsFragment(val app: ZScannerApplication, val access_token: String)
                 app.accessToken = plaintext.array()
             } else {
                 app.accessToken = null
-                //TODO: Tell to the user that the biometry failed ...
+                FailedLoginDialogFragment().show(fragmentManager!!, "failedLogin")
             }
             HttpClient().reset()
 
