@@ -34,6 +34,8 @@
     <string name="fragment_document_hint_type"><i><small>nabídka typů</small></i></string>
     <string name="fragment_document_hint_name"><i><small>popisný název (nepovinný)</small></i></string>
 
+    <string name="fragment_document_sub_type">Zadat specifikaci události</string>
+
     <string name="fragment_pages_galery">Vybrat z galerie</string>
     <string name="fragment_pages_camera">Vyfotit</string>
     <string name="fragment_pages_instruction">žádné vybrané fotografie</string>
@@ -46,8 +48,8 @@
     <string name="logout_prompt_button_pos">ODHLÁSIT</string>
     <string name="logout_prompt_button_neg">ne, nechci</string>
     <string name="finish_prompt_text">Opravdu chcete ukončit přípravu záznamu a vrátit se?</string>
-    <string name="finish_prompt_button_pos">UKONČIT</string>
-    <string name="finish_prompt_button_neg">ne, nechci</string>
+    <string name="finish_prompt_button_negative">UKONČIT</string>
+    <string name="finish_prompt_button_neutral">ne, nechci</string>
 
     <string name="err_invalid_patient">Není vybrán platný pacient.</string>
     <string name="err_no_photo">Není vybrána ani jedna fotografie.</string>

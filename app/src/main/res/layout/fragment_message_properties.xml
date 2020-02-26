@@ -8,12 +8,12 @@
     tools:context=".screen_message.CreateMessageTypeFragment">
 
     <TextView
-        android:id="@+id/other_photo_types_text"
+        android:id="@+id/document_types_text"
         style="@style/TextLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
-        android:text="TYPE"
+        android:text="@string/fragment_document_type"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fab_next_step_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/other_photo_types_text"
+        app:layout_constraintTop_toBottomOf="@+id/document_types_text"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

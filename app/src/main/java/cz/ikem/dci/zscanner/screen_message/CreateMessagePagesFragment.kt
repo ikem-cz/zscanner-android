@@ -24,24 +24,6 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
     private var mSnackbar: Snackbar? = null
 
-    //region Step callbacks
-
-//    override fun onSelected() {
-//        mViewModel.currentStep = ModeDispatcher().stepNumberFor(this)
-//
-//        return
-//    }
-//
-//    override fun verifyStep(): VerificationError? {
-//        if (!mViewModel.containsAtLeastOnePage()) {
-//            return VerificationError(getString(R.string.err_no_photo))
-//        }
-//        return null
-//    }
-//
-//    override fun onError(error: VerificationError) {}
-
-    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         activity?.let{_activity ->
