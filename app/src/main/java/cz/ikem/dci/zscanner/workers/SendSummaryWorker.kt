@@ -48,14 +48,14 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
             val numpages = RequestBody.create(MediaType.parse("text/plain"), numpagesInt.toString())
 
-            val res = HttpClient().getApiServiceBackend(applicationContext).postDocumentSummary(
-                    correlation,
-                    patid,
-                    type,
-                    subType,
-                    numpages,
-                    date,
-                    RequestBody.create(MediaType.parse("text/plain"), "")
+            val res = HttpClient.ApiServiceBackend.postDocumentSummary(
+                correlation,
+                patid,
+                type,
+                subType,
+                numpages,
+                date,
+                RequestBody.create(MediaType.parse("text/plain"), "")
             ).execute()
 
             if (res.code() != 200) {

@@ -58,7 +58,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
                     val filterResults = FilterResults()
                     if (constraint != null) {
 
-                        val response = HttpClient().getApiServiceBackend(mContext).searchPatients(constraint.toString()).execute()
+                        val response = HttpClient.ApiServiceBackend.searchPatients(constraint.toString()).execute()
 
                         // Assign the data to the FilterResults
                         filterResults.values = response.body()

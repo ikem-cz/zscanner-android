@@ -14,14 +14,11 @@ class FailedLoginDialogFragment : DialogFragment() {
     private val KEY_TITLE = "ERR"
     private val KEY_MESSAGE = "MSG"
 
-    fun showAlert(targetFragment: Fragment) {
-        val dialog = FailedLoginDialogFragment()
+    init {
         val args = Bundle()
         args.putString(KEY_TITLE, TITLE)
         args.putString(KEY_MESSAGE, MESSAGE)
-        dialog.arguments = args
-        dialog.setTargetFragment(targetFragment, 0)
-        dialog.show(targetFragment.fragmentManager!!, "tag")
+        arguments = args
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {

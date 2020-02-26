@@ -88,6 +88,9 @@ class JobsOverviewActivity : AppCompatActivity() {
                 R.id.menu_repeat_tutorial -> {
                     startTutorial()
                 }
+                R.id.menu_lock -> {
+                    lock()
+                }
             }
 
             it.isChecked = true
@@ -122,9 +125,9 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     override fun onPostResume() {
         super.onPostResume()
-        val prefs = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        /*val prefs = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val firstTimePromptShown = prefs.getBoolean(PREF_FIRST_TIME_PROMPTED, false)
-        /*if (!firstTimePromptShown) {
+        if (!firstTimePromptShown) {
             prefs.edit().putBoolean(PREF_FIRST_TIME_PROMPTED, true).commit()
             AlertDialog.Builder(this)
                     .setTitle("Zdá se, že aplikaci spouštíte poprvé")
@@ -151,17 +154,22 @@ class JobsOverviewActivity : AppCompatActivity() {
 
 
     private fun logout() {
+        val app = applicationContext as ZScannerApplication
+        val access_token = HttpClient.accessToken
+        HttpClient.reset(null)
 
         // Call the logout remotely ... but ignore the result (for now).
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
-        val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, "")
-        HttpClient().getApiServiceBackend(this).postLogout(access_token).enqueue(object : Callback<ResponseBody> {
+
+        HttpClient.ApiServiceBackend.postLogout(access_token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
             }
         })
+
+
 
         JobUtils(this).nukeAllJobs()
 
@@ -170,6 +178,16 @@ class JobsOverviewActivity : AppCompatActivity() {
             .remove(PREF_USERNAME)
             .remove(PREF_ACCESS_TOKEN)
             .apply()
+
+        val intent = Intent(this, SplashLoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+
+    private fun lock() {
+        val app = applicationContext as ZScannerApplication
+        HttpClient.reset(null)
 
         val intent = Intent(this, SplashLoginActivity::class.java)
         startActivity(intent)

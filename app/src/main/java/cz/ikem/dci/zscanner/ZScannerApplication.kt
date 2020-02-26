@@ -1,14 +1,23 @@
 package cz.ikem.dci.zscanner
 
 import android.app.Application
+import android.os.Handler
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import java.util.concurrent.Executors
 import com.teskalabs.seacat.SeaCat
+import com.teskalabs.seacat.biometrics.Biometrics
+import com.teskalabs.seacat.biometrics.BiometricsKey
+import cz.ikem.dci.zscanner.webservices.HttpClient
+import java.util.concurrent.Executors
+
 
 class ZScannerApplication : Application() {
 
     lateinit var seacat: SeaCat
+
+    val uiHandler = Handler()
+    lateinit var biometrics: Biometrics
+    lateinit var masterKey: BiometricsKey
 
     override fun onCreate() {
         super.onCreate()
@@ -19,10 +28,16 @@ class ZScannerApplication : Application() {
             .setExecutor(Executors.newFixedThreadPool(2))
             .build()
 
+        HttpClient.application = this
+
         seacat = SeaCat(this, "https://zscanner.seacat.io/seacat")
 
         WorkManager.initialize(this, configuration)
-    }
 
+        // Initialize biometrics lock
+        biometrics = Biometrics(this, uiHandler)
+        masterKey = BiometricsKey(biometrics, "zScanner Master Key")
+
+    }
 
 }

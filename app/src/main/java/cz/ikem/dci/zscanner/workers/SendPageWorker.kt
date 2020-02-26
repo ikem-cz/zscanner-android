@@ -55,15 +55,12 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                     )
             val filePartList = listOf(filePart)
 
-
-
-            val res = HttpClient().getApiServiceBackend(applicationContext).postDocumentPage(
-                    filePartList,
-                    correlation,
-                    pagenum,
-                    description
+            val res = HttpClient.ApiServiceBackend.postDocumentPage(
+                filePartList,
+                correlation,
+                pagenum,
+                description
             ).execute()
-
 
             if (res.code() != 200) {
                 throw Exception("Non OK response")

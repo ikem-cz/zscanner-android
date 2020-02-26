@@ -1,41 +1,72 @@
 package cz.ikem.dci.zscanner.webservices
 
-import android.content.Context
 import cz.ikem.dci.zscanner.ZScannerApplication
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HttpClient {
 
-    fun getApiServiceBackend(context: Context): BackendHttpServiceInterface {
-        return Companion.getApiServiceBackend(context)
+object HttpClient {
+
+    private var mApiServiceBackend: BackendHttpServiceInterface? = null
+    lateinit var application: ZScannerApplication
+
+    var accessToken: String? = null // In-memory access token, proof that the user is authenticated
+
+    fun reset(accessToken:  ByteArray?) {
+        synchronized(this) {
+            mApiServiceBackend = null
+
+            if (accessToken == null) {
+                this.accessToken = null
+            } else {
+                this.accessToken = accessToken.toString(Charsets.UTF_8)
+            }
+
+        }
     }
 
-    companion object {
-
-        private var mApiServiceBackend: BackendHttpServiceInterface? = null
-
-        private fun getApiServiceBackend(context: Context): BackendHttpServiceInterface {
-            val application: ZScannerApplication = context.applicationContext as ZScannerApplication
-
+    val ApiServiceBackend: BackendHttpServiceInterface
+        get() {
             synchronized(this) {
-                if (mApiServiceBackend == null) {
+                val asb = mApiServiceBackend
+                if (asb == null) {
                     val client = OkHttpClient.Builder()
                         .sslSocketFactory(
                             application.seacat.sslContext.socketFactory,
                             application.seacat.trustManager
                         )
+                        .addInterceptor(HeaderInterceptor(accessToken))
                         .build()
+
                     val retrofit = Retrofit.Builder()
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(client)
                         .baseUrl("https://zscanner.seacat.io").build()
-                    mApiServiceBackend = retrofit.create(BackendHttpServiceInterface::class.java)
+                    val asb2 = retrofit.create(BackendHttpServiceInterface::class.java)
+                    mApiServiceBackend = asb2
+                    return asb2
+                } else {
+                    return asb
                 }
-                return mApiServiceBackend!!
             }
         }
+}
 
+
+class HeaderInterceptor(val accessToken: String?): Interceptor {
+
+    override fun intercept(chain: Interceptor.Chain): Response {
+        var request = chain.request()
+
+        if (accessToken != null) {
+            request = request.newBuilder()
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .build();
+        }
+
+        return chain.proceed(request)
     }
 }
