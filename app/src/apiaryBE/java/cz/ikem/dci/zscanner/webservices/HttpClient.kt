@@ -8,29 +8,23 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HttpClient {
+
+object HttpClient {
+
+    private var mApiServiceBackend: BackendHttpServiceInterface? = null
+    lateinit var application: ZScannerApplication
 
     fun reset() {
-        Companion.reset()
-    }
-
-    fun getApiServiceBackend(context: Context): BackendHttpServiceInterface {
-        return Companion.getApiServiceBackend(context)
-    }
-
-    companion object {
-
-        private var mApiServiceBackend: BackendHttpServiceInterface? = null
-
-        private fun reset() {
+        synchronized(this) {
             mApiServiceBackend = null
         }
+    }
 
-        private fun getApiServiceBackend(context: Context): BackendHttpServiceInterface {
-            val application: ZScannerApplication = context.applicationContext as ZScannerApplication
-
+    val ApiServiceBackend: BackendHttpServiceInterface
+        get() {
             synchronized(this) {
-                if (mApiServiceBackend == null) {
+                val asb = mApiServiceBackend
+                if (asb == null) {
                     val accessToken = application.accessToken
 
                     val client = OkHttpClient.Builder()
@@ -45,13 +39,16 @@ class HttpClient {
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(client)
                         .baseUrl("https://zscanner.seacat.io").build()
-                    mApiServiceBackend = retrofit.create(BackendHttpServiceInterface::class.java)
+                    val asb2 = retrofit.create(BackendHttpServiceInterface::class.java)
+                    mApiServiceBackend = asb2
+                    return asb2
+                } else {
+                    return asb
                 }
-                return mApiServiceBackend!!
             }
         }
-    }
 }
+
 
 class HeaderInterceptor(val accessToken: ByteArray?): Interceptor {
 

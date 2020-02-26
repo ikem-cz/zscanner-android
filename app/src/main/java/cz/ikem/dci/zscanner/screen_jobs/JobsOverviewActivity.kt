@@ -138,9 +138,9 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     override fun onPostResume() {
         super.onPostResume()
-        val prefs = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        /*val prefs = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val firstTimePromptShown = prefs.getBoolean(PREF_FIRST_TIME_PROMPTED, false)
-        /*if (!firstTimePromptShown) {
+        if (!firstTimePromptShown) {
             prefs.edit().putBoolean(PREF_FIRST_TIME_PROMPTED, true).commit()
             AlertDialog.Builder(this)
                     .setTitle("Zdá se, že aplikaci spouštíte poprvé")
@@ -173,7 +173,7 @@ class JobsOverviewActivity : AppCompatActivity() {
         // Call the logout remotely ... but ignore the result (for now).
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, "")
-        HttpClient().getApiServiceBackend(this).postLogout(access_token).enqueue(object : Callback<ResponseBody> {
+        HttpClient.ApiServiceBackend.postLogout(access_token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }
 

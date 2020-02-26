@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import com.teskalabs.seacat.SeaCat
 import cz.ikem.dci.zscanner.biometry.Biometrics
 import cz.ikem.dci.zscanner.biometry.MasterKey
+import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.util.concurrent.Executors
 
 
@@ -28,6 +29,8 @@ class ZScannerApplication : Application() {
             // Ideally you would choose a number that is dynamic based on the number of cores on the device.
             .setExecutor(Executors.newFixedThreadPool(2))
             .build()
+
+        HttpClient.application = this
 
         seacat = SeaCat(this, "https://zscanner.seacat.io/seacat")
 

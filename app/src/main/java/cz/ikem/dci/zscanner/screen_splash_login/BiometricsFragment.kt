@@ -31,7 +31,7 @@ class BiometricsFragment(val app: ZScannerApplication, val access_token: String)
                 app.accessToken = null
                 FailedLoginDialogFragment().show(fragmentManager!!, "failedLogin")
             }
-            HttpClient().reset()
+            HttpClient.reset()
 
             (activity as SplashLoginActivity?)?.makeProgess()
         }).start()

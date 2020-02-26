@@ -33,7 +33,7 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
             val username = fragmentView.username_edit_text.text.toString()
             val password = fragmentView.password_edit_text.text.toString()
 
-            HttpClient().getApiServiceBackend(context!!).postLogin(
+            HttpClient.ApiServiceBackend.postLogin(
                 username,
                 password
             ).enqueue(this)

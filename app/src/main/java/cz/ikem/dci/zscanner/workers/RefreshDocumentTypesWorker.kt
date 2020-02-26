@@ -30,7 +30,7 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
 
             department?.let {
 
-                val response = HttpClient().getApiServiceBackend(applicationContext).getDocumentTypes(department).execute()
+                val response = HttpClient.ApiServiceBackend.getDocumentTypes(department).execute()
                 if (response.code() != 200) {
                     return Result.retry()
                 }
