@@ -61,7 +61,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
 
                 if (decrypted) {
                     HttpClient.reset(plaintext.array())
-                    (activity as SplashLoginActivity?)?.makeProgess()
+                    (activity as SplashLoginActivity?)?.makeProgress()
                 } else {
                     HttpClient.reset(null)
                     makeProgressWithDelay()
@@ -84,13 +84,11 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
 
     private fun createPromptInfo(): BiometricPrompt.PromptInfo {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("R.string.prompt_info_title")
-            .setSubtitle("R.string.prompt_info_subtitle")
-            .setDescription("R.string.prompt_info_description")
+            .setTitle("Please authenticate") //todo translate to Czech
             // Authenticate without requiring the user to press a "confirm"
             // button after satisfying the biometric check
             .setConfirmationRequired(false)
-            .setNegativeButtonText("R.string.prompt_info_use_app_password")
+            .setNegativeButtonText("Log in with password") // todo this means allowing to set an app password (not backend one) instead of biometry
             .build()
         return promptInfo
     }
@@ -99,7 +97,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
     private fun makeProgressWithDelay() {
         mainHandler.postDelayed(object : Runnable {
             override fun run() {
-                (activity as SplashLoginActivity?)?.makeProgess()
+                (activity as SplashLoginActivity?)?.makeProgress()
             }
         }, 1000)
     }

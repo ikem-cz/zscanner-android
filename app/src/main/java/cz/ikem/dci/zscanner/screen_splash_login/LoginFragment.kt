@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -75,7 +74,7 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
                         .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
                         .putString(PREF_USERNAME, username)
                         .apply()
-                    (activity as SplashLoginActivity?)?.makeProgess()
+                    (activity as SplashLoginActivity?)?.makeProgress()
                     return
                 }
             }
