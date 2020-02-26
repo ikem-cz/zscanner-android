@@ -47,11 +47,11 @@ class SplashFragment : androidx.fragment.app.Fragment() {
         mainHandler.post(object : Runnable {
             override fun run() {
                 if (checkIfReady(app)) {
-                    (activity as SplashLoginActivity?)?.makeProgess()
+                    (activity as SplashLoginActivity?)?.makeProgress()
                 } else {
 
                     val biometricsState = BiometricManager.from(app).canAuthenticate()
-                    if ((biometricsState != BIOMETRIC_SUCCESS) && (dialogShown == false)) {
+                    if ((biometricsState != BIOMETRIC_SUCCESS) && !dialogShown) {
                         FaileBiometryDialogFragment(biometricsState, object : Runnable {
                             override fun run() {
                                 dialogShown = false
