@@ -19,8 +19,6 @@ class ZScannerApplication : Application() {
     lateinit var biometrics: Biometrics
     lateinit var masterKey: BiometricsKey
 
-    var accessToken: ByteArray? = null // In-memory access token, proof that the user is authenticated
-
     override fun onCreate() {
         super.onCreate()
 

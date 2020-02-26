@@ -168,11 +168,12 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     private fun logout() {
         val app = applicationContext as ZScannerApplication
-        app.accessToken = null
+        val access_token = HttpClient.accessToken
+        HttpClient.reset(null)
 
         // Call the logout remotely ... but ignore the result (for now).
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
-        val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, "")
+
         HttpClient.ApiServiceBackend.postLogout(access_token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }
@@ -180,6 +181,8 @@ class JobsOverviewActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
             }
         })
+
+
 
         JobUtils(this).nukeAllJobs()
 
@@ -197,7 +200,7 @@ class JobsOverviewActivity : AppCompatActivity() {
 
     private fun lock() {
         val app = applicationContext as ZScannerApplication
-        app.accessToken = null
+        HttpClient.reset(null)
 
         val intent = Intent(this, SplashLoginActivity::class.java)
         startActivity(intent)

@@ -10,6 +10,7 @@ import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.SHARED_PREF_KEY
 import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.screen_jobs.JobsOverviewActivity
+import cz.ikem.dci.zscanner.webservices.HttpClient
 
 class SplashLoginActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class SplashLoginActivity : AppCompatActivity() {
     fun makeProgess() {
         val app = application as ZScannerApplication
 
-        // If we don't have a SeaCat certificate, wait for that in a splash screen
+        // If the application is not ready, show the splash screen with a progress bar spinning
         if (checkIfReady(app) == false) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, SplashFragment())
@@ -49,8 +50,8 @@ class SplashLoginActivity : AppCompatActivity() {
             return
         }
 
-        // If we don't have the in-memory access token, get it
-        if (app.accessToken == null) {
+        // If we don't have the in-memory HttpClient access token, get it
+        if (HttpClient.accessToken == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, BiometricsFragment(app, access_token))
                 .commit()
