@@ -3,39 +3,30 @@ package cz.ikem.dci.zscanner.screen_splash_login
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.biometric.BiometricManager
 import androidx.fragment.app.DialogFragment
-import com.teskalabs.seacat.biometrics.Biometrics
 
-
-class FaileBiometryDialogFragment(biometricsState: Biometrics.State, val dismissCallback: Runnable) : DialogFragment() {
+class FaileBiometryDialogFragment(biometricsState: Int, val dismissCallback: Runnable) : DialogFragment() {
 
     private val TITLE = "Chyba"
     private val MESSAGE = "Zařízení není připraveno pro biometrii."
 
-    private val KEY_TITLE = "ERR"
-    private val KEY_MESSAGE = "MSG"
+    val title: String
+    val message: String
 
     init {
-
         val detail = when (biometricsState) {
-            Biometrics.State.READY -> ":-("
-            Biometrics.State.FINGERPRINTS_NOT_ENROLLED -> "Nejsou k dispozici otisky prstu."
-            Biometrics.State.DEVICE_NOT_SUPPORTED -> "Zarizeni nepodporuje otisky prstu."
-            Biometrics.State.PERMISSION_NOT_GRANTED -> "Nedostatek systemovych opravneni."
-            Biometrics.State.KEYGUARD_NOT_SECURE -> "Keyguard neni zabezpecen."
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> "Zarizeni neni pripraveno, zkuste to pozdeji."
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> "Biometricke overeni neni nastaveno."
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> "Zarizeni nepodporuje biometricke overeni uzivatele."
+            else -> ":-("
         }
 
-        val args = Bundle()
-        args.putString(KEY_TITLE, TITLE)
-        args.putString(KEY_MESSAGE, MESSAGE + "\n" + detail)
-        arguments = args
+        title = TITLE
+        message = MESSAGE + "\n" + detail
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
-        val args = arguments
-        val title = args!!.getString(KEY_TITLE, "")
-        val message = args.getString(KEY_MESSAGE, "")
-
         return AlertDialog.Builder(context!!)
             .setTitle(title)
             .setMessage(message)

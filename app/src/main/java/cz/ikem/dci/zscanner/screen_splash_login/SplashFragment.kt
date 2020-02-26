@@ -6,9 +6,10 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
-import com.teskalabs.seacat.biometrics.Biometrics
 import java.util.concurrent.Callable
 
 class SplashFragment : androidx.fragment.app.Fragment() {
@@ -37,7 +38,7 @@ class SplashFragment : androidx.fragment.app.Fragment() {
         // Periodically check if the SeaCat is ready, if yes, then make a progress
 
         // Generate the master key, if not present
-        if (app.masterKey.getKeyPair() == null) {
+        if (app.masterKey.keyPair == null) {
             app.seacat.executorService.submit(Callable {
                 app.masterKey.generateKeyPair()
             })
@@ -49,8 +50,8 @@ class SplashFragment : androidx.fragment.app.Fragment() {
                     (activity as SplashLoginActivity?)?.makeProgess()
                 } else {
 
-                    val biometricsState = app.biometrics.getBiometryState()
-                    if ((biometricsState != Biometrics.State.READY) && (dialogShown == false)) {
+                    val biometricsState = BiometricManager.from(app).canAuthenticate()
+                    if ((biometricsState != BIOMETRIC_SUCCESS) && (dialogShown == false)) {
                         FaileBiometryDialogFragment(biometricsState, object : Runnable {
                             override fun run() {
                                 dialogShown = false
@@ -69,8 +70,8 @@ class SplashFragment : androidx.fragment.app.Fragment() {
 }
 
 fun checkIfReady(app: ZScannerApplication): Boolean {
-    if (app.biometrics.getBiometryState() != Biometrics.State.READY) return false
+    if (BiometricManager.from(app).canAuthenticate() != BIOMETRIC_SUCCESS) return false
     if (app.seacat.identity.certificate == null) return false;
-    if (app.masterKey.getKeyPair() == null) return false;
+    if (app.masterKey.keyPair == null) return false;
     return true
 }

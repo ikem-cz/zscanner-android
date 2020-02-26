@@ -53,7 +53,7 @@ class SplashLoginActivity : AppCompatActivity() {
         // If we don't have the in-memory HttpClient access token, get it
         if (HttpClient.accessToken == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, BiometricsFragment(app, access_token))
+                .replace(R.id.container, BiometricsFragment(app))
                 .commit()
             return
         }

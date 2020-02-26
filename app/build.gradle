@@ -92,6 +92,8 @@ dependencies {
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
+    // Biometrics
+    implementation "androidx.biometric:biometric:1.0.1"
 
     // Crashlytics
     implementation 'com.google.firebase:firebase-core:17.2.2'
