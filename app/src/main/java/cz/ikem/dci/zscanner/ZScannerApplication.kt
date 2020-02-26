@@ -6,7 +6,7 @@ import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.teskalabs.seacat.SeaCat
 import cz.ikem.dci.zscanner.biometry.Biometrics
-import cz.ikem.dci.zscanner.biometry.MasterKey
+import cz.ikem.dci.zscanner.biometry.BiometricsKey
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.util.concurrent.Executors
 
@@ -17,7 +17,7 @@ class ZScannerApplication : Application() {
 
     val uiHandler = Handler()
     lateinit var biometrics: Biometrics
-    lateinit var masterKey: MasterKey
+    lateinit var masterKey: BiometricsKey
 
     var accessToken: ByteArray? = null // In-memory access token, proof that the user is authenticated
 
@@ -38,7 +38,7 @@ class ZScannerApplication : Application() {
 
         // Initialize biometrics lock
         biometrics = Biometrics(this, uiHandler)
-        masterKey = MasterKey(biometrics)
+        masterKey = BiometricsKey(biometrics, "zScanner Master Key")
 
         if (masterKey.getKeyPair() == null) {
             Thread(Runnable {

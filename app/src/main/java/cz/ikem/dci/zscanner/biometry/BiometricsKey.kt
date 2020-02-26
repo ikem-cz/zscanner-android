@@ -15,11 +15,9 @@ import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
-class MasterKey(val biometrics: Biometrics) {
+class BiometricsKey(private val biometrics: Biometrics, private val keyName: String) {
 
-    private val TAG = MasterKey::class.java.simpleName
-
-    val keyName = "zScanner Master Key"
+    private val TAG = BiometricsKey::class.java.simpleName
 
     fun getKeyPair(): KeyPair? {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")
