@@ -40,12 +40,6 @@ class ZScannerApplication : Application() {
         biometrics = Biometrics(this, uiHandler)
         masterKey = BiometricsKey(biometrics, "zScanner Master Key")
 
-        if (masterKey.getKeyPair() == null) {
-            Thread(Runnable {
-                masterKey.generateKeyPair()
-            }).start()
-        }
-
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
 import com.teskalabs.seacat.biometrics.Biometrics
+import java.util.concurrent.Callable
 
 class SplashFragment : androidx.fragment.app.Fragment() {
 
@@ -34,6 +35,13 @@ class SplashFragment : androidx.fragment.app.Fragment() {
         val app = context?.applicationContext as ZScannerApplication
 
         // Periodically check if the SeaCat is ready, if yes, then make a progress
+
+        // Generate the master key, if not present
+        if (app.masterKey.getKeyPair() == null) {
+            app.seacat.executorService.submit(Callable {
+                app.masterKey.generateKeyPair()
+            })
+        }
 
         mainHandler.post(object : Runnable {
             override fun run() {
