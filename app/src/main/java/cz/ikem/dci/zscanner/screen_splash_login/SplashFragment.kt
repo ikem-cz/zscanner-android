@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
-import cz.ikem.dci.zscanner.biometry.Biometrics
+import com.teskalabs.seacat.biometrics.Biometrics
 
 class SplashFragment : androidx.fragment.app.Fragment() {
 

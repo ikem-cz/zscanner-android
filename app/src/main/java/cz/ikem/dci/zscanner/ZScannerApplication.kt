@@ -5,8 +5,8 @@ import android.os.Handler
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.teskalabs.seacat.SeaCat
-import cz.ikem.dci.zscanner.biometry.Biometrics
-import cz.ikem.dci.zscanner.biometry.BiometricsKey
+import com.teskalabs.seacat.biometrics.Biometrics
+import com.teskalabs.seacat.biometrics.BiometricsKey
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.util.concurrent.Executors
 

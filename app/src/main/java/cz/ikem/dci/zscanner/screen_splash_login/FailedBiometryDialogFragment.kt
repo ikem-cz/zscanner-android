@@ -4,9 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import cz.ikem.dci.zscanner.biometry.Biometrics
-import java.util.concurrent.Callable
+import com.teskalabs.seacat.biometrics.Biometrics
 
 
 class FaileBiometryDialogFragment(biometricsState: Biometrics.State, val dismissCallback: Runnable) : DialogFragment() {
