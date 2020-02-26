@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/teskalabs_footer"
+        app:layout_constraintBottom_toTopOf="@+id/teskalabs_footer_text"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <ImageView
             android:id="@+id/logo_view"
@@ -21,7 +20,10 @@
             android:adjustViewBounds="true"
             android:maxWidth="128dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_logo_typ_4" />
+            android:src="@drawable/ic_logo_typ_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/logo_text_view"
@@ -34,12 +36,19 @@
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo_view" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo_text_view">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username_edit_text"
@@ -51,9 +60,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_text"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -67,9 +80,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <FrameLayout
+            android:id="@+id/login_button_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/login_password">
 
 
             <ProgressBar
@@ -92,29 +110,25 @@
                 android:textColor="@color/white"
                 android:visibility="visible" />
         </FrameLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/teskalabs_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_standard"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/teskalabs_footer_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/teskalabs_footer_logo"
             android:text="Cyber Security by"
             android:textAlignment="center" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/teskalabs_footer_logo"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_gravity="bottom"
-            android:src="@drawable/ic_teskalabs_sidebyside" />
-    </LinearLayout>
+            android:layout_marginBottom="@dimen/margin_standard"
+            android:src="@drawable/ic_teskalabs_sidebyside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
