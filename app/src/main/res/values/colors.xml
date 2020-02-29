@@ -5,8 +5,8 @@
 
     <!--    theme for Plzen-->
     <color name="plzen_titleTextColor">#FFFFFF</color>
-    <color name="plzen_colorAccent">#FE0000</color>
-    <color name="plzen_colorPrimary">#FE0000</color>
+    <color name="plzen_colorAccent">#da251c</color>
+    <color name="plzen_colorPrimary">#da251c</color>
     <color name="plzen_colorPrimaryDark">#9f1b15</color>
     <color name="plzen_colorSecondary">#555454</color>
     <color name="plzen_colorSecondaryDark">#222222</color>
