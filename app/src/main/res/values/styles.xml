@@ -1,35 +1,34 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="ms_stepperStyle">@style/DotStepperStyle</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--item nameOrEntered="colorSecondary">@color/colorSecondary</ite-->
-
+    <style name="IkemTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/ikem_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/ikem_colorPrimaryDark</item>
+        <item name="colorAccent">@color/ikem_colorAccent</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="colorSecondaryVariant">@color/ikem_colorInvalid</item>
+        <item name="titleTextColor">@color/plzen_titleTextColor</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="IkemTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="DotStepperStyle">
-        <item name="ms_activeStepColor">#ffffff</item>
-        <!--item nameOrEntered="ms_inactiveStepColor">#888888</item>
-        <item nameOrEntered="ms_bottomNavigationBackground">@color/colorSecondary</item-->
-        <item name="ms_inactiveStepColor">@color/colorPrimary</item>
-        <item name="ms_bottomNavigationBackground">@color/colorPrimaryDark</item>
-        <item name="ms_backButtonColor">#ffffff</item>
-        <item name="ms_nextButtonColor">#ffffff</item>
-        <item name="ms_completeButtonColor">#ffffff</item>
+    <!--    Plzen theme-->
+    <style name="PlzenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/plzen_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/plzen_colorPrimaryDark</item>
+        <item name="colorAccent">@color/plzen_colorAccent</item>
+        <item name="colorSecondaryVariant">@color/plzen_colorInvalid</item>
+        <item name="titleTextColor">@color/plzen_titleTextColor</item>
     </style>
+
+    <style name="PlzenTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
     <style name="EmptyView" parent="TextAppearance.AppCompat.Tooltip">
         <item name="android:gravity">top|center</item>
@@ -39,7 +38,7 @@
 
     <style name="TextLabel">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="FAB.Main" parent="Widget.Design.FloatingActionButton">
@@ -49,14 +48,14 @@
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
         <item name="fabSize">normal</item>
     </style>
 
     <style name="Button.Small" parent="Widget.Design.FloatingActionButton">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="backgroundTint">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">?attr/colorPrimaryDark</item>
         <item name="android:layout_margin">@dimen/fab_margin_small</item>
         <item name="fabSize">mini</item>
     </style>

@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#FE0000</color>
-    <color name="colorPrimary">#FE0000</color>
-    <color name="colorPrimaryDark">#B30000</color>
-    <color name="colorSecondary">#555454</color>
-    <color name="colorSecondaryDark">#222222</color>
+    <!-- color for zScanner icon-->
     <color name="ic_launcher_background">#FFFFFF</color>
-    <color name="invalid">#CCCCCC</color>
+
+    <!--    theme for Plzen-->
+    <color name="plzen_titleTextColor">#FFFFFF</color>
+    <color name="plzen_colorAccent">#FE0000</color>
+    <color name="plzen_colorPrimary">#FE0000</color>
+    <color name="plzen_colorPrimaryDark">#9f1b15</color>
+    <color name="plzen_colorSecondary">#555454</color>
+    <color name="plzen_colorSecondaryDark">#222222</color>
+    <color name="plzen_colorInvalid">#CCCCCC</color>
+
+    <color name="logo_plzen_red">#da251c</color>
+    <color name="logo_plzen_blue">#00274e</color>
+
+
+    <!--    theme for IKEM-->
+    <color name="ikem_titleTextColort">#FFFFFF</color>
+    <color name="ikem_colorAccent">#FE0000</color>
+    <color name="ikem_colorPrimary">#FE0000</color>
+    <color name="ikem_colorPrimaryDark">#B30000</color>
+    <color name="ikem_colorSecondary">#555454</color>
+    <color name="ikem_colorSecondaryDark">#222222</color>
+    <color name="ikem_colorInvalid">#CCCCCC</color>
+
+    <!--todo make the below theme specific-->
     <color name="white">#FFFFFF</color>
     <color name="job_type_doc">#3333CC</color>
     <color name="job_type_photo">#0099FF</color>
     <color name="job_type_exam">#663399</color>
     <color name="background_opaque">#ddFaFaFa</color>
     <color name="colorTranslucent">#00000000</color>
-    <color name="logo_plzen_red">#da251c</color>
-    <color name="logo_plzen_blue">#00274e</color>
 </resources>

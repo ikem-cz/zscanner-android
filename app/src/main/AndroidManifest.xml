@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme"
+        android:theme="@style/PlzenTheme"
         tools:ignore="GoogleAppIndexingWarning"
         android:usesCleartextTraffic="true">
         <activity android:name=".screen_about.AboutActivity"></activity>
@@ -37,7 +37,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/PlzenTheme.NoActionBar" />
         <activity
             android:name=".screen_message.CreateMessageActivity"
             android:configChanges="orientation"
@@ -48,7 +48,7 @@
             android:name=".screen_splash_login.SplashLoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/PlzenTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -58,7 +59,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         super.onViewCreated(view, savedInstanceState)
 
 
-        fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+        fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
 
         // setup scan button
         scan_barcode_layout.setOnClickListener {
@@ -123,24 +124,25 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         }
 
         mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
+            context?.let{_context ->
             when {
                 patientInput.code != null -> {
                     mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
                     view.patient_validated_layout.visibility = View.INVISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
                 }
                 patientInput.patientObject != null -> {
                     mValidated = true
                     view.patient_validated_layout.visibility = View.VISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorPrimary)
                 }
                 else -> {
                     mValidated = false
                     view.patient_validated_layout.visibility = View.INVISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.invalid))
+                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
                 }
-            }
+            }}
         })
 
         // show/hide too many results text

@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/suggestion_bid_textview"

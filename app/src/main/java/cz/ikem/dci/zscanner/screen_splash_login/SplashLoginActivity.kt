@@ -21,6 +21,7 @@ class SplashLoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        setTheme(R.style.PlzenTheme)
         setContentView(R.layout.activity_splash)
 
         sharedPreferences = applicationContext.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
