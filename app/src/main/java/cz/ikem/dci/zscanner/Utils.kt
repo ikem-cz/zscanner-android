@@ -125,47 +125,47 @@ class Utils {
             sharedPreferences.edit().putInt(PREF_TUTORIAL_NEXT_STEP, 1).commit()
         }
 
-        fun tutorialNextStep(step: Int, ctx: Context?) : Boolean {
-            if (ctx != null) {
-                val sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE)
-                val nextStep = sharedPreferences.getInt(PREF_TUTORIAL_NEXT_STEP, -1)
-                return (nextStep == step)
-            } else {
-                return false
-            }
-        }
+//        fun tutorialNextStep(step: Int, ctx: Context?) : Boolean {
+//            if (ctx != null) {
+//                val sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE)
+//                val nextStep = sharedPreferences.getInt(PREF_TUTORIAL_NEXT_STEP, -1)
+//                return (nextStep == step)
+//            } else {
+//                return false
+//            }
+//        }
+//
+//        fun tutorialAdvance(ctx : Context?) {
+//            if (ctx != null) {
+//                val sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE)
+//                val step = sharedPreferences.getInt(PREF_TUTORIAL_NEXT_STEP, -1)
+//                sharedPreferences.edit().putInt(PREF_TUTORIAL_NEXT_STEP, step + 1).commit()
+//            }
+//        }
 
-        fun tutorialAdvance(ctx : Context?) {
-            if (ctx != null) {
-                val sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE)
-                val step = sharedPreferences.getInt(PREF_TUTORIAL_NEXT_STEP, -1)
-                sharedPreferences.edit().putInt(PREF_TUTORIAL_NEXT_STEP, step + 1).commit()
-            }
-        }
-
-        fun makeTooltip(text: String, view: View, gravity: Int, context: Context?, showArrow : Boolean = true, modal : Boolean = false, onDismissCallback: (() -> Unit)? = null) {
-            if (context != null) {
-                SimpleTooltip.Builder(context).apply {
-                    anchorView(view)
-                    text(text)
-                    textColor(Color.WHITE)
-                    backgroundColor(context.resources.getColor(R.color.colorSecondary))
-                    arrowColor(context.resources.getColor(R.color.colorSecondary))
-                    gravity(gravity)
-                    animated(true)
-                    transparentOverlay(true)
-                    showArrow(showArrow)
-                    if (modal) {
-                        modal(true)
-                        dismissOnOutsideTouch(false)
-                        dismissOnInsideTouch(true)
-                    }
-                    if (onDismissCallback != null) {
-                        onDismissListener { onDismissCallback() }
-                    }
-                }.build().show()
-            }
-        }
+//        fun makeTooltip(text: String, view: View, gravity: Int, context: Context?, showArrow : Boolean = true, modal : Boolean = false, onDismissCallback: (() -> Unit)? = null) {
+//            if (context != null) {
+//                SimpleTooltip.Builder(context).apply {
+//                    anchorView(view)
+//                    text(text)
+//                    textColor(Color.WHITE)
+//                    backgroundColor(context.resources.getColor(R.color.colorSecondary))
+//                    arrowColor(context.resources.getColor(R.color.colorSecondary))
+//                    gravity(gravity)
+//                    animated(true)
+//                    transparentOverlay(true)
+//                    showArrow(showArrow)
+//                    if (modal) {
+//                        modal(true)
+//                        dismissOnOutsideTouch(false)
+//                        dismissOnInsideTouch(true)
+//                    }
+//                    if (onDismissCallback != null) {
+//                        onDismissListener { onDismissCallback() }
+//                    }
+//                }.build().show()
+//            }
+//        }
 
 
         /**

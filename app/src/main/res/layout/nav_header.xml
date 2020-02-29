@@ -24,7 +24,7 @@
             app:layout_constraintBottom_toTopOf="@id/caption_textview"
             app:layout_constraintEnd_toEndOf="@id/caption_textview"
             app:layout_constraintStart_toStartOf="@id/caption_textview"
-            app:srcCompat="@drawable/ic_logo_typ_4w" />
+            app:srcCompat="@drawable/ic_logo_plzen_white" />
 
         <TextView
             android:id="@+id/caption_textview"
