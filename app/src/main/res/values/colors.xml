@@ -13,4 +13,6 @@
     <color name="job_type_exam">#663399</color>
     <color name="background_opaque">#ddFaFaFa</color>
     <color name="colorTranslucent">#00000000</color>
+    <color name="logo_plzen_red">#da251c</color>
+    <color name="logo_plzen_blue">#00274e</color>
 </resources>
