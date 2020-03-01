@@ -41,6 +41,8 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
             fragmentView.login_progress_bar.visibility = VISIBLE
         }
 
+        fragmentView.username_edit_text.requestFocus()
+
         return fragmentView
     }
 
