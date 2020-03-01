@@ -69,6 +69,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                 super.onAuthenticationError(errorCode, errString)
                 if (errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
                     Log.w(TAG, "Authentication failed $errorCode :: $errString")
+                    makeProgressWithDelay()
                 } else {
                     val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
                     sharedPreferences.edit()
@@ -77,7 +78,6 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                         .apply()
                     (activity as SplashLoginActivity?)?.makeProgress()
                 }
-                makeProgressWithDelay()
             }
 
         }
