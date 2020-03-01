@@ -113,22 +113,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <TextView
-            android:id="@+id/teskalabs_footer_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/teskalabs_footer_logo"
-            android:text="Cyber Security by"
-            android:textAlignment="center" />
+    <TextView
+        android:id="@+id/teskalabs_footer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cyber Security by"
+        android:textAlignment="center"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/teskalabs_footer_logo" />
 
-        <ImageView
-            android:id="@+id/teskalabs_footer_logo"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginBottom="@dimen/margin_standard"
-            android:src="@drawable/ic_teskalabs_sidebyside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="1.0"/>
+    <ImageView
+        android:id="@+id/teskalabs_footer_logo"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginBottom="@dimen/margin_standard"
+        android:src="@drawable/ic_teskalabs_sidebyside"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
