@@ -10,13 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.teskalabs.seacat.SeaCat
-import cz.ikem.dci.zscanner.R
-import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.nio.ByteBuffer
 import androidx.biometric.BiometricPrompt
-import cz.ikem.dci.zscanner.PREF_ACCESS_TOKEN
-import cz.ikem.dci.zscanner.SHARED_PREF_KEY
+import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.biometrics.BiometricKeyDecrypt
 
 class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.Fragment() {
@@ -72,6 +69,13 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                 super.onAuthenticationError(errorCode, errString)
                 if (errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
                     Log.w(TAG, "Authentication failed $errorCode :: $errString")
+                } else {
+                    val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+                    sharedPreferences.edit()
+                        .remove(PREF_USERNAME)
+                        .remove(PREF_ACCESS_TOKEN)
+                        .apply()
+                    (activity as SplashLoginActivity?)?.makeProgress()
                 }
                 makeProgressWithDelay()
             }
@@ -84,7 +88,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
 
     private fun createPromptInfo(): BiometricPrompt.PromptInfo {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Please authenticate") //todo translate to Czech
+            .setTitle("Please authenticate") //TODO: translate to Czech
             // Authenticate without requiring the user to press a "confirm"
             // button after satisfying the biometric check
             .setConfirmationRequired(false)

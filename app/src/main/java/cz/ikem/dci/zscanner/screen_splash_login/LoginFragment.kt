@@ -74,9 +74,11 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
                         .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
                         .putString(PREF_USERNAME, username)
                         .apply()
-                    (activity as SplashLoginActivity?)?.makeProgress()
-                    return
                 }
+
+                HttpClient.reset(access_token)
+                (activity as SplashLoginActivity?)?.makeProgress()
+                return
             }
         }
 
