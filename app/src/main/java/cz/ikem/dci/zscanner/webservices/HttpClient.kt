@@ -44,7 +44,9 @@ object HttpClient {
                     val retrofit = Retrofit.Builder()
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(client)
-                        .baseUrl("https://zscanner.seacat.io").build()
+                        .baseUrl("https://zscanner.seacat.io")
+                        .build()
+
                     val asb2 = retrofit.create(BackendHttpServiceInterface::class.java)
                     mApiServiceBackend = asb2
                     return asb2

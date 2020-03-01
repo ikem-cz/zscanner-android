@@ -35,24 +35,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "backend","auth"
-    productFlavors {
-        devBE {
-            dimension "backend"
-        }
-        prodBE {
-            dimension "backend"
-        }
-        apiaryBE {
-            dimension "backend"
-        }
-        prodA {
-            dimension "auth"
-        }
-        fakeA {
-            dimension "auth"
-        }
-    }
 }
 
 dependencies {
