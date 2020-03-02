@@ -1,6 +1,7 @@
 package cz.ikem.dci.zscanner.screen_message
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,31 +49,28 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
         private var lastFilteredConstraint : String = ""
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-
             lastFilteredConstraint = constraint.toString()
-
             mViewModel.loadingSuggestions.postValue(true)
             mViewModel.tooManySuggestions.postValue(false)
 
-                try {
-                    val filterResults = FilterResults()
-                    if (constraint != null) {
-
-                        val response = HttpClient.ApiServiceBackend.searchPatients(constraint.toString()).execute()
-
-                        // Assign the data to the FilterResults
-                        filterResults.values = response.body()
-                        response.body()?.let {
-                            filterResults.count = it.count()
-                        }
-                        if (response.body() == null) {
-                            filterResults.count = 0
-                        }
+            try {
+                val filterResults = FilterResults()
+                if (constraint != null) {
+                    val query = constraint.toString()
+                    val response = HttpClient.ApiServiceBackend.searchPatients(query).execute()
+                    // Assign the data to the FilterResults
+                    filterResults.values = response.body()
+                    response.body()?.let {
+                        filterResults.count = it.count()
                     }
-                    return filterResults
-                } catch (e: Exception) {
-                    return FilterResults()
+                    if (response.body() == null) {
+                        filterResults.count = 0
+                    }
                 }
+                return filterResults
+            } catch (e: Exception) {
+                return FilterResults()
+            }
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {

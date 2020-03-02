@@ -45,8 +45,8 @@
     <string name="new_job_pages">Fotografie - obsah záznamu</string>
 
     <string name="logout_prompt_text">Opravdu se chcete odhlásit z aplikace\na vymazat veškerá uložená data?</string>
-    <string name="logout_prompt_button_pos">ODHLÁSIT</string>
-    <string name="logout_prompt_button_neg">ne, nechci</string>
+    <string name="logout_prompt_button_negative">ODHLÁSIT</string>
+    <string name="logout_prompt_button_neutral">ne, nechci</string>
     <string name="finish_prompt_text">Opravdu chcete ukončit přípravu záznamu a vrátit se?</string>
     <string name="finish_prompt_button_negative">UKONČIT</string>
     <string name="finish_prompt_button_neutral">ne, nechci</string>

@@ -38,7 +38,9 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     // always contains all mrus -- move elsewhere?
     val mrus: LiveData<List<Mru>> = Repositories(zapplication).mruRepository.mru()
 
-    val type: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
+    val type: MutableLiveData<DocumentType> = MutableLiveData()
+    val subtype: MutableLiveData<DocumentSubType> = MutableLiveData()
+    val additionalNote: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
     data class PatientInput(
             val patientObject: Patient?,
@@ -76,8 +78,6 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         }
     }
 
-    val name: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
-
     val undoAction: MutableLiveData<PageActionsQueue.PageAction> = MutableLiveData<PageActionsQueue.PageAction>().apply { value = null }
 
     private val mPageActions: PageActionsQueue = PageActionsQueue()
@@ -88,7 +88,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     val pageActions: MutableLiveData<PageActionsQueue> = MutableLiveData<PageActionsQueue>().apply { value = mPageActions }
 
-    fun addPage(path: String?, position: Int? = -1) {
+    fun addPage(path: String?, position: Int? = -1, note: String?) {
         if (path == null){
             return
         }
@@ -96,7 +96,11 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         if (_position == null){
             _position = -1
         }
-        val action = PageActionsQueue.PageAction(PageActionsQueue.Page(path), PageActionsQueue.PageActionType.ADDED, _position)
+        var _note = note
+        if(_note == null){
+            _note = ""
+        }
+        val action = PageActionsQueue.PageAction(PageActionsQueue.Page(path, _note), PageActionsQueue.PageActionType.ADDED, _position)
         mPageActions.add(action)
         undoAction.postValue(null)
         pageActions.postValue(mPageActions)
@@ -123,62 +127,65 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     /**
      *  Called when message creating process is complete and no validation errors were encountered
      */
-    fun onProcessEnd() {
+    fun onProcessEnd(completion: (error: Error?) -> Unit) {
         val toSend = mPageActions.makePages().map { e -> e.path }
         val toClean = mPageActions.actionsList().asSequence().map { e -> e.page.path }.distinct().filter { e -> !toSend.contains(e) }.toList()
         JobUtils(zapplication).scheduleFilesCleanup(toClean)
 
         cleanupHandled = true
 
-        val entry = patientInput.value?.patientObject
-        handleProcessOutput(entry, type.value, name.value, toSend)
+        val docType = type.value?.id
+        if (docType == null){
+            Log.e(TAG, "type is null")
+            return completion(Error("type is null")) // TODO: change it to sth in Czech that can be displayed to user
+        }
 
+        val docSubType: String? = subtype.value?.id
+        Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: docType = $docType")
+        Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: docSubType = $docSubType")
+
+        val patient = patientInput.value?.patientObject
+        if (patient == null) {
+            Log.e(TAG, "patient is null")
+            return completion(Error("patient is null")) // TODO: change it to sth in Czech that can be displayed to user
+        }
+
+        handleProcessOutput(patient, docType, docSubType, additionalNote.value, toSend) { error ->
+            Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: handleProcessOutput, error = $error")
+            completion(error)
+        }
     }
 
-    private fun handleProcessOutput(patient: Patient?, type: String?, name: String?, filePaths: List<String>) {
+    private fun handleProcessOutput(patient: Patient, docType: String, docSubType: String?, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
 
         // insert mru
-        patient?.let{ _patient ->
-            MruUtils(getApplication<ZScannerApplication>()).addMru(_patient)
-        }
+        MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
 
         // set current date and time as string value
         val dateString = SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date())
         val numpages = filePaths.count()
 
+        var description = ""
         // create description string
-        val description = run {
-            val allTypes = storedTypes.value
-            val typeDisplayString = if (!allTypes.isNullOrEmpty()) {
-                " - ${allTypes.filter { it.display == type }[0].display}"
-            } else { "" }
-            "$typeDisplayString - $numpages str."
-        }
+        description =
+                if (!docSubType.isNullOrEmpty()) {
+                    "type $docType - subtype $docSubType - $numpages str." //TODO: this is visible for the user, so should be in Czech
+                } else {
+                    "type $docType - $numpages str."
+                }
 
-        if (patient == null) {
-            Log.e(TAG, "patient is null")
-            return
-        }
-
-        if (type == null){
-            Log.e(TAG, "type is null")
-            return
-        }
-
-        if (name == null){
-            Log.e(TAG, "name is null")
-            return
-        }
 
         JobUtils(getApplication<ZScannerApplication>()).addJob(
                 correlationId,
                 System.currentTimeMillis(),
                 patient,
-                type,
-                name,
+                docType,
+                docSubType ?: "",
+                additionalNote ?: "",
                 dateString,
                 filePaths,
                 description)
+        completion(null)
     }
 
     override fun onCleared() {

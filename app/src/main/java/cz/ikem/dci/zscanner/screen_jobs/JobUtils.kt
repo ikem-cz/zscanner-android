@@ -21,21 +21,25 @@ class JobUtils(private val context: Context) {
     /**
      *  Create and schedule sendjob of create message process result
      */
-    fun addJob(instanceId: String,
-               timestamp: Long,
-               patient: Patient,
-               documentType: String,
-               documentName: String,
-               dateString: String,
-               toSend: List<String>,
-               intDescr: String
+    fun addJob(
+            instanceId: String,
+            timestamp: Long,
+            patient: Patient,
+            documentType: String,
+            documentSubType: String?,
+            documentNote: String,
+            dateString: String,
+            toSend: List<String>,
+            intDescr: String
     ) {
 
-        val sendJob = SendJob(instanceId,
+        val sendJob = SendJob(
+                instanceId,
                 timestamp,
                 patient.internalId,
                 documentType,
-                documentName,
+                documentSubType,
+                documentNote,
                 dateString,
                 toSend,
                 toSend.count() + 1,
@@ -55,8 +59,8 @@ class JobUtils(private val context: Context) {
                 .putString(KEY_CORRELATION_ID, instanceId)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)
-                .putString(KEY_NAME, documentName)
-                .putString(KEY_DOCUMENT_NOTE, "note") //todo remove placeholder
+//                .putString(KEY_NAME, documentName)
+                .putString(KEY_DOCUMENT_NOTE, documentNote)
                 .build()
         val sendSummaryWorker = OneTimeWorkRequest.Builder(SendSummaryWorker::class.java)
                 .addTag(WORKTAG_SENDING_JOB)

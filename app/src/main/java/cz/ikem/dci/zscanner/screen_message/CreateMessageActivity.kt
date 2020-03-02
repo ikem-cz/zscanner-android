@@ -28,8 +28,8 @@ import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.DocumentType
 import cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment.Companion.EXTRA_DEPARTMENT
-import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
+import kotlinx.android.synthetic.main.page_row.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -114,8 +114,9 @@ val departmentId = department.id
                 super.onActivityResult(requestCode, resultCode, data)
             }
         } else if ((requestCode == REQUEST_CODE_PHOTO) && (resultCode == Activity.RESULT_OK)) {
+            val photoNote = note_to_photo?.text.toString().trim()
             mCurrentPhotoPath?.let {
-                addPhotoToViewModel(it)
+                addPhotoToViewModel(it, photoNote)
             }
         } else {
             //if (resultCode == Activity.RESULT_CANCELED) Toast.makeText(this, "Přerušeno uživatelem", Toast.LENGTH_SHORT).show()
@@ -166,9 +167,10 @@ val departmentId = department.id
 
 
     //region photo utility functions
-    private fun addPhotoToViewModel(path: String) {
+    private fun addPhotoToViewModel(path: String, photoNote: String?) {
+
         mCurrentPhotoPath?.let {
-            mViewModel.addPage(path)
+            mViewModel.addPage(path, note = photoNote)
         }
     }
 

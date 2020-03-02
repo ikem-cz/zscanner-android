@@ -102,12 +102,17 @@ class CreateMessageSubTypeFragment : Fragment() {
         val subTypesAdapter = SubTypeAdapter(context)
 
         subTypesAdapter.onItemSelected = { subtype ->
+            mViewModel.subtype.postValue(subtype)
 
-            mViewModel.type.postValue(subtype.display)
-
-            //TODO
-//             send the POST request
-            Log.e("DEBUGGING", "send the POST request with subtype")
+            mViewModel.onProcessEnd{ error ->
+                if(error != null){
+                    //TODO: handle
+                    Log.e(TAG, "error while onProcessEnd: ${error.message}")
+                    return@onProcessEnd
+                }
+                Log.e("DEBUGGING", "send the POST request")
+                activity?.finish() //TODO: possibly add some spinner overlay
+            }
         }
 
         document_types_recycler_view.adapter = subTypesAdapter

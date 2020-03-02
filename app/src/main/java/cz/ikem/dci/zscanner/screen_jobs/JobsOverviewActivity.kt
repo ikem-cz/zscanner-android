@@ -77,8 +77,8 @@ class JobsOverviewActivity : AppCompatActivity() {
                 R.id.menu_logout -> {
                     AlertDialog.Builder(this)
                             .setMessage(getString(R.string.logout_prompt_text))
-                            .setNegativeButton(getString(R.string.logout_prompt_button_pos)) { _, _ -> logout() }
-                            .setPositiveButton(getString(R.string.logout_prompt_button_neg), null)
+                            .setNegativeButton(getString(R.string.logout_prompt_button_negative)) { _, _ -> logout() }
+                            .setNeutralButton(getString(R.string.logout_prompt_button_neutral), null)
                             .show()
                 }
                 R.id.menu_about -> {

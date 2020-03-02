@@ -117,7 +117,6 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         }
         // set the button color depending on validation
         fab_next_step_1.backgroundTintList = context?.resources?.getColorStateList(R.color.button_bcg_states, context?.theme)
-
         mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
             when {
                 patientInput.code != null -> {
@@ -141,6 +140,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
         // show/hide too many results text
         mViewModel.tooManySuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
+            Log.e("DEBUGGING", "CreateMessagePatientFragment, tooManySuggestions: value = $value")
             when (value) {
                 true -> view.too_many_layout.visibility = View.VISIBLE
                 false -> view.too_many_layout.visibility = View.INVISIBLE
@@ -148,6 +148,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         })
 
         mViewModel.loadingSuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
+            Log.e("DEBUGGING", "CreateMessagePatientFragment, loadingSuggestions: value = $value")
             when (value) {
                 true -> view.progress_bar.visibility = View.VISIBLE
                 false -> view.progress_bar.visibility = View.INVISIBLE
@@ -155,6 +156,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         })
 
         mViewModel.noSuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
+            Log.e("DEBUGGING", "CreateMessagePatientFragment, noSuggestions: value = $value")
             when (value) {
                 true -> view.no_patient_layout.visibility = View.VISIBLE
                 false -> view.no_patient_layout.visibility = View.INVISIBLE

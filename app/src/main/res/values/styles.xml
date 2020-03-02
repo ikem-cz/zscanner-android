@@ -7,7 +7,8 @@
         <item name="colorAccent">@color/ikem_colorAccent</item>
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="colorSecondaryVariant">@color/ikem_colorInvalid</item>
-        <item name="titleTextColor">@color/plzen_titleTextColor</item>
+        <item name="titleTextColor">@color/ikem_titleTextColor</item>
+        <item name="colorSecondary">@color/ikem_colorSecondary</item>
     </style>
 
     <style name="IkemTheme.NoActionBar">
@@ -22,6 +23,7 @@
         <item name="colorAccent">@color/plzen_colorAccent</item>
         <item name="colorSecondaryVariant">@color/plzen_colorInvalid</item>
         <item name="titleTextColor">@color/plzen_titleTextColor</item>
+        <item name="colorSecondary">@color/plzen_colorSecondary</item>
     </style>
 
     <style name="PlzenTheme.NoActionBar">
@@ -84,4 +86,24 @@
         <item name="android:paddingTop">30dp</item>
         <item name="android:textStyle">italic</item>
     </style>
+
+<!--    <style name="zScannerDialog" parent="@style/Theme.MaterialComponents.Light.Dialog">-->
+<!--        <item name="colorPrimaryDark">?attr/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">?attr/colorAccent</item>-->
+<!--        <item name="colorPrimary">?attr/colorPrimary</item>-->
+<!--        <item name="colorSecondary">?attr/colorSecondary</item>-->
+<!--        <item name="android:buttonBarNegativeButtonStyle">@style/zScannerDialog.ButtonNegative</item>-->
+<!--        <item name="android:buttonBarPositiveButtonStyle">@style/zScannerDialog.ButtonPositive</item>-->
+<!--        <item name="android:buttonBarNeutralButtonStyle">@style/zScannerDialog.ButtonNeutral</item>-->
+<!--    </style>-->
+
+<!--    <style name="zScannerDialog.ButtonNegative" parent="Widget.MaterialComponents.Button.TextButton.Dialog">-->
+<!--        <item name="android:textColor">?attr/colorPrimary</item>-->
+<!--    </style>-->
+<!--    <style name="zScannerDialog.ButtonPositive" parent="Widget.MaterialComponents.Button.TextButton.Dialog">-->
+<!--        <item name="android:textColor">?attr/colorSecondary</item>-->
+<!--    </style>-->
+<!--    <style name="zScannerDialog.ButtonNeutral" parent="Widget.MaterialComponents.Button.TextButton.Dialog">-->
+<!--        <item name="android:textColor">?attr/colorSecondary</item>-->
+<!--    </style>-->
 </resources>
