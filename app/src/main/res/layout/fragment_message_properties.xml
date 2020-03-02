@@ -23,20 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_standard"
-        app:layout_constraintBottom_toTopOf="@+id/fab_next_step_2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/document_types_text"
         app:layout_constraintVertical_bias="0.0" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_next_step_2"
-        style="@style/FAB.Main"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_navigate_next2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
