@@ -163,20 +163,10 @@
                 style="@style/FAB.Main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_navigate_next2"
-                />
+                android:src="@drawable/ic_navigate_next2" />
 
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tutorial_anchor_next"
-        android:layout_marginRight="26dp"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom|end"
-        android:visibility="invisible"
-        android:orientation="horizontal"/>
 
 </FrameLayout>
 

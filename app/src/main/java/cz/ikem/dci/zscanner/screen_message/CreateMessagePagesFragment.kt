@@ -3,9 +3,11 @@ package cz.ikem.dci.zscanner.screen_message
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_message_pages.view.*
 
 
 class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
+
+    private val TAG = CreateMessagePagesFragment::class.java.simpleName
 
     private var mListener: OnCreateMessageViewsInteractionListener? = null
     private lateinit var mViewModel: CreateMessageViewModel
@@ -42,10 +46,16 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        fab_next_send.isEnabled = false
+        fab_next_send.isActivated = false
 
         fab_next_send.setOnClickListener {
-           findNavController().navigate(R.id.action_createMessagePagesFragment_to_createMessageTypeFragment)
+            if (!mViewModel.containsAtLeastOnePage()) {
+                val errorText = getString(R.string.err_no_photo)
+                Log.d(TAG, "step not validated due to $errorText")
+                Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            findNavController().navigate(R.id.action_createMessagePagesFragment_to_createMessageTypeFragment)
         }
 
         // initialize recycler view
@@ -62,10 +72,12 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
             val adapter = PagesAdapter(mViewModel.pageActions.value!!.clone(), _context)
             mRecyclerView.adapter = adapter
 
+            // set the button color depending on validation
+            fab_next_send.backgroundTintList = context?.resources?.getColorStateList(R.color.button_bcg_states, context?.theme)
+
             mViewModel.pageActions.observe(viewLifecycleOwner, Observer<PageActionsQueue> {
                 adapter.syncActionsQueue(mViewModel)
-
-                fab_next_send.isEnabled = mViewModel.containsAtLeastOnePage()
+                    view.fab_next_send.isActivated = mViewModel.containsAtLeastOnePage()
             })
         }
 

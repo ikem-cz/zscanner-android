@@ -43,13 +43,6 @@ class CreateMessageTypeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        fab_next_step_2.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
-
-        fab_next_step_2.setOnClickListener {
-            // TODO for some reason deleting this listener makes the app stop working. No idea why, the button is set to GONE anyways.
-        }
-
         createDocumentTypesAdapter(this.requireContext())
 
     }

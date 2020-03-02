@@ -1,7 +1,6 @@
 package cz.ikem.dci.zscanner.screen_message
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,21 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.stepstone.stepper.Step
-import com.stepstone.stepper.VerificationError
 import cz.ikem.dci.zscanner.KeyboardCallback
 import cz.ikem.dci.zscanner.MruSelectionCallback
 import cz.ikem.dci.zscanner.OnCreateMessageViewsInteractionListener
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Mru
 import cz.ikem.dci.zscanner.webservices.Patient
-import kotlinx.android.synthetic.main.activity_create_message.*
 import kotlinx.android.synthetic.main.fragment_message_patient.*
 import kotlinx.android.synthetic.main.fragment_message_patient.view.*
 
@@ -41,7 +35,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
     private var mValidated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        activity?.let{ _activity ->
+        activity?.let { _activity ->
             mViewModel = ViewModelProviders.of(_activity).get(CreateMessageViewModel::class.java)
         }
         super.onCreate(savedInstanceState)
@@ -59,7 +53,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         super.onViewCreated(view, savedInstanceState)
 
 
-        fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
+        fab_next_step_1.isActivated = false
 
         // setup scan button
         scan_barcode_layout.setOnClickListener {
@@ -72,11 +66,10 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
         fab_next_step_1.setOnClickListener {
             val action = CreateMessagePatientFragmentDirections.actionCreateMessagePatientFragmentToCreateMessagePagesFragment()
-            if(!mValidated){
+            if (!mValidated) {
                 val errorText = getString(R.string.err_invalid_patient)
                 Log.d(TAG, "step not validated due to $errorText")
-                Toast.makeText(context, errorText, Toast.LENGTH_SHORT)
-                        .show()
+                Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             findNavController().navigate(action)
@@ -105,7 +98,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         })
 
         // setup autocompletion suggestions callbacks
-        activity?.applicationContext?.let {_context ->
+        activity?.applicationContext?.let { _context ->
             val adapter = PatientAdapter(_context, mViewModel)
             patient_id_edittext.apply {
                 setAdapter(adapter)
@@ -122,27 +115,28 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
                 }
             }
         }
+        // set the button color depending on validation
+        fab_next_step_1.backgroundTintList = context?.resources?.getColorStateList(R.color.button_bcg_states, context?.theme)
 
         mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
-            context?.let{_context ->
             when {
                 patientInput.code != null -> {
                     mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
-                    view.patient_validated_layout.visibility = View.INVISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
+                    patient_validated_layout.visibility = View.INVISIBLE
+                    fab_next_step_1.isActivated = false
                 }
                 patientInput.patientObject != null -> {
                     mValidated = true
-                    view.patient_validated_layout.visibility = View.VISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorPrimary)
+                    patient_validated_layout.visibility = View.VISIBLE
+                    fab_next_step_1.isActivated = true
                 }
                 else -> {
                     mValidated = false
-                    view.patient_validated_layout.visibility = View.INVISIBLE
-                    view.fab_next_step_1.backgroundTintList = ColorStateList.valueOf(R.attr.colorSecondaryVariant)
+                    patient_validated_layout.visibility = View.INVISIBLE
+                    fab_next_step_1.isActivated = false
                 }
-            }}
+            }
         })
 
         // show/hide too many results text
