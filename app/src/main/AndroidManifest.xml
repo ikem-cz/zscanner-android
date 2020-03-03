@@ -20,7 +20,6 @@
         android:theme="@style/PlzenTheme"
         tools:ignore="GoogleAppIndexingWarning"
         android:usesCleartextTraffic="true">
-        <activity android:name=".screen_about.AboutActivity"></activity>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
@@ -28,9 +27,21 @@
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="cz.ikem.dci.zscanner.workmanager-init"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:replace="android:authorities"
             android:enabled="false"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            tools:replace="android:authorities"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity
             android:name=".screen_jobs.JobsOverviewActivity"
@@ -38,12 +49,14 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:theme="@style/PlzenTheme.NoActionBar" />
+
         <activity
             android:name=".screen_message.CreateMessageActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".screen_jobs.JobsOverviewActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".screen_splash_login.SplashLoginActivity"
             android:configChanges="orientation"
@@ -56,15 +69,8 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="cz.ikem.dci.zscanner.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <activity android:name=".screen_about.AboutActivity"></activity>
+
     </application>
 
 </manifest>

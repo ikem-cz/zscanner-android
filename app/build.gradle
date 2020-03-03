@@ -35,6 +35,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'operator'
+    productFlavors {
+        fnplzen {
+            dimension = 'operator'
+            applicationId = 'cz.fnplzen.zscanner'
+            resValue "string", "seacat_api_url", '"https://fnplzen-zscanner.seacat.io/seacat"'
+            resValue "string", "backend_url", '"https://fnplzen-zscanner.seacat.io"'
+        }
+        ikem {
+            dimension = 'operator'
+            resValue "string", "seacat_api_url", '"https://zscanner.seacat.io/seacat"'
+            resValue "string", "backend_url", '"https://zscanner.seacat.io"'
+        }
+    }
 }
 
 dependencies {

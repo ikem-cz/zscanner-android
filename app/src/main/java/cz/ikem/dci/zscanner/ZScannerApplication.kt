@@ -8,7 +8,6 @@ import cz.ikem.dci.zscanner.biometrics.BiometricsKey
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import java.util.concurrent.Executors
 
-
 class ZScannerApplication : Application() {
 
     lateinit var seacat: SeaCat
@@ -25,9 +24,7 @@ class ZScannerApplication : Application() {
             .build()
 
         HttpClient.application = this
-
-        seacat = SeaCat(this, "https://zscanner.seacat.io/seacat")
-
+        seacat = SeaCat(this, getString(R.string.seacat_api_url))
         WorkManager.initialize(this, configuration)
 
         // Initialize biometrics lock

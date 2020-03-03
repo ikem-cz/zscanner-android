@@ -1,5 +1,6 @@
 package cz.ikem.dci.zscanner.webservices
 
+import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -33,6 +34,8 @@ object HttpClient {
             synchronized(this) {
                 val asb = mApiServiceBackend
                 if (asb == null) {
+                    val url = application.getString(R.string.backend_url)
+
                     val client = OkHttpClient.Builder()
                         .sslSocketFactory(
                             application.seacat.sslContext.socketFactory,
@@ -44,7 +47,7 @@ object HttpClient {
                     val retrofit = Retrofit.Builder()
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(client)
-                        .baseUrl("https://zscanner.seacat.io")
+                        .baseUrl(url)
                         .build()
 
                     val asb2 = retrofit.create(BackendHttpServiceInterface::class.java)
