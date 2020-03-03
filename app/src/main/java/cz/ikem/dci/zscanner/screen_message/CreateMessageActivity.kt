@@ -183,7 +183,7 @@ val departmentId = department.id
                     Toast.makeText(this, "Nezdařila se rezervace prostoru v úložišti telefonu", Toast.LENGTH_LONG).show()
                 }
                 if (photoFile != null) {
-                    val photoURI = FileProvider.getUriForFile(this, "cz.ikem.dci.zscanner.fileprovider", photoFile)
+                    val photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", photoFile)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO)
                 }
