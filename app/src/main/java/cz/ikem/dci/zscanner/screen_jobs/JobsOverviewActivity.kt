@@ -66,7 +66,7 @@ class JobsOverviewActivity : AppCompatActivity() {
         val username = sharedPreferences.getString(PREF_USERNAME, "")
 
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_textview)?.apply {
-            text = getString(R.string.username_prefix)+": "+username.toLowerCase()
+            text = getString(R.string.username_prefix)+": " + (username?.toLowerCase() ?: "???")
         }
 
         nav_view.setNavigationItemSelectedListener {

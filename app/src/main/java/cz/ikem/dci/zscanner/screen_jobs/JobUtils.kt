@@ -152,7 +152,7 @@ class JobUtils(private val context: Context) {
             var workContinuation = workManager.beginWith(request)
 
             if (deleteDir) {
-                val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/" + instanceId!!).absolutePath
+                val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/" + instanceId!!)!!.absolutePath
                 val dirCleanupWorkerData = Data.Builder().putString(KEY_DIRECTORY, storageDir).build()
                 val dirCleanupWorker = OneTimeWorkRequest.Builder(DirectoryCleanupWorker::class.java).setInputData(dirCleanupWorkerData).build()
                 workContinuation = workContinuation.then(dirCleanupWorker)
