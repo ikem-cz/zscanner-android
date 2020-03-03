@@ -57,7 +57,9 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                 val decrypted = decryptor?.final(result.cryptoObject, plaintext) ?: false
 
                 if (decrypted) {
-                    HttpClient.reset(plaintext.array())
+                    val plaintext_array = ByteArray(plaintext.limit())
+                    plaintext.get(plaintext_array, 0, plaintext.limit())
+                    HttpClient.reset(plaintext_array)
                     (activity as SplashLoginActivity?)?.makeProgress()
                 } else {
                     HttpClient.reset(null)
