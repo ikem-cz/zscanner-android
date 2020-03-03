@@ -17,20 +17,20 @@ import retrofit2.http.Query;
 import retrofit2.http.Field;
 
 public interface BackendHttpServiceInterface {
-    @GET("/medicalc/v3.1/departments")
+    @GET("v3.1/departments")
     Call<List<JsonObject>> getDepartments();
 
-    @GET("/medicalc/v3.1/documenttypes")
+    @GET("v3.1/documenttypes")
     Call<JsonObject> getDocumentTypes(@Query("department") String department);
 
-    @GET("/medicalc/v3.1/folders/search")
+    @GET("v3.1/folders/search")
     Call<List<Patient>> searchPatients(@Query("query") String entered);
 
-    @GET("/medicalc/v3.1/folders/decode")
+    @GET("v3.1/folders/decode")
     Call<Patient> decodePatient(@Query("query") String code);
 
     @Multipart
-    @POST("/medicalc/v3.1/documents/summary")
+    @POST("v3.1/documents/summary")
     Call<ResponseBody> postDocumentSummary(
         @Part("correlation") RequestBody correlation,
         @Part("folderInternalId") RequestBody cardid,
@@ -42,7 +42,7 @@ public interface BackendHttpServiceInterface {
     );
 
     @Multipart
-    @POST("/medicalc/v3.1/documents/page")
+    @POST("v3.1/documents/page")
     Call<ResponseBody> postDocumentPage(
         @Part ("page") List<MultipartBody.Part> images,
         @Part("correlation") RequestBody correlation,
@@ -51,14 +51,14 @@ public interface BackendHttpServiceInterface {
     );
 
     @FormUrlEncoded
-    @POST("/medicalc/v3.1/login")
+    @POST("v3.1/login")
     Call<ResponseBody> postLogin(
         @Field("username") String username,
         @Field("password") String password
     );
 
     @FormUrlEncoded
-    @POST("/medicalc/v3.1/logout")
+    @POST("v3.1/logout")
     Call<ResponseBody> postLogout(
             @Field("access_token") String access_token
     );

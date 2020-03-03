@@ -41,12 +41,13 @@ android {
             dimension = 'operator'
             applicationId = 'cz.fnplzen.zscanner'
             resValue "string", "seacat_api_url", '"https://fnplzen-zscanner.seacat.io/seacat"'
-            resValue "string", "backend_url", '"https://fnplzen-zscanner.seacat.io"'
+            resValue "string", "backend_url", '"https://fnplzen-zscanner.seacat.io/medicalc/"'
         }
         ikem {
             dimension = 'operator'
+            applicationId "cz.ikem.dci.zscanner"
             resValue "string", "seacat_api_url", '"https://zscanner.seacat.io/seacat"'
-            resValue "string", "backend_url", '"https://zscanner.seacat.io"'
+            resValue "string", "backend_url", '"https://zscanner.seacat.io/medicalc/"'
         }
     }
 }
@@ -101,6 +102,7 @@ dependencies {
     // A simple library based on PopupWindow to create Tooltips on Android. 💚
     // https://github.com/douglasjunior/android-simple-tooltip
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.2'
+
     implementation project(path: ':seacat')
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
