@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "591984072064",
+    "firebase_url": "https://cz-fnplzen-zscanner.firebaseio.com",
+    "project_id": "cz-fnplzen-zscanner",
+    "storage_bucket": "cz-fnplzen-zscanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591984072064:android:aa199ba86933a313ac1d65",
+        "android_client_info": {
+          "package_name": "cz.fnplzen.zscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591984072064-vcdc0bq3rumasbuk9j4m9demogll9ech.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8LlQHo6Qef6qT7MyVYjxUS0IuIsSeXzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591984072064-vcdc0bq3rumasbuk9j4m9demogll9ech.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
