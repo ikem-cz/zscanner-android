@@ -40,13 +40,13 @@ android {
         fnplzen {
             dimension = 'operator'
             applicationId = 'cz.fnplzen.zscanner'
-            resValue "string", "seacat_api_url", '"https://fnplzen-zscanner.seacat.io/seacat"'
+            resValue "string", "seacat_api_url", '"https://fnplzen-zscanner.seacat.io/seacat/"'
             resValue "string", "backend_url", '"https://fnplzen-zscanner.seacat.io/medicalc/"'
         }
         ikem {
             dimension = 'operator'
             applicationId "cz.ikem.dci.zscanner"
-            resValue "string", "seacat_api_url", '"https://zscanner.seacat.io/seacat"'
+            resValue "string", "seacat_api_url", '"https://zscanner.seacat.io/seacat/"'
             resValue "string", "backend_url", '"https://zscanner.seacat.io/medicalc/"'
         }
     }
