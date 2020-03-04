@@ -3,6 +3,7 @@ package cz.ikem.dci.zscanner.biometrics
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
 import androidx.biometric.BiometricPrompt
 import java.nio.ByteBuffer
 import java.security.*
@@ -64,6 +65,9 @@ class BiometricsKey(private val keyName: String) {
 
             keyPairGenerator.initialize(builder.build())
             keyPairGenerator.generateKeyPair()
+        }
+        catch (exception: Exception) {
+            Log.e(TAG, "Failed to generate biometrics key", exception)
         }
         finally {
             generating = false
