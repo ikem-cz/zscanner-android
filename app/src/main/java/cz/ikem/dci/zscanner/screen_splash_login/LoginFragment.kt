@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_login.view.*
 import okhttp3.ResponseBody
 import java.nio.ByteBuffer
 
+//TODO: If (BiometricManager.from(app).canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS), display the info message about that
+
 class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<ResponseBody> {
 
     var sharedPreferences: SharedPreferences? = null

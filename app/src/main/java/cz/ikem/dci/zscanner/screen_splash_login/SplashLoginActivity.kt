@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
 import cz.ikem.dci.zscanner.PREF_ACCESS_TOKEN
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.SHARED_PREF_KEY
@@ -53,9 +54,16 @@ class SplashLoginActivity : AppCompatActivity() {
 
         // If we don't have the in-memory HttpClient access token, get it
         if (HttpClient.accessToken == null) {
+            if (BiometricManager.from(app).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, BiometricsFragment(app))
-                        .commitAllowingStateLoss() // otherwise it crashes if user leaves the screen
+                    .replace(R.id.container, BiometricsFragment(app))
+                    .commitAllowingStateLoss() // otherwise it crashes if user leaves the screen
+            } else {
+                // If biometry is not available, fallback to a username/password login dialog
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, LoginFragment())
+                    .commit()
+            }
             return
         }
 

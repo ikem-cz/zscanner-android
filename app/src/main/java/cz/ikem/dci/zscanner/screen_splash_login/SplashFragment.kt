@@ -15,7 +15,6 @@ import java.util.concurrent.Callable
 class SplashFragment : androidx.fragment.app.Fragment() {
 
     val mainHandler = Handler(Looper.getMainLooper())
-    var dialogShown = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_splash, container, false)
@@ -49,17 +48,6 @@ class SplashFragment : androidx.fragment.app.Fragment() {
                 if (checkIfReady(app)) {
                     (activity as SplashLoginActivity?)?.makeProgress()
                 } else {
-
-                    val biometricsState = BiometricManager.from(app).canAuthenticate()
-                    if ((biometricsState != BIOMETRIC_SUCCESS) && !dialogShown) {
-                        FaileBiometryDialogFragment(biometricsState, object : Runnable {
-                            override fun run() {
-                                dialogShown = false
-                            }
-                        }).show(fragmentManager!!, "failedBiometry")
-                        dialogShown = true
-                    }
-
                     mainHandler.postDelayed(this, 1000)
                 }
             }
@@ -70,8 +58,7 @@ class SplashFragment : androidx.fragment.app.Fragment() {
 }
 
 fun checkIfReady(app: ZScannerApplication): Boolean {
-    if (BiometricManager.from(app).canAuthenticate() != BIOMETRIC_SUCCESS) return false
-    if (app.seacat.identity.certificate == null) return false;
+    if (!app.seacat.ready) return false;
     if (app.masterKey.keyPair == null) return false;
     return true
 }
