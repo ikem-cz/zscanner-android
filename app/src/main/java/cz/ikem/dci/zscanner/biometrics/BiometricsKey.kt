@@ -12,7 +12,9 @@ import javax.crypto.KeyGenerator
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
+// Compatible with Android 6+
 class BiometricsKey(private val keyName: String) {
+
 
     private val TAG = BiometricsKey::class.java.simpleName
 
