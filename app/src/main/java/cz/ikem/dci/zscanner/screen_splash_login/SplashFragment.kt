@@ -37,7 +37,7 @@ class SplashFragment : androidx.fragment.app.Fragment() {
         // Periodically check if the SeaCat is ready, if yes, then make a progress
 
         // Generate the master key, if not present
-        if (app.masterKey.keyPair == null) {
+        if ((app.masterKey.keyPair == null) && (BiometricManager.from(app).canAuthenticate() == BIOMETRIC_SUCCESS)) {
             app.seacat.executorService.submit(Callable {
                 app.masterKey.generateKeyPair()
             })
@@ -59,6 +59,6 @@ class SplashFragment : androidx.fragment.app.Fragment() {
 
 fun checkIfReady(app: ZScannerApplication): Boolean {
     if (!app.seacat.ready) return false;
-    if (app.masterKey.keyPair == null) return false;
+    if ((app.masterKey.keyPair == null) && (BiometricManager.from(app).canAuthenticate() == BIOMETRIC_SUCCESS)) return false;
     return true
 }

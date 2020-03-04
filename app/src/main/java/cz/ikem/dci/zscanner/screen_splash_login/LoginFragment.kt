@@ -66,18 +66,18 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
 
                 val app = context?.applicationContext as ZScannerApplication
                 val cyphertext = ByteBuffer.allocate(access_token.size + 4096)
-                app.masterKey.encrypt(ByteBuffer.wrap(access_token), cyphertext)
+                if (app.masterKey.encrypt(ByteBuffer.wrap(access_token), cyphertext)) {
+                    val cyphertext_array = ByteArray(cyphertext.limit())
+                    cyphertext.get(cyphertext_array)
 
-                val cyphertext_array = ByteArray(cyphertext.limit())
-                cyphertext.get(cyphertext_array)
-
-                val sharedPreferences = sharedPreferences
-                if (sharedPreferences != null) {
-                    val username = fragmentView.username_edit_text.text.toString()
-                    sharedPreferences.edit()
-                        .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
-                        .putString(PREF_USERNAME, username)
-                        .apply()
+                    val sharedPreferences = sharedPreferences
+                    if (sharedPreferences != null) {
+                        val username = fragmentView.username_edit_text.text.toString()
+                        sharedPreferences.edit()
+                            .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
+                            .putString(PREF_USERNAME, username)
+                            .apply()
+                    }
                 }
 
                 HttpClient.reset(access_token)

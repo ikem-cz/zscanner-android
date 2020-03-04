@@ -45,7 +45,7 @@ class SplashLoginActivity : AppCompatActivity() {
 
         // If we don't have an access token, then go to login fragment
         val accessToken = sharedPreferences.getString(PREF_ACCESS_TOKEN, null)
-        if (accessToken == null) {
+        if ((accessToken == null) && (HttpClient.accessToken == null)) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, LoginFragment())
                 .commit()
