@@ -2,8 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -16,11 +17,12 @@ android {
     }
     defaultConfig {
         applicationId "cz.ikem.dci.zscanner"
-        minSdkVersion 23
+        minSdkVersion 20
         targetSdkVersion 29
-        versionCode 200301
-        versionName "20.03.1"
+        versionCode 200304
+        versionName "20.03.04"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -28,7 +30,7 @@ android {
             manifestPlaceholders = [crashlytics: "false"]
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             manifestPlaceholders = [crashlytics: "true"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -106,4 +108,5 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    implementation 'com.android.support:multidex:1.0.3'
 }
