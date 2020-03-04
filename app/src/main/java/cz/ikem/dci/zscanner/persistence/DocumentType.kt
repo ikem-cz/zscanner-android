@@ -13,7 +13,7 @@ data class DocumentType(
         val id: String,
         @ColumnInfo(name = "display")
         val display: String,
-        @ColumnInfo(name = "sub-types")
+        @ColumnInfo(name = "sub-type")
         val subtype: String? = null,
         @ColumnInfo(name = "department_id")
         val departmentId: String
