@@ -25,10 +25,13 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
     var decryptor: BiometricKeyDecrypt? = null
     var cyphertext_len: Int = 0
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentView = inflater.inflate(R.layout.fragment_biometrics, container, false)
+        displayPrompt()
+        return fragmentView
+    }
 
+    private fun displayPrompt() {
         val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val access_token = sharedPreferences.getString(PREF_ACCESS_TOKEN, null)!!
         val cyphertext = ByteBuffer.wrap(Base64.decode(access_token, Base64.DEFAULT))
@@ -41,8 +44,19 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
         } else {
             decryptor?.prompt(biometrics_prompt, createPromptInfo())
         }
+    }
 
-        return fragmentView
+
+    override fun onResume() {
+        super.onResume()
+        if (decryptor == null) {
+            displayPrompt()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        decryptor = null
     }
 
 
@@ -65,13 +79,15 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                     HttpClient.reset(null)
                     makeProgressWithDelay()
                 }
+
+                decryptor = null
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
                 if (errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
                     Log.w(TAG, "Authentication failed $errorCode :: $errString")
-                    makeProgressWithDelay()
+                    if (decryptor != null) makeProgressWithDelay() // Display again
                 } else {
                     val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
                     sharedPreferences.edit()
@@ -80,6 +96,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
                         .apply()
                     (activity as SplashLoginActivity?)?.makeProgress()
                 }
+                decryptor = null
             }
 
         }
