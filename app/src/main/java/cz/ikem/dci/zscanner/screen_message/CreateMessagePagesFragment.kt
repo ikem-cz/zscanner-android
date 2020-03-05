@@ -85,7 +85,7 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
             if (mViewModel.undoAction.value != null) {
                 mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Zpět") {
-                            mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target)
+                            mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target, null)
                         }
                 mSnackbar?.show()
             } else {

@@ -13,11 +13,11 @@ data class SendJob(
         var timestamp: Long,
         @ColumnInfo(name = "patient_id")
         var patientId: String,
-//        @ColumnInfo(name = "document_mode")
-//        var docMode: CreateMessageType,
         @ColumnInfo(name = "document_type")
         var docType: String,
-        @ColumnInfo(name = "document_name")
+        @ColumnInfo(name = "document_sub_type")
+        var docSubType: String?,
+        @ColumnInfo(name = "document_note")
         var docName: String,
         @ColumnInfo(name = "document_datetime")
         var docDateTime: String,

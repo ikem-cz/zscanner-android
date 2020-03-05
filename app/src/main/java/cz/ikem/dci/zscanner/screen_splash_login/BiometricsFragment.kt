@@ -111,7 +111,7 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
             // Authenticate without requiring the user to press a "confirm"
             // button after satisfying the biometric check
             .setConfirmationRequired(false)
-            .setNegativeButtonText("Log in with password") // todo this means allowing to set an app password (not backend one) instead of biometry
+            .setNegativeButtonText("Log in with password") //TODO: translate to Czech
             .build()
         return promptInfo
     }

@@ -25,7 +25,7 @@ const val KEY_INTERNAL_ID = "internalId"
 const val KEY_NAME = "name"
 
 const val KEY_TYPE = "type"
-const val KEY_SUB_TYPE = "sub-types"
+const val KEY_SUB_TYPE = "sub-type"
 
 const val KEY_DIRECTORY = "folder"
 

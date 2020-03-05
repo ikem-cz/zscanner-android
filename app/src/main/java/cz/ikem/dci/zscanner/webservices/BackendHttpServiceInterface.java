@@ -42,7 +42,7 @@ public interface BackendHttpServiceInterface {
     );
 
     @Multipart
-    @POST("v3.1/documents/page")
+    @POST("v3.1/documents/")
     Call<ResponseBody> postDocumentPage(
         @Part ("page") List<MultipartBody.Part> images,
         @Part("correlation") RequestBody correlation,

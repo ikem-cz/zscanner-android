@@ -42,7 +42,7 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
                 try {
                     bodyJson = JSONObject(bodyString)
                 } catch (exception: JSONException) {
-                    Log.e(TAG, "Can't parse the response: $exception")
+                    Log.e(TAG, "Can't parse the response (bodyJson): $exception")
                     return Result.retry()
                 }
                 // verify if has field types

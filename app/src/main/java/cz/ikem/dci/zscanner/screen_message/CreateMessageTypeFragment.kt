@@ -3,6 +3,8 @@ package cz.ikem.dci.zscanner.screen_message
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +22,9 @@ import kotlinx.android.synthetic.main.fragment_message_properties.*
 
 class CreateMessageTypeFragment : Fragment() {
 
-    private lateinit var mViewModel: CreateMessageViewModel
+    private val TAG = CreateMessageTypeFragment::class.java.simpleName
 
+    private lateinit var mViewModel: CreateMessageViewModel
     private var listener: OnCreateMessageViewsInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,17 +72,25 @@ class CreateMessageTypeFragment : Fragment() {
         typesAdapter.onItemSelected = { docType ->
             //val isSubTypeNull = (type.subtypeId == null)
 
-            mViewModel.type.postValue(docType.id)
+            saveType(docType) {
+                if (docType.subtype == null) {
+                    mViewModel.subtype.postValue(null)
 
-            if (docType.subtype == null) {
-                //TODO
-                // send the POST request
-                Log.e("DEBUGGING", "send the POST request")
-            } else {
-                val action = CreateMessageTypeFragmentDirections.actionCreateMessageTypeFragmentToCreateMessageSubTypeFragment(docType.subtype)
-                findNavController().navigate(action)
+                    mViewModel.onProcessEnd{ error ->
+                        if(error != null){
+                            //TODO: handle
+                            Log.e(TAG, "error while onProcessEnd: ${error.message}")
+                            return@onProcessEnd
+                        }
+                        Log.e("DEBUGGING", "send the POST request")
+                        activity?.finish() //TODO: possibly add some spinner overlay
+                    }
+
+                } else {
+                    val action = CreateMessageTypeFragmentDirections.actionCreateMessageTypeFragmentToCreateMessageSubTypeFragment(docType.subtype)
+                    findNavController().navigate(action)
+                }
             }
-
         }
 
         document_types_recycler_view.adapter = typesAdapter
@@ -89,6 +100,38 @@ class CreateMessageTypeFragment : Fragment() {
         mViewModel.storedTypes.observe(viewLifecycleOwner, androidx.lifecycle.Observer { list: List<DocumentType>? ->
             typesAdapter.submitList(list)
         })
+    }
+
+    private fun saveType(docType: DocumentType, completion: (error: Error?) -> Unit) {
+        mViewModel.type.postValue(docType)
+
+        doUntilFalse(500) {
+            if (mViewModel.type.value !== null) {
+                completion(null)
+                false
+            } else {
+                true
+            }
+        }
+    }
+
+    /**
+     * Executes given [closure] periodically until it returns false
+     *
+     * @param period Milliseconds of how often this should happen
+     * @param closure A closure that will be executed. If it returns false, it won't be executed again
+     *
+     * */
+    private fun doUntilFalse(period: Long, closure: () -> Boolean) {
+        val origLooper = Looper.myLooper() ?: Looper.getMainLooper()
+        val handler = Handler(origLooper)
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (closure()) {
+                    handler.postDelayed(this, period)
+                }
+            }
+        }, 0)
     }
 
     companion object {
