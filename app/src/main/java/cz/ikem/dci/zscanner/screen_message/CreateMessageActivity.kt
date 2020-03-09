@@ -59,7 +59,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
 
         setContentView(R.layout.activity_create_message)
 
-        department = (intent.extras?.getSerializable(KEY_DEPARTMENT) as? Department) ?: throw Exception()
+        department = (intent.extras?.getSerializable(KEY_DEPARTMENT) as? Department)
+                ?: throw Exception()
 
         mViewModel = ViewModelProviders.of(this, CreateMessageViewModelFactory(application)).get(CreateMessageViewModel::class.java)
 
@@ -73,8 +74,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
             setDisplayHomeAsUpEnabled(true)
         }
 
-
-val departmentId = department.id
+        mViewModel.department.postValue(department)
+        val departmentId = department.id
 
         val departmentData = Data.Builder()
         //Add department as parameter in Data class.
@@ -95,7 +96,7 @@ val departmentId = department.id
                         .build())
                 .enqueue()
 
-      //  Log.d(TAG, "Url = ${HttpClient().getApiServiceBackend().getDocumentTypes(departmentId).request().url()}")
+//        Log.d(TAG, "Url = ${HttpClient.ApiServiceBackend.getDocumentTypes(departmentId).request().url()}")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -147,7 +148,7 @@ val departmentId = department.id
                     .setNeutralButton(getString(R.string.no_i_dont_want_to_button), null)
                 .show()
         }
-        mViewModel.undoAction.postValue( null )
+        mViewModel.undoAction.postValue(null)
     }
 
     override fun onBackPressed() {
@@ -163,7 +164,6 @@ val departmentId = department.id
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 
     //region photo utility functions

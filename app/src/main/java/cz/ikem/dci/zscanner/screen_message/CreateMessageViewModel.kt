@@ -4,10 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import cz.ikem.dci.zscanner.ZScannerApplication
-import cz.ikem.dci.zscanner.persistence.Mru
-import cz.ikem.dci.zscanner.persistence.Repositories
-import cz.ikem.dci.zscanner.persistence.DocumentSubType
-import cz.ikem.dci.zscanner.persistence.DocumentType
+import cz.ikem.dci.zscanner.persistence.*
 import cz.ikem.dci.zscanner.screen_jobs.JobUtils
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.webservices.Patient
@@ -37,6 +34,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     val type: MutableLiveData<DocumentType> = MutableLiveData()
     val subtype: MutableLiveData<DocumentSubType> = MutableLiveData()
+    val department: MutableLiveData<Department> = MutableLiveData()
     val additionalNote: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
     data class PatientInput(
@@ -138,13 +136,21 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
         val docSubType = subtype.value
 
+        val docDepartment = department.value?.id
+        if (docDepartment == null){
+            Log.e(TAG, "department is null")
+            return completion(Error("department is null")) // TODO: change it to sth in Czech that can be displayed to user
+        }
+
         val patient = patientInput.value?.patientObject
         if (patient == null) {
             return completion(Error("patient is null"))
         }
 
-        handleProcessOutput(patient, docType, docSubType, additionalNote.value, toSend) { error ->
-            Log.e(TAG, "CreateMessageViewModel, onProcessEnd: handleProcessOutput, error = $error")
+        handleProcessOutput(patient, docType, docSubType, docDepartment, additionalNote.value, toSend) { error ->
+            if(error != null){
+              Log.e(TAG, "CreateMessageViewModel, onProcessEnd: handleProcessOutput, error = $error")
+            }
             completion(error)
         }
     }
@@ -155,7 +161,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
 
         // set current date and time as string value
-        val dateString = SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date())
+        val dateString = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
         val numpages = filePaths.count()
 
         val descWithSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.description_with_subtype, docType.display, docSubType?.display, numpages)
@@ -174,6 +180,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
                 patient,
                 docType.id,
                 docSubType?.id ?: "",
+                department,
                 additionalNote ?: "",
                 dateString,
                 filePaths,

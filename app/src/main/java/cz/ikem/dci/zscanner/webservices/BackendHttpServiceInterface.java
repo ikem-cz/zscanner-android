@@ -36,15 +36,15 @@ public interface BackendHttpServiceInterface {
         @Part("folderInternalId") RequestBody cardid,
         @Part("documentType") RequestBody type,
         @Part("documentSubType") RequestBody subtype,
+        @Part("department") RequestBody department,
         @Part("pages") RequestBody numPages,
-        @Part("datetime") RequestBody datetime,
-        @Part("name") RequestBody name
+        @Part("datetime") RequestBody datetime
     );
 
     @Multipart
-    @POST("v3.1/documents/")
+    @POST("v3.1/documents/page")
     Call<ResponseBody> postDocumentPage(
-        @Part ("page") List<MultipartBody.Part> images,
+        @Part List<MultipartBody.Part> images,
         @Part("correlation") RequestBody correlation,
         @Part("pageIndex") RequestBody pageNum,
         @Part ("description") RequestBody additionalNote

@@ -41,29 +41,32 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         val description = RequestBody.create(MediaType.parse("text/plain"), note)
 
 
-        try {
+//        try {
 
             val pageFilename = inputData.getString(KEY_PAGE_FILE)
             val filePart =
                     MultipartBody.Part.createFormData(
                             "page",
-                            pageFilename!!.substringAfterLast("/"),
+                            pageFilename?.substringAfterLast("/"),
                             RequestBody.create(
                                     MediaType.parse("image/jpeg"),
-                                    File(pageFilename)
+                                    File(pageFilename?: "image")
                             )
                     )
             val filePartList = listOf(filePart)
+        Log.e("DEBUGGING", "SendPageWorker, doWork: pageFilename = $pageFilename")
+        Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.body = ${filePart.body()}")
+        Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.headers = ${filePart.headers()}")
 
-            val res = HttpClient.ApiServiceBackend.postDocumentPage(
+            val response = HttpClient.ApiServiceBackend.postDocumentPage(
                 filePartList,
                 correlation,
                 pagenum,
                 description
             ).execute()
 
-            if (res.code() != 200) {
-                throw Exception("Non OK response")
+            if (response.code() != 200) {
+                throw Exception("Non OK response: $response")
             }
 
             if (mCancelling) {
@@ -74,16 +77,16 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
             repository.setPartialJobDoneTag(instance, taskid)
 
-            Log.d(TAG, "SendPageWorker ${taskid} ends")
+            Log.d(TAG, "SendPageWorker $taskid ends")
 
             return Result.success()
 
-        } catch (e: Exception) {
-            Log.d(TAG, "SendPageWorker ${taskid} caught exception !")
-            Log.e(TAG, e.toString())
-            return Result.retry()
-
-        }
+//        } catch (e: Exception) {
+//            Log.d(TAG, "SendPageWorker $taskid caught exception !")
+//            Log.e(TAG, e.toString())
+//            return Result.retry()
+//
+//        }
 
 
     }

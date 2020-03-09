@@ -24,42 +24,42 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
         // summary sending task externalId must contain substring "-S" -- is used for progress indicator calculations in JobsOverviewAdapter
         val taskid = (instance.substring(0, 6)) + "-S"
 
-        Log.d(TAG, "SendSummaryWorker ${taskid} starts")
-
-        val correlation = RequestBody.create(MediaType.parse("text/plain"), instance)
+        Log.d(TAG, "SendSummaryWorker $taskid starts")
 
         try {
-
-            val patid = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_FOLDER_INTERNAL_ID))
+            val correlation = RequestBody.create(MediaType.parse("text/plain"), instance)
+            val internalId = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_FOLDER_INTERNAL_ID))
             val type = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_TYPE))
             val subType = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_SUB_TYPE))
+            val department = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DEPARTMENT))
+            val numPagesInt = inputData.getInt(KEY_NUM_PAGES, -1)
             val date = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DATE_STRING))
-            val name = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_NAME))
-            val note = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOCUMENT_NOTE))
+       
 
-
-            Log.d(TAG, "SendSummaryWorker ${taskid} data: ${inputData.getString(KEY_FOLDER_INTERNAL_ID)} ${inputData.getString(KEY_DOC_TYPE)} " +
-                    "${inputData.getString(KEY_DOC_SUB_TYPE)} ${inputData.getString(KEY_DATE_STRING)} ${inputData.getString(KEY_NAME)}")
-
-            val numpagesInt = inputData.getInt(KEY_NUM_PAGES, -1)
-            if (numpagesInt == -1) {
+            if (numPagesInt == -1) {
                 throw Exception("Assertion error")
             }
 
-            val numpages = RequestBody.create(MediaType.parse("text/plain"), numpagesInt.toString())
+            val numPages = RequestBody.create(MediaType.parse("text/plain"), numPagesInt.toString())
 
-            val res = HttpClient.ApiServiceBackend.postDocumentSummary(
-                correlation,
-                patid,
-                type,
-                subType,
-                numpages,
-                date,
-                RequestBody.create(MediaType.parse("text/plain"), "")
+            Log.d(TAG, "SendSummaryWorker $taskid: correlation = $instance, internalId = ${inputData.getString(KEY_FOLDER_INTERNAL_ID)}, type = ${inputData.getString(KEY_DOC_TYPE)}, " +
+                    "subType = ${inputData.getString(KEY_DOC_SUB_TYPE)}, department = ${inputData.getString(KEY_DEPARTMENT)}, pages = ${inputData.getString(KEY_NUM_PAGES)}, date = ${inputData.getString(KEY_DATE_STRING)}")
+
+            val response = HttpClient.ApiServiceBackend.postDocumentSummary(
+                    correlation,
+                    internalId,
+                    type,
+                    subType,
+                    department,
+                    numPages,
+                    date
             ).execute()
 
-            if (res.code() != 200) {
-                throw Exception("Non OK response")
+
+            if (response.code() != 200) {
+                Log.e(TAG, "Response on postDocumentSummary: response: $response")
+                val code = response.code()
+                throw Exception("Non OK response, response code: $code")
             }
 
             if (mCancelling) {
@@ -70,19 +70,14 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
             repository.setPartialJobDoneTag(instance, taskid)
 
-            Log.d(TAG, "SendSummaryWorker ${taskid} ends")
+            Log.d(TAG, "SendSummaryWorker $taskid ends")
 
             return Result.success()
 
         } catch (e: Exception) {
-            Log.d(TAG, "SendSummaryWorker ${taskid} caught exception !")
-
-            Log.e(TAG, e.toString())
+            Log.e(TAG, "SendSummaryWorker $taskid caught exception: $e.toString()")
             return Result.retry()
-
         }
-
-
     }
 
     override fun onStopped() {
