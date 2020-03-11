@@ -41,7 +41,7 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         val description = RequestBody.create(MediaType.parse("text/plain"), note)
 
 
-//        try {
+        try {
 
             val pageFilename = inputData.getString(KEY_PAGE_FILE)
             val filePart =
@@ -58,12 +58,15 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.body = ${filePart.body()}")
         Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.headers = ${filePart.headers()}")
 
-            val response = HttpClient.ApiServiceBackend.postDocumentPage(
+            val request = HttpClient.ApiServiceBackend.postDocumentPage(
                 filePartList,
                 correlation,
                 pagenum,
                 description
-            ).execute()
+            )
+
+            Log.e("DEBUGGING", "SendPageWorker, doWork: Request = ${request.request()}")
+            val response = request.execute()
 
             if (response.code() != 200) {
                 throw Exception("Non OK response: $response")
@@ -81,12 +84,12 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
             return Result.success()
 
-//        } catch (e: Exception) {
-//            Log.d(TAG, "SendPageWorker $taskid caught exception !")
-//            Log.e(TAG, e.toString())
-//            return Result.retry()
-//
-//        }
+        } catch (e: Exception) {
+            Log.d(TAG, "SendPageWorker $taskid caught exception !")
+            Log.e(TAG, e.toString())
+            return Result.retry()
+
+        }
 
 
     }

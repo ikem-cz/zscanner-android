@@ -2,12 +2,15 @@ package cz.ikem.dci.zscanner.webservices;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -29,17 +32,23 @@ public interface BackendHttpServiceInterface {
     @GET("v3.1/folders/decode")
     Call<Patient> decodePatient(@Query("query") String code);
 
-    @Multipart
+
+//    @POST("v3.1/documents/summary")
+//    Call<JSONObject> postDocumentSummary(
+////            @Body RequestBody body);
+//        @Field("correlation") String correlation,
+//        @Field("folderInternalId") String indernalId,
+//        @Field("documentType") String type,
+//        @Field("documentSubType") String subtype,
+//        @Field("department") String department,
+//        @Field("pages") String numPages,
+//        @Field("datetime") String datetime
+//    );
+
+
     @POST("v3.1/documents/summary")
-    Call<ResponseBody> postDocumentSummary(
-        @Part("correlation") RequestBody correlation,
-        @Part("folderInternalId") RequestBody cardid,
-        @Part("documentType") RequestBody type,
-        @Part("documentSubType") RequestBody subtype,
-        @Part("department") RequestBody department,
-        @Part("pages") RequestBody numPages,
-        @Part("datetime") RequestBody datetime
-    );
+    Call<RequestBody> postDocumentSummary(
+            @Body JSONObject body);
 
     @Multipart
     @POST("v3.1/documents/page")
