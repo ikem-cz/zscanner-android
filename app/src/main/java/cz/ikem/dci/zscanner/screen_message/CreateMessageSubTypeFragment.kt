@@ -106,7 +106,8 @@ class CreateMessageSubTypeFragment : Fragment() {
 
             mViewModel.onProcessEnd{ error ->
                 if(error != null){
-                    //TODO: handle
+                    Toast.makeText(context, getString(R.string.error_submitting), Toast.LENGTH_LONG).show()
+
                     Log.e(TAG, "error while onProcessEnd: ${error.message}")
                     return@onProcessEnd
                 }

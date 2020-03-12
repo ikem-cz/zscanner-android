@@ -144,7 +144,7 @@ val departmentId = department.id
             AlertDialog.Builder(this)
                 .setMessage(getString(R.string.finish_prompt_text))
                 .setNegativeButton(getString(R.string.finish_prompt_button_negative)) { _, _ -> finish() }
-                    .setNeutralButton(getString(R.string.finish_prompt_button_neutral), null)
+                    .setNeutralButton(getString(R.string.no_i_dont_want_to_button), null)
                 .show()
         }
         mViewModel.undoAction.postValue( null )

@@ -30,10 +30,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     private var cleanupHandled: Boolean = false
 
-
     var storedTypes: LiveData<List<DocumentType>> = Repositories(zapplication).docTypeRepository.allDocumentTypes
-    var storedSubTypes: LiveData<List<DocumentSubType>> = Repositories(zapplication).docSubTypeRepository.allDocumentSubTypes
-
 
     // always contains all mrus -- move elsewhere?
     val mrus: LiveData<List<Mru>> = Repositories(zapplication).mruRepository.mru()
@@ -134,29 +131,25 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
         cleanupHandled = true
 
-        val docType = type.value?.id
+        val docType = type.value
         if (docType == null){
-            Log.e(TAG, "type is null")
-            return completion(Error("type is null")) // TODO: change it to sth in Czech that can be displayed to user
+            return completion(Error("document type is null"))
         }
 
-        val docSubType: String? = subtype.value?.id
-        Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: docType = $docType")
-        Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: docSubType = $docSubType")
+        val docSubType = subtype.value
 
         val patient = patientInput.value?.patientObject
         if (patient == null) {
-            Log.e(TAG, "patient is null")
-            return completion(Error("patient is null")) // TODO: change it to sth in Czech that can be displayed to user
+            return completion(Error("patient is null"))
         }
 
         handleProcessOutput(patient, docType, docSubType, additionalNote.value, toSend) { error ->
-            Log.e("DEBUGGING", "CreateMessageViewModel, onProcessEnd: handleProcessOutput, error = $error")
+            Log.e(TAG, "CreateMessageViewModel, onProcessEnd: handleProcessOutput, error = $error")
             completion(error)
         }
     }
 
-    private fun handleProcessOutput(patient: Patient, docType: String, docSubType: String?, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
+    private fun handleProcessOutput(patient: Patient, docType: DocumentType, docSubType: DocumentSubType?, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
 
         // insert mru
         MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
@@ -165,22 +158,22 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         val dateString = SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date())
         val numpages = filePaths.count()
 
-        var description = ""
+        val descWithSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.description_with_subtype, docType.display, docSubType?.display, numpages)
+        val descNoSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.description_without_subtype, docType.display, numpages)
         // create description string
-        description =
-                if (!docSubType.isNullOrEmpty()) {
-                    "type $docType - subtype $docSubType - $numpages str." //TODO: this is visible for the user, so should be in Czech
-                } else {
-                    "type $docType - $numpages str."
-                }
+        val description = if (!docSubType?.display.isNullOrEmpty()) {
+            descWithSubtype
+        } else {
+            descNoSubtype
+        }
 
 
         JobUtils(getApplication<ZScannerApplication>()).addJob(
                 correlationId,
                 System.currentTimeMillis(),
                 patient,
-                docType,
-                docSubType ?: "",
+                docType.id,
+                docSubType?.id ?: "",
                 additionalNote ?: "",
                 dateString,
                 filePaths,
