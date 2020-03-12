@@ -106,13 +106,16 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
 
 
     private fun createPromptInfo(): BiometricPrompt.PromptInfo {
+        val title = app.resources.getString(R.string.login_with_fingerprint)
+        val negativeButton = app.resources.getString(R.string.login_with_password)
+        
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Please authenticate") //TODO: translate to Czech
-            // Authenticate without requiring the user to press a "confirm"
-            // button after satisfying the biometric check
-            .setConfirmationRequired(false)
-            .setNegativeButtonText("Log in with password") //TODO: translate to Czech
-            .build()
+                .setTitle(title)
+                // Authenticate without requiring the user to press a "confirm"
+                // button after satisfying the biometric check
+                .setConfirmationRequired(false)
+                .setNegativeButtonText(negativeButton)
+                .build()
         return promptInfo
     }
 

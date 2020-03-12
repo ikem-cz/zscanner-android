@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -78,7 +79,8 @@ class CreateMessageTypeFragment : Fragment() {
 
                     mViewModel.onProcessEnd{ error ->
                         if(error != null){
-                            //TODO: handle
+                            Toast.makeText(context, getString(R.string.error_submitting), Toast.LENGTH_LONG).show()
+
                             Log.e(TAG, "error while onProcessEnd: ${error.message}")
                             return@onProcessEnd
                         }

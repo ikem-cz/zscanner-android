@@ -26,7 +26,7 @@ android:layout_marginRight="@dimen/margin_medium"-->
                 android:id="@+id/note_to_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/popisny_nazev_nepovinny" />
+                android:hint="@string/fragment_document_hint_name" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

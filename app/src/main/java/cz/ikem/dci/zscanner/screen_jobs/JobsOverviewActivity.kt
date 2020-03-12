@@ -78,7 +78,7 @@ class JobsOverviewActivity : AppCompatActivity() {
                     AlertDialog.Builder(this)
                             .setMessage(getString(R.string.logout_prompt_text))
                             .setNegativeButton(getString(R.string.logout_prompt_button_negative)) { _, _ -> logout() }
-                            .setNeutralButton(getString(R.string.logout_prompt_button_neutral), null)
+                            .setNeutralButton(getString(R.string.no_i_dont_want_to_button), null)
                             .show()
                 }
                 R.id.menu_about -> {
@@ -103,13 +103,6 @@ class JobsOverviewActivity : AppCompatActivity() {
 
 
     }
-
-    //TODO delete?
-//    private fun launchCreateMessageActivity() {
-//        val intent = Intent(this, CreateMessageActivity::class.java)
-//        startActivity(intent)
-//    }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

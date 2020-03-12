@@ -1,62 +1,69 @@
 <resources>
     <string name="app_name">zScanner</string>
 
-    <string name="drawer_about">O aplikaci</string>
-    <string name="drawer_purge">Odstranit historii</string>
-    <string name="drawer_logout">Odhlásit</string>
-    <string name="drawer_tutorial">Průvodce</string>
+    <string name="drawer_about">About application</string>
+    <string name="drawer_purge">Delete history</string>
+    <string name="drawer_logout">Log out</string>
+    <string name="drawer_tutorial">Tutorial</string>
 
-    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS.\n\n© 2019-2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
+    <string name="about_text">ZScanner is designed to quickly import examination and photo documentation\ninto NIS.\n\n© 2019-2020 IKEM Data Center\n\nCyber Security by TeskaLabs.</string>
 
-    <string name="job_type_doc">dokument</string>
-    <string name="job_type_photo">fotografie</string>
-    <string name="job_type_exam">vyšetření</string>
-    <string name="mode_document_name">Dokument</string>
-    <string name="mode_exam_name">Vyšetření</string>
-    <string name="mode_photo_name">Fotografie</string>
+    <string name="job_type_doc">document</string>
+    <string name="job_type_photo">photo</string>
+    <string name="job_type_exam">examination</string>
+    <string name="mode_document_name">Document</string>
+    <string name="mode_exam_name">Examination</string>
+    <string name="mode_photo_name">Photo</string>
 
-    <string name="jobs_overview_no_jobs">žádné uložené úlohy</string>
+    <string name="jobs_overview_no_jobs">no saved tasks</string>
     <string name="login_screen_username_placeholder"><i><small>login</small></i></string>
-    <string name="login_screen_password_placeholder"><i><small>heslo</small></i></string>
-    <string name="login_screen_submit">Přihlásit</string>
-    <string name="username_prefix">Přihlášený uživatel</string>
+    <string name="login_screen_password_placeholder"><i><small>password</small></i></string>
+    <string name="login_screen_submit">Login</string>
+    <string name="username_prefix">Current user</string>
 
-    <string name="fragment_patient_hint"><i><small>rodné číslo</small></i></string>
+    <string name="fragment_patient_hint"><i><small>personal identification number</small></i></string>
 
-    <string name="fragment_patient_patient">Vyhledat v kartotéce</string>
-    <string name="fragment_patient_mru">… vybrat z historie … </string>
-    <string name="fragment_patient_scan">… nebo naskenovat</string>
+    <string name="fragment_patient_patient">Search by NIN</string>
+    <string name="fragment_patient_mru">… choose from history … </string>
+    <string name="fragment_patient_scan">… or scan</string>
 
-    <string name="fragment_document_type">Zadat název</string>
-    <string name="fragment_document_datetime">… a určit platnost</string>
-    <string name="fragment_document_hint_date"><i><small>datum</small></i></string>
-    <string name="fragment_document_hint_time"><i><small>čas</small></i></string>
-    <string name="fragment_document_hint_type"><i><small>nabídka typů</small></i></string>
-    <string name="fragment_document_hint_name"><i><small>popisný název (nepovinný)</small></i></string>
+    <string name="fragment_document_type">Choose document type</string>
+    <string name="fragment_document_sub_type">Choose document subtype</string>
+<!--    <string name="fragment_document_datetime">… a určit platnost</string>-->
+<!--    <string name="fragment_document_hint_date"><i><small>datum</small></i></string>-->
+<!--    <string name="fragment_document_hint_time"><i><small>čas</small></i></string>-->
+<!--    <string name="fragment_document_hint_type"><i><small>nabídka typů</small></i></string>-->
+    <string name="fragment_document_hint_name"><i><small>description (optional)</small></i></string>
 
-    <string name="fragment_document_sub_type">Zadat specifikaci události</string>
+<!--    <string name="fragment_pages_galery">Vybrat z galerie</string>-->
+    <string name="fragment_pages_camera">Take a picture</string>
+    <string name="fragment_pages_instruction">no pictures chosen</string>
 
-    <string name="fragment_pages_galery">Vybrat z galerie</string>
-    <string name="fragment_pages_camera">Vyfotit</string>
-    <string name="fragment_pages_instruction">žádné vybrané fotografie</string>
+<!--    <string name="new_job_patient">Fotografie - výběr pacienta</string>-->
+<!--    <string name="new_job_document_properties">Fotografie - vlastnosti záznamu</string>-->
+<!--    <string name="new_job_pages">Fotografie - obsah záznamu</string>-->
 
-    <string name="new_job_patient">Fotografie - výběr pacienta</string>
-    <string name="new_job_document_properties">Fotografie - vlastnosti záznamu</string>
-    <string name="new_job_pages">Fotografie - obsah záznamu</string>
+    <string name="logout_prompt_text">Are you sure you want to log out of and erase all saved data?</string>
+    <string name="logout_prompt_button_negative">LOG OUT</string>
+    <string name="no_i_dont_want_to_button">no, I don\'t want to</string>
+    <string name="finish_prompt_text">Are you sure you want to finish the task and return?</string>
+    <string name="finish_prompt_button_negative">FINISH</string>
 
-    <string name="logout_prompt_text">Opravdu se chcete odhlásit z aplikace\na vymazat veškerá uložená data?</string>
-    <string name="logout_prompt_button_negative">ODHLÁSIT</string>
-    <string name="logout_prompt_button_neutral">ne, nechci</string>
-    <string name="finish_prompt_text">Opravdu chcete ukončit přípravu záznamu a vrátit se?</string>
-    <string name="finish_prompt_button_negative">UKONČIT</string>
-    <string name="finish_prompt_button_neutral">ne, nechci</string>
+    <string name="err_invalid_patient">No valid patient is selected.</string>
+    <string name="err_no_photo">No photo selected.</string>
+<!--    <string name="err_no_entrytype">Není určen typ záznamu.</string>-->
+<!--    <string name="err_no_datetime">Není určen datum a čas záznamu.</string>-->
 
-    <string name="err_invalid_patient">Není vybrán platný pacient.</string>
-    <string name="err_no_photo">Není vybrána ani jedna fotografie.</string>
-    <string name="err_no_entrytype">Není určen typ záznamu.</string>
-    <string name="err_no_datetime">Není určen datum a čas záznamu.</string>
+    <string name="fragment_jobs_overview_history">History</string>
+    <string name="fragment_jobs_overview_department">Choose the department</string>
+    
+    <string name="biometric_auth">Biometric authentication</string>
+    <string name="login_with_fingerprint">Login with fingerprint</string>
+    <string name="login_with_password">Login with password</string>
 
-    <string name="fragment_jobs_overview_history">Historie</string>
-    <string name="fragment_jobs_overview_department">Zadat typ pracoviště</string>
-    <string name="popisny_nazev_nepovinny">Popisný název (nepovinný)</string>
+    <string name="error_submitting">There was a problem with sending the task to server. Please try again.</string>
+
+    <string name="description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
+    <string name="description_without_subtype">Type: %1$s, pages: %2$d</string>
+
 </resources>
