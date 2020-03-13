@@ -136,7 +136,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
         val docSubType = subtype.value
 
-        val docDepartment = department.value?.id
+        val docDepartment = department.value
         if (docDepartment == null){
             Log.e(TAG, "department is null")
             return completion(Error("department is null")) // TODO: change it to sth in Czech that can be displayed to user
@@ -155,7 +155,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         }
     }
 
-    private fun handleProcessOutput(patient: Patient, docType: DocumentType, docSubType: DocumentSubType?, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
+    private fun handleProcessOutput(patient: Patient, docType: DocumentType, docSubType: DocumentSubType?, docDepartment: Department, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
 
         // insert mru
         MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
@@ -180,7 +180,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
                 patient,
                 docType.id,
                 docSubType?.id ?: "",
-                department,
+                docDepartment.id,
                 additionalNote ?: "",
                 dateString,
                 filePaths,
