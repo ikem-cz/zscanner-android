@@ -54,9 +54,6 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                             )
                     )
             val filePartList = listOf(filePart)
-        Log.e("DEBUGGING", "SendPageWorker, doWork: pageFilename = $pageFilename")
-        Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.body = ${filePart.body()}")
-        Log.e("DEBUGGING", "SendPageWorker, doWork: filePart.headers = ${filePart.headers()}")
 
             val request = HttpClient.ApiServiceBackend.postDocumentPage(
                 filePartList,
@@ -65,7 +62,7 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                 description
             )
 
-            Log.e("DEBUGGING", "SendPageWorker, doWork: Request = ${request.request()}")
+           
             val response = request.execute()
 
             if (response.code() != 200) {

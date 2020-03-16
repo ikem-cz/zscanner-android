@@ -19,7 +19,7 @@ object HttpClient {
 
     val name = BuildConfig.VERSION_NAME
     var version = BuildConfig.VERSION_CODE
-    private var userAgent = "${name}-${version}"
+    private var userAgent = "${name}/${version}"
 
 
 

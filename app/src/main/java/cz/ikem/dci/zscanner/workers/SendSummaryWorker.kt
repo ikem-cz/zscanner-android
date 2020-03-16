@@ -43,7 +43,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
             paramObject.put("documentSubType", inputData.getString(KEY_DOC_SUB_TYPE))
             paramObject.put("pages", numPagesInt)
             paramObject.put("datetime", inputData.getString(KEY_DATE_STRING))
-            paramObject.put("name", "")
+            paramObject.put("name", "") // TODO: maybe add some name or else remove this from iOS as well
 
 
             val reqBody = RequestBody.create(MediaType.parse("application/json"), paramObject.toString())
