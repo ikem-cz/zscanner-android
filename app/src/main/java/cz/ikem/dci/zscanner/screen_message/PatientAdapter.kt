@@ -69,6 +69,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
                 }
                 return filterResults
             } catch (e: Exception) {
+                Log.e(TAG, "Exception when filtering patients: $e")
                 return FilterResults()
             }
         }

@@ -47,23 +47,26 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
             val filePart =
                     MultipartBody.Part.createFormData(
                             "page",
-                            pageFilename!!.substringAfterLast("/"),
+                            pageFilename?.substringAfterLast("/"),
                             RequestBody.create(
                                     MediaType.parse("image/jpeg"),
-                                    File(pageFilename)
+                                    File(pageFilename?: "image")
                             )
                     )
             val filePartList = listOf(filePart)
 
-            val res = HttpClient.ApiServiceBackend.postDocumentPage(
+            val request = HttpClient.ApiServiceBackend.postDocumentPage(
                 filePartList,
                 correlation,
                 pagenum,
                 description
-            ).execute()
+            )
 
-            if (res.code() != 200) {
-                throw Exception("Non OK response")
+           
+            val response = request.execute()
+
+            if (response.code() != 200) {
+                throw Exception("Non OK response: $response")
             }
 
             if (mCancelling) {
@@ -74,12 +77,12 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
             repository.setPartialJobDoneTag(instance, taskid)
 
-            Log.d(TAG, "SendPageWorker ${taskid} ends")
+            Log.d(TAG, "SendPageWorker $taskid ends")
 
             return Result.success()
 
         } catch (e: Exception) {
-            Log.d(TAG, "SendPageWorker ${taskid} caught exception !")
+            Log.d(TAG, "SendPageWorker $taskid caught exception !")
             Log.e(TAG, e.toString())
             return Result.retry()
 

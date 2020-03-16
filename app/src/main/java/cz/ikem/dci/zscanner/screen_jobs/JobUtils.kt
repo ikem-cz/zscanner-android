@@ -2,6 +2,7 @@ package cz.ikem.dci.zscanner.screen_jobs
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import androidx.work.*
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.Utils.Companion.dispatch
@@ -27,10 +28,11 @@ class JobUtils(private val context: Context) {
             patient: Patient,
             documentType: String,
             documentSubType: String?,
+            department: String,
             documentNote: String,
             dateString: String,
             toSend: List<String>,
-            intDescr: String
+            description: String
     ) {
 
         val sendJob = SendJob(
@@ -44,7 +46,7 @@ class JobUtils(private val context: Context) {
                 toSend,
                 toSend.count() + 1,
                 listOf(),
-                intDescr,
+                description,
                 "${patient.externalId} ${patient.name}"
         )
 
@@ -54,40 +56,43 @@ class JobUtils(private val context: Context) {
         }
 
         val sendSummaryWorkerData = Data.Builder()
-                .putString(KEY_DOC_SUB_TYPE, documentType)
-                .putString(KEY_FOLDER_INTERNAL_ID, patient.internalId)
                 .putString(KEY_CORRELATION_ID, instanceId)
+                .putString(KEY_FOLDER_INTERNAL_ID, patient.internalId)
+                .putString(KEY_DOC_TYPE, documentType)
+                .putString(KEY_DOC_SUB_TYPE, documentSubType)
+                .putString(KEY_DEPARTMENT, department)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)
-//                .putString(KEY_NAME, documentName)
                 .putString(KEY_DOCUMENT_NOTE, documentNote)
                 .build()
+
         val sendSummaryWorker = OneTimeWorkRequest.Builder(SendSummaryWorker::class.java)
                 .addTag(WORKTAG_SENDING_JOB)
                 .setInputData(sendSummaryWorkerData)
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
-                .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 15, TimeUnit.SECONDS)
                 .build()
 
         // make pages send workers
-        val sendPageWorkerDatas = toSend.mapIndexed { index, e ->
+        val sendPageWorkerDatas = toSend.mapIndexed { index,  e->
             Data.Builder()
                     .putString(KEY_CORRELATION_ID, instanceId)
                     .putInt(KEY_PAGE_INDEX, index)
                     .putString(KEY_PAGE_FILE, e)
-                    .putString(KEY_DOCUMENT_NOTE, "note") //todo remove placeholder
+                    .putString(KEY_DOCUMENT_NOTE, "note") // TODO: remove placeholder
                     .build()
         }
+
+
         val sendPageWorkers = sendPageWorkerDatas.map { e ->
             OneTimeWorkRequest.Builder(SendPageWorker::class.java).setInputData(e)
                     .addTag(WORKTAG_SENDING_JOB)
                     .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
-                    .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS)
+                    .setBackoffCriteria(BackoffPolicy.LINEAR, 15, TimeUnit.SECONDS)
                     .build()
         }
 
         val allSendWorkers = listOf(listOf(sendSummaryWorker), sendPageWorkers).flatten()
-
         WorkManager.getInstance()
                 .beginWith(allSendWorkers)
                 .enqueue()

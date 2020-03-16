@@ -75,16 +75,16 @@ class CreateMessageTypeFragment : Fragment() {
 
             saveType(docType) {
                 if (docType.subtype == null) {
+                    Log.d(TAG, "Document subtype is null")
                     mViewModel.subtype.postValue(null)
 
-                    mViewModel.onProcessEnd{ error ->
+                    mViewModel.onProcessEnd { error ->
                         if(error != null){
                             Toast.makeText(context, getString(R.string.error_submitting), Toast.LENGTH_LONG).show()
 
                             Log.e(TAG, "error while onProcessEnd: ${error.message}")
                             return@onProcessEnd
                         }
-                        Log.e("DEBUGGING", "send the POST request")
                         activity?.finish() //TODO: possibly add some spinner overlay
                     }
 

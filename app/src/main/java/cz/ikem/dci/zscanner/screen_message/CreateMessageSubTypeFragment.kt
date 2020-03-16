@@ -2,6 +2,8 @@ package cz.ikem.dci.zscanner.screen_message
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -101,18 +103,18 @@ class CreateMessageSubTypeFragment : Fragment() {
     private fun createSubTypesAdapter(context: Context, subtypes: List<DocumentSubType>) {
         val subTypesAdapter = SubTypeAdapter(context)
 
-        subTypesAdapter.onItemSelected = { subtype ->
-            mViewModel.subtype.postValue(subtype)
+        subTypesAdapter.onItemSelected = { _subtype ->
 
-            mViewModel.onProcessEnd{ error ->
-                if(error != null){
+            saveSubType(_subtype){
+                mViewModel.onProcessEnd { error ->
+                    if(error != null){
                     Toast.makeText(context, getString(R.string.error_submitting), Toast.LENGTH_LONG).show()
 
-                    Log.e(TAG, "error while onProcessEnd: ${error.message}")
-                    return@onProcessEnd
+                        Log.e(TAG, "error while onProcessEnd: ${error.message}")
+                        return@onProcessEnd
+                    }
+                    activity?.finish() //TODO: possibly add some spinner overlay
                 }
-                Log.e("DEBUGGING", "send the POST request")
-                activity?.finish() //TODO: possibly add some spinner overlay
             }
         }
 
@@ -120,6 +122,38 @@ class CreateMessageSubTypeFragment : Fragment() {
         document_types_recycler_view.layoutManager = LinearLayoutManager(context)
 
         subTypesAdapter.submitList(subtypes)
+    }
+
+    private fun saveSubType(docSubType: DocumentSubType, completion: (error: Error?) -> Unit) {
+        mViewModel.subtype.postValue(docSubType)
+
+        doUntilFalse(500) {
+            if (mViewModel.type.value !== null) {
+                completion(null)
+                false
+            } else {
+                true
+            }
+        }
+    }
+
+    /**
+     * Executes given [closure] periodically until it returns false
+     *
+     * @param period Milliseconds of how often this should happen
+     * @param closure A closure that will be executed. If it returns false, it won't be executed again
+     *
+     * */
+    private fun doUntilFalse(period: Long, closure: () -> Boolean) {
+        val origLooper = Looper.myLooper() ?: Looper.getMainLooper()
+        val handler = Handler(origLooper)
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (closure()) {
+                    handler.postDelayed(this, period)
+                }
+            }
+        }, 0)
     }
 
 }

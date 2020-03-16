@@ -9,6 +9,8 @@ import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.json.JSONObject
+
 
 class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx, workerParams) {
 
@@ -19,47 +21,43 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
     override fun doWork(): Result {
 
-        val instance = inputData.getString(KEY_CORRELATION_ID)!!
+        val correlation = inputData.getString(KEY_CORRELATION_ID)
 
         // summary sending task externalId must contain substring "-S" -- is used for progress indicator calculations in JobsOverviewAdapter
-        val taskid = (instance.substring(0, 6)) + "-S"
+        val taskid = (correlation?.substring(0, 6)) + "-S"
 
-        Log.d(TAG, "SendSummaryWorker ${taskid} starts")
-
-        val correlation = RequestBody.create(MediaType.parse("text/plain"), instance)
+        Log.d(TAG, "SendSummaryWorker $taskid starts")
 
         try {
-
-            val patid = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_FOLDER_INTERNAL_ID))
-            val type = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_TYPE))
-            val subType = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOC_SUB_TYPE))
-            val date = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DATE_STRING))
-            val name = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_NAME))
-            val note = RequestBody.create(MediaType.parse("text/plain"), inputData.getString(KEY_DOCUMENT_NOTE))
-
-
-            Log.d(TAG, "SendSummaryWorker ${taskid} data: ${inputData.getString(KEY_FOLDER_INTERNAL_ID)} ${inputData.getString(KEY_DOC_TYPE)} " +
-                    "${inputData.getString(KEY_DOC_SUB_TYPE)} ${inputData.getString(KEY_DATE_STRING)} ${inputData.getString(KEY_NAME)}")
-
-            val numpagesInt = inputData.getInt(KEY_NUM_PAGES, -1)
-            if (numpagesInt == -1) {
+            val numPagesInt = inputData.getInt(KEY_NUM_PAGES, -1)
+            if (numPagesInt == -1) {
                 throw Exception("Assertion error")
             }
 
-            val numpages = RequestBody.create(MediaType.parse("text/plain"), numpagesInt.toString())
 
-            val res = HttpClient.ApiServiceBackend.postDocumentSummary(
-                correlation,
-                patid,
-                type,
-                subType,
-                numpages,
-                date,
-                RequestBody.create(MediaType.parse("text/plain"), "")
-            ).execute()
+            val paramObject = JSONObject()
+            paramObject.put("correlation", correlation)
+            paramObject.put("folderInternalId", inputData.getString(KEY_FOLDER_INTERNAL_ID))
+            paramObject.put("documentType", inputData.getString(KEY_DOC_TYPE))
+            paramObject.put("department", inputData.getString(KEY_DEPARTMENT))
+            paramObject.put("documentSubType", inputData.getString(KEY_DOC_SUB_TYPE))
+            paramObject.put("pages", numPagesInt)
+            paramObject.put("datetime", inputData.getString(KEY_DATE_STRING))
+            paramObject.put("name", "") // TODO: maybe add some name or else remove this from iOS as well
 
-            if (res.code() != 200) {
-                throw Exception("Non OK response")
+
+            val reqBody = RequestBody.create(MediaType.parse("application/json"), paramObject.toString())
+
+            val request = HttpClient.ApiServiceBackend.postDocumentSummary(
+                    reqBody
+            )
+
+            val response = request.execute()
+
+            if (response.code() != 200) {
+                Log.e(TAG, "Response on postDocumentSummary: response: $response")
+                val code = response.code()
+                throw Exception("Non OK response, response code: $code")
             }
 
             if (mCancelling) {
@@ -67,22 +65,19 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
             }
 
             val repository = Repositories(applicationContext).jobsRepository
+            correlation?.let {
+                repository.setPartialJobDoneTag(it, taskid)
+            }
 
-            repository.setPartialJobDoneTag(instance, taskid)
 
-            Log.d(TAG, "SendSummaryWorker ${taskid} ends")
+            Log.d(TAG, "SendSummaryWorker $taskid ends")
 
             return Result.success()
 
         } catch (e: Exception) {
-            Log.d(TAG, "SendSummaryWorker ${taskid} caught exception !")
-
-            Log.e(TAG, e.toString())
+            Log.e(TAG, "SendSummaryWorker $taskid caught exception: $e.toString()")
             return Result.retry()
-
         }
-
-
     }
 
     override fun onStopped() {
