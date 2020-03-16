@@ -139,7 +139,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         val docDepartment = department.value
         if (docDepartment == null){
             Log.e(TAG, "department is null")
-            return completion(Error("department is null")) // TODO: change it to sth in Czech that can be displayed to user
+            return completion(Error("department is null"))
         }
 
         val patient = patientInput.value?.patientObject

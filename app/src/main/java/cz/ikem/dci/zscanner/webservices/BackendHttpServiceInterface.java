@@ -12,6 +12,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Multipart;
@@ -32,23 +33,10 @@ public interface BackendHttpServiceInterface {
     @GET("v3.1/folders/decode")
     Call<Patient> decodePatient(@Query("query") String code);
 
-
-//    @POST("v3.1/documents/summary")
-//    Call<JSONObject> postDocumentSummary(
-////            @Body RequestBody body);
-//        @Field("correlation") String correlation,
-//        @Field("folderInternalId") String indernalId,
-//        @Field("documentType") String type,
-//        @Field("documentSubType") String subtype,
-//        @Field("department") String department,
-//        @Field("pages") String numPages,
-//        @Field("datetime") String datetime
-//    );
-
-
+    @Headers("Content-Type: application/json")
     @POST("v3.1/documents/summary")
-    Call<RequestBody> postDocumentSummary(
-            @Body JSONObject body);
+    Call<ResponseBody> postDocumentSummary(
+            @Body RequestBody body);
 
     @Multipart
     @POST("v3.1/documents/page")
