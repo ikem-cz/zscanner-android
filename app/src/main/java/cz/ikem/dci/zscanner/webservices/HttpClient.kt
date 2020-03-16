@@ -1,5 +1,6 @@
 package cz.ikem.dci.zscanner.webservices
 
+import cz.ikem.dci.zscanner.BuildConfig
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.ZScannerApplication
 import okhttp3.Interceptor
@@ -15,6 +16,12 @@ object HttpClient {
     lateinit var application: ZScannerApplication
 
     var accessToken: String? = null // In-memory access token, proof that the user is authenticated
+
+    val name = BuildConfig.VERSION_NAME
+    var version = BuildConfig.VERSION_CODE
+    private var userAgent = "${name}-${version}"
+
+
 
     fun reset(accessToken:  ByteArray?) {
         synchronized(this) {
@@ -41,7 +48,7 @@ object HttpClient {
                             application.seacat.sslContext.socketFactory,
                             application.seacat.trustManager
                         )
-                        .addInterceptor(HeaderInterceptor(accessToken))
+                        .addInterceptor(HeaderInterceptor(accessToken, userAgent))
                         .build()
 
                     val retrofit = Retrofit.Builder()
@@ -61,15 +68,16 @@ object HttpClient {
 }
 
 
-class HeaderInterceptor(val accessToken: String?): Interceptor {
+class HeaderInterceptor(val accessToken: String?, val userAgent: String) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
 
         if (accessToken != null) {
             request = request.newBuilder()
-                .addHeader("Authorization", "Bearer " + accessToken)
-                .build();
+                    .addHeader("Authorization", "Bearer " + accessToken)
+                    .addHeader("User-Agent", userAgent)
+                    .build()
         }
 
         return chain.proceed(request)
