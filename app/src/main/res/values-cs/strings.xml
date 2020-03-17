@@ -4,16 +4,8 @@
     <string name="drawer_about">O aplikaci</string>
     <string name="drawer_purge">Odstranit historii</string>
     <string name="drawer_logout">Odhlásit</string>
-    <string name="drawer_tutorial">Průvodce</string>
 
     <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS.\n\n© 2019-2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
-
-    <string name="job_type_doc">dokument</string>
-    <string name="job_type_photo">fotografie</string>
-    <string name="job_type_exam">vyšetření</string>
-    <string name="mode_document_name">Dokument</string>
-    <string name="mode_exam_name">Vyšetření</string>
-    <string name="mode_photo_name">Fotografie</string>
 
     <string name="jobs_overview_no_jobs">žádné uložené úlohy</string>
     <string name="login_screen_username_placeholder"><i><small>login</small></i></string>
@@ -27,37 +19,36 @@
     <string name="fragment_patient_mru">… vybrat z historie … </string>
     <string name="fragment_patient_scan">… nebo naskenovat</string>
 
-    <string name="fragment_document_type">Vybrat typ dokumentu</string>
-    <string name="fragment_document_sub_type">Vybrat podtyp dokumentu</string>
-<!--    <string name="fragment_document_datetime">… a určit platnost</string>-->
-<!--    <string name="fragment_document_hint_date"><i><small>datum</small></i></string>-->
-<!--    <string name="fragment_document_hint_time"><i><small>čas</small></i></string>-->
-<!--    <string name="fragment_document_hint_type"><i><small>nabídka typů</small></i></string>-->
+    <string name="fragment_document_type">Vybrat typ události</string>
+    <string name="fragment_document_sub_type">Vybrat specifikaci události</string>
     <string name="fragment_document_hint_name"><i><small>popis (nepovinný)</small></i></string>
 
-<!--    <string name="fragment_pages_galery">Vybrat z galerie</string>-->
     <string name="fragment_pages_camera">Vyfotit</string>
     <string name="fragment_pages_instruction">žádné vybrané fotografie</string>
-
-<!--    <string name="new_job_patient">Fotografie - výběr pacienta</string>-->
-<!--    <string name="new_job_document_properties">Fotografie - vlastnosti záznamu</string>-->
-<!--    <string name="new_job_pages">Fotografie - obsah záznamu</string>-->
 
     <string name="logout_prompt_text">Opravdu se chcete odhlásit z aplikace a vymazat veškerá uložená data?</string>
     <string name="logout_prompt_button_negative">ODHLÁSIT</string>
     <string name="no_i_dont_want_to_button">ne, nechci</string>
-    <string name="finish_prompt_text">Opravdu chcete ukončit přípravu záznamu a vrátit se?</string>
+    <string name="finish_prompt_text">Opravdu chcete ukončit tvorbu záznamu a vrátit se?</string>
     <string name="finish_prompt_button_negative">UKONČIT</string>
 
     <string name="err_invalid_patient">Není vybrán platný pacient.</string>
-    <string name="err_no_photo">Není vybrána ani jedna fotografie.</string>
-<!--    <string name="err_no_entrytype">Není určen typ záznamu.</string>-->
-<!--    <string name="err_no_datetime">Není určen datum a čas záznamu.</string>-->
+    <string name="err_no_photo">Není vytvořena ani jedna fotografie.</string>
 
     <string name="fragment_jobs_overview_history">Historie</string>
     <string name="fragment_jobs_overview_department">Vybrat pracoviště</string>
 
     <string name="biometric_auth">Biometrická autentizace</string>
-    <string name="login_with_fingerprint">Přihlášení s otiskem prstu</string>
-    <string name="login_with_password">Přihlaste se pomocí hesla</string>
+    <string name="login_with_fingerprint">Přihlášení otiskem prstu</string>
+    <string name="login_with_password">Přihlásit se pomocí hesla</string>
+
+    <string name="error_submitting">Nastal problém s odesláním. Prosím odešlete znovu.</string>
+
+    <string name="description_with_subtype">Typ: %1$s, specifikace: %2$s, fotky: %3$d</string>
+    <string name="description_without_subtype">Typ: %1$s, fotky: %2$d</string>
+
+    <string name="title_patient">Patient selection</string>
+    <string name="title_foto">Photos</string>
+    <string name="title_type">Document type</string>
+    <string name="title_subtype">Document subtype</string>
 </resources>
