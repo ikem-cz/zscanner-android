@@ -14,7 +14,6 @@ import androidx.work.*
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.screen_about.AboutActivity
-import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
 import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.workers.RefreshDepartmentsWorker
@@ -85,12 +84,6 @@ class JobsOverviewActivity : AppCompatActivity() {
                     val intent = Intent(this, AboutActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.menu_repeat_tutorial -> {
-                    startTutorial()
-                }
-                R.id.menu_lock -> {
-                    lock()
-                }
             }
 
             it.isChecked = true
@@ -100,8 +93,6 @@ class JobsOverviewActivity : AppCompatActivity() {
             drawer_layout.closeDrawers()
             true
         }
-
-
     }
 
 
@@ -113,36 +104,6 @@ class JobsOverviewActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-
-    override fun onPostResume() {
-        super.onPostResume()
-        /*val prefs = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
-        val firstTimePromptShown = prefs.getBoolean(PREF_FIRST_TIME_PROMPTED, false)
-        if (!firstTimePromptShown) {
-            prefs.edit().putBoolean(PREF_FIRST_TIME_PROMPTED, true).commit()
-            AlertDialog.Builder(this)
-                    .setTitle("Zdá se, že aplikaci spouštíte poprvé")
-                    .setMessage("Přejete si spustit průvodce?")
-                    .setPositiveButton("Ano") { _, _ ->
-                        startTutorial()
-                    }
-                    .setNegativeButton("Ne", null)
-                    .show()
-        }*/
-    }
-
-    private fun startTutorial() {
-        Utils.tutorialInitialize(this)
-        /*if (Utils.tutorialNextStep(1, this)) {
-            Utils.makeTooltip("Vítejte v aplikaci zScanner.\n\nAplikace slouží k rychlému pořízení fotodokumentace pomocí mobilního telefonu.\n\nInformační bubliny Vás nyní provedou typickým použitím aplikace.\n\n(pro další krok vždy klepněte na bublinu)",
-                    tool_bar, Gravity.BOTTOM, this, showArrow = false, modal = true) {
-                Utils.makeTooltip("Začněte klepnutím sem", new_entry_fab, Gravity.START, this) {
-                    Utils.tutorialAdvance(this)
-                }
-            }
-        }*/
     }
 
 
@@ -162,8 +123,6 @@ class JobsOverviewActivity : AppCompatActivity() {
             }
         })
 
-
-
         JobUtils(this).nukeAllJobs()
 
         val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
@@ -177,14 +136,5 @@ class JobsOverviewActivity : AppCompatActivity() {
         finish()
     }
 
-
-    private fun lock() {
-        val app = applicationContext as ZScannerApplication
-        HttpClient.reset(null)
-
-        val intent = Intent(this, SplashLoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 
 }
