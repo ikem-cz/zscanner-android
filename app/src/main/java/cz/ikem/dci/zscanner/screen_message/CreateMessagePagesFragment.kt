@@ -20,8 +20,6 @@ import kotlinx.android.synthetic.main.fragment_message_pages.view.*
 
 class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
-    private val TAG = CreateMessagePagesFragment::class.java.simpleName
-
     private var mListener: OnCreateMessageViewsInteractionListener? = null
     private lateinit var mViewModel: CreateMessageViewModel
     private lateinit var mRecyclerView: androidx.recyclerview.widget.RecyclerView
@@ -116,9 +114,19 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        context?.let{
+            mViewModel.updateActionBarTitle(it.resources.getString(R.string.title_foto))
+        }
+    }
+
     override fun onDetach() {
         super.onDetach()
         mListener = null
     }
 
+    companion object {
+        val TAG = CreateMessagePagesFragment::class.java.simpleName
+    }
 }

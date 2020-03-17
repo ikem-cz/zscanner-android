@@ -4,16 +4,8 @@
     <string name="drawer_about">About application</string>
     <string name="drawer_purge">Delete history</string>
     <string name="drawer_logout">Log out</string>
-    <string name="drawer_tutorial">Tutorial</string>
 
-    <string name="about_text">ZScanner is designed to quickly import examination and photo documentation\ninto NIS.\n\n© 2019-2020 IKEM Data Center\n\nCyber Security by TeskaLabs.</string>
-
-    <string name="job_type_doc">document</string>
-    <string name="job_type_photo">photo</string>
-    <string name="job_type_exam">examination</string>
-    <string name="mode_document_name">Document</string>
-    <string name="mode_exam_name">Examination</string>
-    <string name="mode_photo_name">Photo</string>
+    <string name="about_text">ZScanner is designed to quickly import examination and photo documentation\ninto HIS.\n\n© 2019-2020 IKEM Data Center\n\nCyber Security by TeskaLabs.</string>
 
     <string name="jobs_overview_no_jobs">no saved tasks</string>
     <string name="login_screen_username_placeholder"><i><small>login</small></i></string>
@@ -29,19 +21,11 @@
 
     <string name="fragment_document_type">Choose document type</string>
     <string name="fragment_document_sub_type">Choose document subtype</string>
-<!--    <string name="fragment_document_datetime">… a určit platnost</string>-->
-<!--    <string name="fragment_document_hint_date"><i><small>datum</small></i></string>-->
-<!--    <string name="fragment_document_hint_time"><i><small>čas</small></i></string>-->
-<!--    <string name="fragment_document_hint_type"><i><small>nabídka typů</small></i></string>-->
+
     <string name="fragment_document_hint_name"><i><small>description (optional)</small></i></string>
 
-<!--    <string name="fragment_pages_galery">Vybrat z galerie</string>-->
     <string name="fragment_pages_camera">Take a picture</string>
     <string name="fragment_pages_instruction">no pictures chosen</string>
-
-<!--    <string name="new_job_patient">Fotografie - výběr pacienta</string>-->
-<!--    <string name="new_job_document_properties">Fotografie - vlastnosti záznamu</string>-->
-<!--    <string name="new_job_pages">Fotografie - obsah záznamu</string>-->
 
     <string name="logout_prompt_text">Are you sure you want to log out of and erase all saved data?</string>
     <string name="logout_prompt_button_negative">LOG OUT</string>
@@ -51,8 +35,10 @@
 
     <string name="err_invalid_patient">No valid patient is selected.</string>
     <string name="err_no_photo">No photo selected.</string>
-<!--    <string name="err_no_entrytype">Není určen typ záznamu.</string>-->
-<!--    <string name="err_no_datetime">Není určen datum a čas záznamu.</string>-->
+    <string name="error_submitting">There was a problem with sending the task to server. Please try again.</string>
+    <string name="error_out_of_memory">Memory couldn\'t be allocated</string>
+    <string name="error_no_camera">No camera available</string>
+    <string name="error_no_permissions">You cannot continue without granting necessary permissions</string>
 
     <string name="fragment_jobs_overview_history">History</string>
     <string name="fragment_jobs_overview_department">Choose the department</string>
@@ -61,9 +47,14 @@
     <string name="login_with_fingerprint">Login with fingerprint</string>
     <string name="login_with_password">Login with password</string>
 
-    <string name="error_submitting">There was a problem with sending the task to server. Please try again.</string>
-
     <string name="description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
     <string name="description_without_subtype">Type: %1$s, pages: %2$d</string>
+
+    <string name="title_patient">Patient selection</string>
+    <string name="title_foto">Photos</string>
+    <string name="title_type">Document type</string>
+    <string name="title_subtype">Document subtype</string>
+
+    <string name="scan_barcode">Scan the bacrcode or QR code with patient ID</string>
 
 </resources>

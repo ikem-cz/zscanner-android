@@ -79,6 +79,13 @@ class CreateMessageSubTypeFragment : Fragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        context?.let{
+            mViewModel.updateActionBarTitle(it.resources.getString(R.string.title_subtype))
+        }
+    }
+
     override fun onDetach() {
         super.onDetach()
         listener = null
@@ -154,6 +161,10 @@ class CreateMessageSubTypeFragment : Fragment() {
                 }
             }
         }, 0)
+    }
+
+    companion object {
+        val TAG = CreateMessageSubTypeFragment::class.java.simpleName
     }
 
 }

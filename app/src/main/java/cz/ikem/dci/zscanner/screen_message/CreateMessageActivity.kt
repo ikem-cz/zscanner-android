@@ -74,6 +74,12 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
             setDisplayHomeAsUpEnabled(true)
         }
 
+        mViewModel.title.observe(this, Observer {
+            supportActionBar?.title = it
+        })
+
+
+
         mViewModel.department.postValue(department)
         val departmentId = department.id
 
@@ -129,7 +135,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     //region OnCreateMessageViewsInteractionListener implementation
     override fun onScanPatientIdButtonPress() {
         IntentIntegrator(this).apply {
-            setPrompt("Naskenujte čárový kód nebo QR kód s ID pacienta")
+            setPrompt(applicationContext.resources.getString(R.string.scan_barcode))
             initiateScan()
         }
     }
@@ -139,7 +145,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     }
 
     private fun onBack() {
-        if (findNavController(R.id.nav_host_fragment).currentDestination?.label != "CreateMessagePatientFragment") {
+        if (findNavController(R.id.nav_host_fragment).currentDestination?.label != CreateMessagePatientFragment.TAG) {
             findNavController(R.id.nav_host_fragment).navigateUp()
         } else {
             AlertDialog.Builder(this)
@@ -182,7 +188,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                 try {
                     photoFile = createImageFile()
                 } catch (e: IOException) {
-                    Toast.makeText(this, "Nezdařila se rezervace prostoru v úložišti telefonu", Toast.LENGTH_LONG).show()
+                    Log.e(TAG, e.message ?: "Exception: memory couldn't be allocated")
+                    Toast.makeText(this, R.string.error_out_of_memory , Toast.LENGTH_LONG).show()
                 }
                 if (photoFile != null) {
                     val photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", photoFile)
@@ -190,7 +197,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                     startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO)
                 }
             } else {
-                Toast.makeText(this, "Není k dispozici fotoaparát", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.error_no_camera, Toast.LENGTH_LONG).show()
             }
         } else {
             requestPhotoPermissions()
@@ -225,7 +232,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
             if (grantResults.all { e -> e == PackageManager.PERMISSION_GRANTED }) {
                 startPhotoCapture()
             } else {
-                Toast.makeText(this, "Bez udělení potřebných oprávnění nelze pokračovat", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.error_no_permissions, Toast.LENGTH_LONG).show()
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)

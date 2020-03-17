@@ -22,6 +22,12 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     private val TAG = CreateMessageViewModel::class.java.simpleName
 
+    // set the toolbar title for each fragment
+    private val _title = MutableLiveData<String>()
+    val title: LiveData<String>
+        get() = _title
+    fun updateActionBarTitle(title: String) = _title.postValue(title)
+
     // requests are assembled on Z by correlationId
     val correlationId = UUID.randomUUID().toString()
 
