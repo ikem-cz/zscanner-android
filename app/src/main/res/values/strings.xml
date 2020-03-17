@@ -48,8 +48,8 @@
     <string name="description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
     <string name="description_without_subtype">Type: %1$s, pages: %2$d</string>
 
-    <string name="title_patient">Výběr pacienta</string>
-    <string name="title_foto">Fotografie</string>
-    <string name="title_type">Typ události</string>
-    <string name="title_subtype">Specifikace události</string>
+    <string name="title_patient">Patient selection</string>
+    <string name="title_foto">Photos</string>
+    <string name="title_type">Document type</string>
+    <string name="title_subtype">Document subtype</string>
 </resources>

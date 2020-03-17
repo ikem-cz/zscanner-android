@@ -192,10 +192,20 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        context?.let{
+            mViewModel.updateActionBarTitle(it.resources.getString(R.string.title_patient))
+        }
+    }
+
     override fun onDetach() {
         super.onDetach()
         listener = null
         kbCallback = null
     }
 
+    companion object {
+        val TAG = CreateMessagePatientFragment::class.java.simpleName
+    }
 }
