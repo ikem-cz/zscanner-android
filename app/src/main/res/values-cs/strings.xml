@@ -34,6 +34,10 @@
 
     <string name="err_invalid_patient">Není vybrán platný pacient.</string>
     <string name="err_no_photo">Není vytvořena ani jedna fotografie.</string>
+    <string name="error_submitting">Nastal problém s odesláním. Prosím odešlete znovu.</string>
+    <string name="error_out_of_memory">Nezdařila se rezervace prostoru v úložišti telefonu</string>
+    <string name="error_no_camera">Není k dispozici fotoaparát</string>
+    <string name="error_no_permissions">Bez udělení potřebných oprávnění nelze pokračovat</string>
 
     <string name="fragment_jobs_overview_history">Historie</string>
     <string name="fragment_jobs_overview_department">Vybrat pracoviště</string>
@@ -42,8 +46,6 @@
     <string name="login_with_fingerprint">Přihlášení otiskem prstu</string>
     <string name="login_with_password">Přihlásit se pomocí hesla</string>
 
-    <string name="error_submitting">Nastal problém s odesláním. Prosím odešlete znovu.</string>
-
     <string name="description_with_subtype">Typ: %1$s, specifikace: %2$s, fotky: %3$d</string>
     <string name="description_without_subtype">Typ: %1$s, fotky: %2$d</string>
 
@@ -51,4 +53,7 @@
     <string name="title_foto">Fotografie</string>
     <string name="title_type">Typ události</string>
     <string name="title_subtype">Specifikace události</string>
+
+    <string name="scan_barcode">Naskenujte čárový kód nebo QR kód s ID pacienta</string>
+
 </resources>

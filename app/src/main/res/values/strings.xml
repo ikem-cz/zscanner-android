@@ -35,6 +35,10 @@
 
     <string name="err_invalid_patient">No valid patient is selected.</string>
     <string name="err_no_photo">No photo selected.</string>
+    <string name="error_submitting">There was a problem with sending the task to server. Please try again.</string>
+    <string name="error_out_of_memory">Memory couldn\'t be allocated</string>
+    <string name="error_no_camera">No camera available</string>
+    <string name="error_no_permissions">You cannot continue without granting necessary permissions</string>
 
     <string name="fragment_jobs_overview_history">History</string>
     <string name="fragment_jobs_overview_department">Choose the department</string>
@@ -43,8 +47,6 @@
     <string name="login_with_fingerprint">Login with fingerprint</string>
     <string name="login_with_password">Login with password</string>
 
-    <string name="error_submitting">There was a problem with sending the task to server. Please try again.</string>
-
     <string name="description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
     <string name="description_without_subtype">Type: %1$s, pages: %2$d</string>
 
@@ -52,4 +54,7 @@
     <string name="title_foto">Photos</string>
     <string name="title_type">Document type</string>
     <string name="title_subtype">Document subtype</string>
+
+    <string name="scan_barcode">Scan the bacrcode or QR code with patient ID</string>
+
 </resources>
