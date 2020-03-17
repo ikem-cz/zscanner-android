@@ -3,6 +3,7 @@ package cz.ikem.dci.zscanner.persistence
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import cz.ikem.dci.zscanner.screen_message.PageActionsQueue
 
 @Entity(tableName = "send_jobs")
 data class SendJob(
@@ -22,7 +23,7 @@ data class SendJob(
         @ColumnInfo(name = "document_datetime")
         var docDateTime: String,
         @ColumnInfo(name = "pages")
-        var pageFiles: List<String>,
+        var pageFiles: List<PageActionsQueue.Page>,
         @ColumnInfo(name = "internal_num_tasks")
         var intSumTasks: Int,
         @ColumnInfo(name = "internal_done_tasks")

@@ -62,12 +62,14 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                 description
             )
 
-           
-            val response = request.execute()
+            Log.e("DEBUGGING", "SendPageWorker, doWork: description = $note.")
+            Log.e("DEBUGGING", "SendPageWorker, doWork: AAAAAAAAAAAA = ${request.request()}")
 
-            if (response.code() != 200) {
-                throw Exception("Non OK response: $response")
-            }
+//            val response = request.execute()
+
+//            if (response.code() != 200) {
+//                throw Exception("Non OK response: $response")
+//            }
 
             if (mCancelling) {
                 throw Exception("Cancelling")

@@ -8,6 +8,7 @@ import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.Utils.Companion.dispatch
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.persistence.SendJob
+import cz.ikem.dci.zscanner.screen_message.PageActionsQueue
 import cz.ikem.dci.zscanner.webservices.Patient
 import cz.ikem.dci.zscanner.workers.DirectoryCleanupWorker
 import cz.ikem.dci.zscanner.workers.PageFilesCleanupWorker
@@ -31,7 +32,7 @@ class JobUtils(private val context: Context) {
             department: String,
             documentNote: String,
             dateString: String,
-            toSend: List<String>,
+            toSend: List<PageActionsQueue.Page>,
             description: String
     ) {
 
@@ -63,7 +64,6 @@ class JobUtils(private val context: Context) {
                 .putString(KEY_DEPARTMENT, department)
                 .putInt(KEY_NUM_PAGES, toSend.size)
                 .putString(KEY_DATE_STRING, dateString)
-                .putString(KEY_DOCUMENT_NOTE, documentNote)
                 .build()
 
         val sendSummaryWorker = OneTimeWorkRequest.Builder(SendSummaryWorker::class.java)
@@ -74,12 +74,13 @@ class JobUtils(private val context: Context) {
                 .build()
 
         // make pages send workers
-        val sendPageWorkerDatas = toSend.mapIndexed { index,  e->
+        val sendPageWorkerDatas = toSend.mapIndexed { index,  page ->
+            Log.e("DEBUGGING", "JobUtils, addJob: documentNote = $documentNote")
             Data.Builder()
                     .putString(KEY_CORRELATION_ID, instanceId)
                     .putInt(KEY_PAGE_INDEX, index)
-                    .putString(KEY_PAGE_FILE, e)
-                    .putString(KEY_DOCUMENT_NOTE, "note") // TODO: remove placeholder
+                    .putString(KEY_PAGE_FILE, page.path)
+                    .putString(KEY_DOCUMENT_NOTE, page.note)
                     .build()
         }
 
@@ -149,10 +150,13 @@ class JobUtils(private val context: Context) {
         workManager.pruneWork()
     }
 
-    fun scheduleFilesCleanup(files: List<String>, deleteDir: Boolean = false, instanceId: String? = null) {
+    fun scheduleFilesCleanup(files: List<PageActionsQueue.Page>, deleteDir: Boolean = false, instanceId: String? = null) {
         val workManager = WorkManager.getInstance()
         for (file in files) {
-            val data = Data.Builder().putString(KEY_PAGE_FILE, file).build()
+            val data = Data.Builder()
+                    .putString(KEY_PAGE_FILE, file.path)
+                    .putString(KEY_DOCUMENT_NOTE, file.note)
+                    .build()
             val request =
                     OneTimeWorkRequest.Builder(PageFilesCleanupWorker::class.java)
                             .setInputData(data)

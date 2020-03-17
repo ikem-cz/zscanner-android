@@ -3,6 +3,7 @@ package cz.ikem.dci.zscanner.screen_message
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,6 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
 
         val additionalNote = holder.mItemView.note_to_photo
 
-
     }
 
     class ViewHolder(val mItemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mItemView)
@@ -57,17 +57,21 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
                     PageActionsQueue.PageActionType.ADDED -> {
                         if (diff.target < 0) {
                             mPages.add(diff.page)
+                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: mPages = $mPages")
+                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: page = ${diff.page}")
                             notifyItemInserted(mPages.count() - 1)
                         } else {
                             mPages.add(diff.target, diff.page)
                             notifyItemInserted(diff.target)
                         }
                     }
+
                     PageActionsQueue.PageActionType.REMOVED -> {
                         val idx = mPages.indexOf(diff.page)
                         mPages.remove(diff.page)
                         notifyItemRemoved(idx)
                     }
+
                     PageActionsQueue.PageActionType.MOVED -> {
                         val idx = mPages.indexOf(diff.page)
                         val pg = diff.page
