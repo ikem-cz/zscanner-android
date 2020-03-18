@@ -18,6 +18,7 @@ import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.DocumentSubType
 import kotlinx.android.synthetic.main.fragment_message_properties.*
 import org.json.JSONArray
+import java.lang.Exception
 
 class CreateMessageSubTypeFragment : Fragment() {
 
@@ -53,17 +54,19 @@ class CreateMessageSubTypeFragment : Fragment() {
 
         parseSubTypeJson(subtypesJson) { subtypes, error ->
             if (error != null) {
-                //TODO change the text to something more reasonable
-                Toast.makeText(context, "Error when parsing subtypes to List<DocumentSubType>", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "Error when parsing subtypes to List<DocumentSubType>")
                 return@parseSubTypeJson
             }
 
-            subtypes?.let { list ->
-                context?.let { _context ->
-                    createSubTypesAdapter(_context, list)
-                }
+            if (subtypes == null) {
+                Log.e(TAG, "subtypes are null")
+                return@parseSubTypeJson
             }
+
+            context?.let { _context ->
+                createSubTypesAdapter(_context, subtypes)
+            }
+
         }
 
         document_types_text?.text = getString(R.string.fragment_document_sub_type)
@@ -92,19 +95,22 @@ class CreateMessageSubTypeFragment : Fragment() {
     }
 
 
-    private fun parseSubTypeJson(subtypes: String, completion: (subtypes: List<DocumentSubType>?, error: Error?) -> Unit) {
+    private fun parseSubTypeJson(subtypes: String?, completion: (subtypes: List<DocumentSubType>?, error: Error?) -> Unit) {
 
-        //todo try and catch
+        try {
+            val subTypesJsonArray = JSONArray(subtypes)
 
-        val subTypesJsonArray = JSONArray(subtypes)
-
-        val listSubTypes = ArrayList<DocumentSubType>()
-        for (subtype in 0 until subTypesJsonArray.length()) {
-            val subTypeObject = subTypesJsonArray.getJSONObject(subtype)
-            val docSubType = DocumentSubType(subTypeObject.getString("id"), subTypeObject.getString("display"))
-            listSubTypes.add(docSubType)
+            val listSubTypes = ArrayList<DocumentSubType>()
+            for (subtype in 0 until subTypesJsonArray.length()) {
+                val subTypeObject = subTypesJsonArray.getJSONObject(subtype)
+                val docSubType = DocumentSubType(subTypeObject.getString("id"), subTypeObject.getString("display"))
+                listSubTypes.add(docSubType)
+            }
+            completion(listSubTypes, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "${e.message}")
+            completion (null, null)
         }
-        completion(listSubTypes, null)
     }
 
     private fun createSubTypesAdapter(context: Context, subtypes: List<DocumentSubType>) {
@@ -120,7 +126,7 @@ class CreateMessageSubTypeFragment : Fragment() {
                         Log.e(TAG, "error while onProcessEnd: ${error.message}")
                         return@onProcessEnd
                     }
-                    activity?.finish() //TODO: possibly add some spinner overlay
+                    activity?.finish()
                 }
             }
         }

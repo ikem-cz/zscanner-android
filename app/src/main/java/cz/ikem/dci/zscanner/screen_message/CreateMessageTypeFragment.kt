@@ -77,10 +77,8 @@ class CreateMessageTypeFragment : Fragment() {
         val typesAdapter = TypesAdapter(context)
 
         typesAdapter.onItemSelected = { docType ->
-            //val isSubTypeNull = (type.subtypeId == null)
-
             saveType(docType) {
-                if (docType.subtype == null) {
+                if (docType.subtype.isNullOrEmpty() || docType.subtype == "null") {
                     Log.d(TAG, "Document subtype is null")
                     mViewModel.subtype.postValue(null)
 
@@ -91,7 +89,7 @@ class CreateMessageTypeFragment : Fragment() {
                             Log.e(TAG, "error while onProcessEnd: ${error.message}")
                             return@onProcessEnd
                         }
-                        activity?.finish() //TODO: possibly add some spinner overlay
+                        activity?.finish()
                     }
 
                 } else {
