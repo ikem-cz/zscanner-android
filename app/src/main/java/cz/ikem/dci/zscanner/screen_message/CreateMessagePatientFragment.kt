@@ -103,7 +103,7 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
             patient_id_edittext.apply {
                 setAdapter(adapter)
                 // show suggestions after 9  characters
-                threshold = 9 // TODO: possibly change to 10 (?)
+                threshold = 9 // TODO: possibly change number => this needs to accept both rodne cislo (10) and barcode
                 // on dismiss suggestions
                 setOnDismissListener { view.too_many_layout?.visibility = View.INVISIBLE }
                 // on suggestion selected

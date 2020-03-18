@@ -27,6 +27,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
         } else {
             convertView
         }
+        view.suggestion_name_textview.text = mSuggestions[position].name
         view.suggestion_bid_textview.text = mSuggestions[position].externalId
         return view
 
