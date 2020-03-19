@@ -47,28 +47,28 @@ abstract class MruDatabase : RoomDatabase() {
 
         private val TAG = MruDatabaseCallback::class.java.simpleName
 
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            mInstance?.let { database ->
-                scope.value.launch {
-                    populateDatabase(database.mruDao())
-                }
-            }
-        }
-
-        fun populateDatabase(mruDao: MruDao) {
-            val initialData = listOf(
-                    Mru(
-                            0,
-                            System.currentTimeMillis(),
-                            "1183637",
-                            "PACIENT Test",
-                            "010101/222"
-                    )
-            )
-            mruDao.initializeIfEmpty(initialData)
-            Log.d(TAG, "MruDatabase intialized.")
-        }
+//        override fun onCreate(db: SupportSQLiteDatabase) {
+//            super.onCreate(db)
+//            mInstance?.let { database ->
+//                scope.value.launch {
+//                    populateDatabase(database.mruDao())
+//                }
+//            }
+//        }
+//
+//        fun populateDatabase(mruDao: MruDao) {
+//            val initialData = listOf(
+//                    Mru(
+//                            0,
+//                            System.currentTimeMillis(),
+//                            "1183637",
+//                            "PACIENT Test",
+//                            "010101/222"
+//                    )
+//            )
+//            mruDao.initializeIfEmpty(initialData)
+//            Log.d(TAG, "MruDatabase intialized.")
+//        }
 
     }
 
