@@ -14,6 +14,7 @@ import cz.ikem.dci.zscanner.workers.DirectoryCleanupWorker
 import cz.ikem.dci.zscanner.workers.PageFilesCleanupWorker
 import cz.ikem.dci.zscanner.workers.SendPageWorker
 import cz.ikem.dci.zscanner.workers.SendSummaryWorker
+import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 class JobUtils(private val context: Context) {
@@ -79,8 +80,8 @@ class JobUtils(private val context: Context) {
             Data.Builder()
                     .putString(KEY_CORRELATION_ID, instanceId)
                     .putInt(KEY_PAGE_INDEX, index)
-                    .putString(KEY_PAGE_FILE, page.path)
-                    .putString(KEY_DOCUMENT_NOTE, page.note)
+                    .putString(KEY_PAGE_FILE, page.path) //path
+                    .putString(KEY_DOCUMENT_NOTE, page.note) //note
                     .build()
         }
 
@@ -150,12 +151,12 @@ class JobUtils(private val context: Context) {
         workManager.pruneWork()
     }
 
-    fun scheduleFilesCleanup(files: List<PageActionsQueue.Page>, deleteDir: Boolean = false, instanceId: String? = null) {
+    fun scheduleFilesCleanup(files: List<PageActionsQueue.Page?>, deleteDir: Boolean = false, instanceId: String? = null) {
         val workManager = WorkManager.getInstance()
         for (file in files) {
             val data = Data.Builder()
-                    .putString(KEY_PAGE_FILE, file.path)
-                    .putString(KEY_DOCUMENT_NOTE, file.note)
+                    .putString(KEY_PAGE_FILE, file?.path) //path
+                    .putString(KEY_DOCUMENT_NOTE, file?.note) //note
                     .build()
             val request =
                     OneTimeWorkRequest.Builder(PageFilesCleanupWorker::class.java)

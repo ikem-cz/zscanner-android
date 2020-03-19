@@ -53,6 +53,10 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
                 Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            //TODO: I think here notes need to be saved
+
+
+
             findNavController().navigate(R.id.action_createMessagePagesFragment_to_createMessageTypeFragment)
         }
 

@@ -3,9 +3,12 @@ package cz.ikem.dci.zscanner.persistence
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import cz.ikem.dci.zscanner.screen_message.PageActionsQueue
+import org.json.JSONArray
 
 @Entity(tableName = "send_jobs")
+@TypeConverters(Converters::class)
 data class SendJob(
         @PrimaryKey
         @ColumnInfo(name = "instance_id")

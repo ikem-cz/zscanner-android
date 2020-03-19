@@ -42,6 +42,19 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
 
         val additionalNote = holder.mItemView.note_to_photo
 
+        additionalNote?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+//                if (mViewModel.patientInput.value?.patientText != p0.toString()) {
+//                    mViewModel.patientInput.value = CreateMessageViewModel.PatientInput(null, p0.toString(), null, true)
+//                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
+
+
     }
 
     class ViewHolder(val mItemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mItemView)
@@ -56,9 +69,12 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
                 when (diff.type) {
                     PageActionsQueue.PageActionType.ADDED -> {
                         if (diff.target < 0) {
+
+
                             mPages.add(diff.page)
                             Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: mPages = $mPages")
                             Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: page = ${diff.page}")
+                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: page.note = ${diff.page.note}")
                             notifyItemInserted(mPages.count() - 1)
                         } else {
                             mPages.add(diff.target, diff.page)
