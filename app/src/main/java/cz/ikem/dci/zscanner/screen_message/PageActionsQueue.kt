@@ -12,7 +12,7 @@ class PageActionsQueue() {
         mCachedPageList = lastList
     }
 
-    data class Page(val path: String, val note: String)
+    data class Page(val path: String, var note: String)
     enum class PageActionType { ADDED, REMOVED, MOVED }
     data class PageAction(val page: Page, val type: PageActionType, val target: Int = -1)
 

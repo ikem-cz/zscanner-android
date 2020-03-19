@@ -52,13 +52,13 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
                     reqBody
             )
 
-//            val response = request.execute()
+            val response = request.execute()
 
-//            if (response.code() != 200) {
-//                Log.e(TAG, "Response on postDocumentSummary: response: $response")
-//                val code = response.code()
-//                throw Exception("Non OK response, response code: $code")
-//            }
+            if (response.code() != 200) {
+                Log.e(TAG, "Response on postDocumentSummary: response: $response")
+                val code = response.code()
+                throw Exception("Non OK response, response code: $code")
+            }
 
             if (mCancelling) {
                 throw Exception("Cancelling")

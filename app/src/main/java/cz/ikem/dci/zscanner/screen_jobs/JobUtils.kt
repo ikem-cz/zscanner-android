@@ -76,7 +76,6 @@ class JobUtils(private val context: Context) {
 
         // make pages send workers
         val sendPageWorkerDatas = toSend.mapIndexed { index,  page ->
-            Log.e("DEBUGGING", "JobUtils, addJob: documentNote = $documentNote")
             Data.Builder()
                     .putString(KEY_CORRELATION_ID, instanceId)
                     .putInt(KEY_PAGE_INDEX, index)

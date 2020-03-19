@@ -62,14 +62,11 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                 description
             )
 
-            Log.e("DEBUGGING", "SendPageWorker, doWork: description = $note.")
-            Log.e("DEBUGGING", "SendPageWorker, doWork: AAAAAAAAAAAA = ${request.request()}")
+            val response = request.execute()
 
-//            val response = request.execute()
-
-//            if (response.code() != 200) {
-//                throw Exception("Non OK response: $response")
-//            }
+            if (response.code() != 200) {
+                throw Exception("Non OK response: $response")
+            }
 
             if (mCancelling) {
                 throw Exception("Cancelling")
@@ -87,15 +84,11 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
             Log.d(TAG, "SendPageWorker $taskid caught exception !")
             Log.e(TAG, e.toString())
             return Result.retry()
-
         }
-
-
     }
 
     override fun onStopped() {
         mCancelling = true
         super.onStopped()
     }
-
 }

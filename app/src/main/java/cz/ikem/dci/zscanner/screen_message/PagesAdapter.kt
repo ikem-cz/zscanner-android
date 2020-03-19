@@ -3,7 +3,8 @@ package cz.ikem.dci.zscanner.screen_message
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.provider.Settings.Global.getString
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,26 +40,16 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
         imageView.adjustViewBounds = true
 
-
-        val additionalNote = holder.mItemView.note_to_photo
-
-        additionalNote?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-//                if (mViewModel.patientInput.value?.patientText != p0.toString()) {
-//                    mViewModel.patientInput.value = CreateMessageViewModel.PatientInput(null, p0.toString(), null, true)
-//                }
-
+        holder.itemView.note_to_photo.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                mPages[position].note = s.toString()
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-
-
     }
 
     class ViewHolder(val mItemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mItemView)
-
 
 
     fun syncActionsQueue(viewModel: CreateMessageViewModel) {
@@ -69,12 +60,7 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
                 when (diff.type) {
                     PageActionsQueue.PageActionType.ADDED -> {
                         if (diff.target < 0) {
-
-
                             mPages.add(diff.page)
-                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: mPages = $mPages")
-                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: page = ${diff.page}")
-                            Log.e("DEBUGGING", "PagesAdapter, syncActionsQueue: page.note = ${diff.page.note}")
                             notifyItemInserted(mPages.count() - 1)
                         } else {
                             mPages.add(diff.target, diff.page)
@@ -118,18 +104,12 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
             bmOptions.inPurgeable = true
             bitmap = BitmapFactory.decodeFile(file.absolutePath)
             Log.d(TAG, "Found cached thumb for image ${path}")
-
         } else {
             // if no cached thumbnail, unpack original image and save thumb in cache
             bitmap = Utils.unpackBitmap(path)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, FileOutputStream(file))
             Log.d(TAG, "Generated thumb for image ${path}")
         }
-
         return bitmap
     }
-
 }
-
-
-

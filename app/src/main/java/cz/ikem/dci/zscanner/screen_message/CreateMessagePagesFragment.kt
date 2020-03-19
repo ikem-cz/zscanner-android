@@ -53,10 +53,6 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
                 Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            //TODO: I think here notes need to be saved
-
-
-
             findNavController().navigate(R.id.action_createMessagePagesFragment_to_createMessageTypeFragment)
         }
 
@@ -85,8 +81,8 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
         mViewModel.undoAction.observe(viewLifecycleOwner, Observer<PageActionsQueue.PageAction> {
             if (mViewModel.undoAction.value != null) {
-                mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Zpět") {
+                mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE) //TODO: translate
+                        .setAction("Zpět") {//TODO: translate
                             mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target, null)
                         }
                 mSnackbar?.show()

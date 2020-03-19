@@ -97,13 +97,9 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
                 notifyDataSetInvalidated()
             }
         }
-
     }
 
     override fun getFilter(): Filter {
-
         return mFilter
-
     }
-
 }
