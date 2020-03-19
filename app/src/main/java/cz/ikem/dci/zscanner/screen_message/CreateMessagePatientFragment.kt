@@ -80,6 +80,8 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
             override fun afterTextChanged(p0: Editable?) {
                 if (mViewModel.patientInput.value?.patientText != p0.toString()) {
                     mViewModel.patientInput.value = CreateMessageViewModel.PatientInput(null, p0.toString(), null, true)
+                    //set the focus at the end for easier
+                    patient_id_edittext.setSelection(patient_id_edittext.length())
                 }
             }
 
@@ -102,8 +104,8 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
             val adapter = PatientAdapter(_context, mViewModel)
             patient_id_edittext.apply {
                 setAdapter(adapter)
-                // show suggestions after 9  characters
-                threshold = 9 // TODO: possibly change to 10 (?)
+                // show suggestions after THRESHOLD number of characters
+                threshold = THRESHOLD
                 // on dismiss suggestions
                 setOnDismissListener { view.too_many_layout?.visibility = View.INVISIBLE }
                 // on suggestion selected
@@ -123,16 +125,19 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
                     mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = false
                 }
                 patientInput.patientObject != null -> {
                     mValidated = true
                     patient_validated_layout.visibility = View.VISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = true
                 }
                 else -> {
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = false
                 }
             }
@@ -207,5 +212,6 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
     companion object {
         val TAG = CreateMessagePatientFragment::class.java.simpleName
+        const val THRESHOLD = 8 // TODO: possibly change number => this needs to accept both rodne cislo and barcode
     }
 }

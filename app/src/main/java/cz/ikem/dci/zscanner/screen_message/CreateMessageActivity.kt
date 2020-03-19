@@ -114,8 +114,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                     Log.v(TAG, "Barcode scanning cancelled")
                 } else {
                     Log.v(TAG, "Scanned: ${result.contents}")
-                    //mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(MaybePatient( result.contents ), true, true))
-                    mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(null, result.contents, result.contents, false))
+                    mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(null, result.contents, result.contents, true))
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)

@@ -27,6 +27,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
         } else {
             convertView
         }
+        view.suggestion_name_textview.text = mSuggestions[position].name
         view.suggestion_bid_textview.text = mSuggestions[position].externalId
         return view
 
@@ -78,7 +79,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
 
             if (constraint.toString() == lastFilteredConstraint) {
                 mViewModel.loadingSuggestions.postValue(false)
-                if (((constraint != null) && (constraint.toString().trim().length >= 6)) && (results == null || results.count == 0)) { // if above completion threshold and cannot suggest anything
+                if (((constraint != null) && (constraint.toString().trim().length > CreateMessagePatientFragment.THRESHOLD)) && (results == null || results.count == 0)) { // if above completion threshold and cannot suggest anything
                     mViewModel.noSuggestions.postValue(true)
                 } else {
                     mViewModel.noSuggestions.postValue(false)

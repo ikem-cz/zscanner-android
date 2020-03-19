@@ -64,7 +64,8 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     private fun dispatchDecodeJob(code: String) {
         decodeJob = CoroutineScope(Dispatchers.Default).launch {
             try {
-                val response = HttpClient.ApiServiceBackend.decodePatient(code).execute()
+                val request = HttpClient.ApiServiceBackend.decodePatient(code)
+                val response = request.execute()
                 if (!isActive) {
                     throw Exception("Cancelled")
                 }
@@ -73,7 +74,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
                 val body = response.body() ?: throw Exception("response.body() was null")
                 patientInput.postValue(PatientInput(body, body.getDisplay(), null, false))
             } catch (e: Exception) {
-                Log.d(TAG, "Decode job failed for $code")
+                Log.e(TAG, "Decode job failed for $code, exception: $e")
                 noSuggestions.postValue(true)
             }
         }
