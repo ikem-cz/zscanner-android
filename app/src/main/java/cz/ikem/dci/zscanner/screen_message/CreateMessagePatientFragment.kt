@@ -125,16 +125,19 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
                     mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = false
                 }
                 patientInput.patientObject != null -> {
                     mValidated = true
                     patient_validated_layout.visibility = View.VISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = true
                 }
                 else -> {
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
+                    no_patient_layout.visibility = View.INVISIBLE
                     fab_next_step_1.isActivated = false
                 }
             }
@@ -209,6 +212,6 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
     companion object {
         val TAG = CreateMessagePatientFragment::class.java.simpleName
-        const val THRESHOLD = 8 // TODO: possibly change number => this needs to accept both rodne cislo (10) and barcode
+        const val THRESHOLD = 8 // TODO: possibly change number => this needs to accept both rodne cislo and barcode
     }
 }
