@@ -81,8 +81,8 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
         mViewModel.undoAction.observe(viewLifecycleOwner, Observer<PageActionsQueue.PageAction> {
             if (mViewModel.undoAction.value != null) {
-                mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Zpět") {
+                mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE) //TODO: translate
+                        .setAction("Zpět") {//TODO: translate
                             mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target, null)
                         }
                 mSnackbar?.show()

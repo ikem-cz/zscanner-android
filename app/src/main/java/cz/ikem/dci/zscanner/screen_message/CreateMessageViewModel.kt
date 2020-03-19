@@ -129,8 +129,8 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
      *  Called when message creating process is complete and no validation errors were encountered
      */
     fun onProcessEnd(completion: (error: Error?) -> Unit) {
-        val toSend = mPageActions.makePages().map { e -> e.path }
-        val toClean = mPageActions.actionsList().asSequence().map { e -> e.page.path }.distinct().filter { e -> !toSend.contains(e) }.toList()
+        val toSend = mPageActions.makePages()
+        val toClean = mPageActions.actionsList().asSequence().map { e -> e.page }.distinct().filter { e -> !toSend.contains(e) }.toList()
         JobUtils(zapplication).scheduleFilesCleanup(toClean)
 
         cleanupHandled = true
@@ -161,7 +161,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         }
     }
 
-    private fun handleProcessOutput(patient: Patient, docType: DocumentType, docSubType: DocumentSubType?, docDepartment: Department, additionalNote: String?, filePaths: List<String>, completion: (error: Error?) -> Unit) {
+    private fun handleProcessOutput(patient: Patient, docType: DocumentType, docSubType: DocumentSubType?, docDepartment: Department, additionalNote: String?, filePaths: List<PageActionsQueue.Page>, completion: (error: Error?) -> Unit) {
 
         // insert mru
         MruUtils(getApplication<ZScannerApplication>()).addMru(patient)
@@ -196,7 +196,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
 
     override fun onCleared() {
         if (!cleanupHandled) {
-            val toClean = mPageActions.actionsList().asSequence().map { e -> e.page.path }.distinct().toList()
+            val toClean = mPageActions.actionsList().asSequence().map { e -> e.page }.distinct().toList()
             JobUtils(zapplication).scheduleFilesCleanup(toClean, true, correlationId)
         }
         super.onCleared()

@@ -62,7 +62,6 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                 description
             )
 
-           
             val response = request.execute()
 
             if (response.code() != 200) {
@@ -85,15 +84,11 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
             Log.d(TAG, "SendPageWorker $taskid caught exception !")
             Log.e(TAG, e.toString())
             return Result.retry()
-
         }
-
-
     }
 
     override fun onStopped() {
         mCancelling = true
         super.onStopped()
     }
-
 }

@@ -3,6 +3,8 @@ package cz.ikem.dci.zscanner.screen_message
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,14 +40,16 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
         imageView.adjustViewBounds = true
 
-
-        val additionalNote = holder.mItemView.note_to_photo
-
-
+        holder.itemView.note_to_photo.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                mPages[position].note = s.toString()
+            }
+        })
     }
 
     class ViewHolder(val mItemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mItemView)
-
 
 
     fun syncActionsQueue(viewModel: CreateMessageViewModel) {
@@ -63,11 +67,13 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
                             notifyItemInserted(diff.target)
                         }
                     }
+
                     PageActionsQueue.PageActionType.REMOVED -> {
                         val idx = mPages.indexOf(diff.page)
                         mPages.remove(diff.page)
                         notifyItemRemoved(idx)
                     }
+
                     PageActionsQueue.PageActionType.MOVED -> {
                         val idx = mPages.indexOf(diff.page)
                         val pg = diff.page
@@ -98,18 +104,12 @@ class PagesAdapter(private var mActions: PageActionsQueue, val context: Context)
             bmOptions.inPurgeable = true
             bitmap = BitmapFactory.decodeFile(file.absolutePath)
             Log.d(TAG, "Found cached thumb for image ${path}")
-
         } else {
             // if no cached thumbnail, unpack original image and save thumb in cache
             bitmap = Utils.unpackBitmap(path)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, FileOutputStream(file))
             Log.d(TAG, "Generated thumb for image ${path}")
         }
-
         return bitmap
     }
-
 }
-
-
-
