@@ -1,6 +1,7 @@
 package cz.ikem.dci.zscanner.screen_message
 
 import android.util.Log
+import com.google.gson.annotations.SerializedName
 
 class PageActionsQueue() {
 
@@ -12,9 +13,20 @@ class PageActionsQueue() {
         mCachedPageList = lastList
     }
 
-    data class Page(val path: String, var note: String)
+    data class Page(
+            @SerializedName("path")
+            val path: String,
+            @SerializedName("note")
+            var note: String)
     enum class PageActionType { ADDED, REMOVED, MOVED }
-    data class PageAction(val page: Page, val type: PageActionType, val target: Int = -1)
+
+    data class PageAction(
+            @SerializedName("page")
+            val page: Page,
+            @SerializedName("type")
+            val type: PageActionType,
+            @SerializedName("target")
+            val target: Int = -1)
 
     private var mActionsList: MutableList<PageAction> = ArrayList()
     private var mCachedPageList: MutableList<Page> = ArrayList()
