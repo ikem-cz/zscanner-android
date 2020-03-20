@@ -89,6 +89,7 @@ class CreateMessageTypeFragment : Fragment() {
                             Log.e(TAG, "error while onProcessEnd: ${error.message}")
                             return@onProcessEnd
                         }
+                        mViewModel.type.postValue(null)
                         activity?.finish()
                     }
 
