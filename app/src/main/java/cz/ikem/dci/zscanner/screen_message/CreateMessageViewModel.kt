@@ -3,6 +3,7 @@ package cz.ikem.dci.zscanner.screen_message
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.google.gson.annotations.SerializedName
 import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.persistence.*
 import cz.ikem.dci.zscanner.screen_jobs.JobUtils
@@ -44,9 +45,13 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     val additionalNote: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
     data class PatientInput(
+            @SerializedName("patientObject")
             val patientObject: Patient?,
+            @SerializedName("patientText")
             val patientText: String,
+            @SerializedName("code")
             val code: String?,
+            @SerializedName("suggest")
             val suggest: Boolean
     )
     val patientInput: MutableLiveData<PatientInput> = MutableLiveData<PatientInput>().apply { value = PatientInput(null, "", null, false) }
