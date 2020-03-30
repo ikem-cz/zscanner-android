@@ -1,16 +1,27 @@
 package cz.ikem.dci.zscanner.biometrics
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat.startActivity
+import cz.ikem.dci.zscanner.*
+import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
+import cz.ikem.dci.zscanner.webservices.HttpClient.application
+import kotlinx.coroutines.withContext
+import java.lang.reflect.InvocationTargetException
 import java.nio.ByteBuffer
 import java.security.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
+
 
 // Compatible with Android 6+
 class BiometricsKey(private val keyName: String) {
@@ -22,21 +33,21 @@ class BiometricsKey(private val keyName: String) {
     private var generating: Boolean = false
 
     val keyPair: KeyPair?
-    get() {
-        if (generating) return null
+        get() {
+            if (generating) return null
 
-        val keyStore = KeyStore.getInstance("AndroidKeyStore")
-        keyStore.load(null)
-        if (keyStore.containsAlias(keyName)) {
-            // Get public key
-            val publicKey = keyStore.getCertificate(keyName).publicKey
-            // Get private key
-            val privateKey = keyStore.getKey(keyName, null) as PrivateKey
-            // Return a key pair
-            return KeyPair(publicKey, privateKey)
+            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            if (keyStore.containsAlias(keyName)) {
+                // Get public key
+                val publicKey = keyStore.getCertificate(keyName).publicKey
+                // Get private key
+                val privateKey = keyStore.getKey(keyName, null) as PrivateKey
+                // Return a key pair
+                return KeyPair(publicKey, privateKey)
+            }
+            return null
         }
-        return null
-    }
 
 
     fun generateKeyPair() {
@@ -67,11 +78,9 @@ class BiometricsKey(private val keyName: String) {
 
             keyPairGenerator.initialize(builder.build())
             keyPairGenerator.generateKeyPair()
-        }
-        catch (exception: Exception) {
+        } catch (exception: Exception) {
             Log.e(TAG, "Failed to generate biometrics key", exception)
-        }
-        finally {
+        } finally {
             generating = false
         }
 
@@ -81,7 +90,7 @@ class BiometricsKey(private val keyName: String) {
 
     //TODO: Sign (based on the BiometricKeyDecrypt)
 
-    fun verify(data: ByteBuffer, signature:ByteBuffer): Boolean {
+    fun verify(data: ByteBuffer, signature: ByteBuffer): Boolean {
         val kp = keyPair ?: return false
 
         val arr = ByteArray(signature.limit())
@@ -91,15 +100,10 @@ class BiometricsKey(private val keyName: String) {
         sign.initVerify(kp.public)
 
         sign.update(data)
-        val result = sign.verify(arr)
-        if (result) {
-            return true
-        } else {
-            return false
-        }
+        return sign.verify(arr)
     }
 
-    fun encrypt(plaintext: ByteBuffer, cyphertext:ByteBuffer): Boolean {
+    fun encrypt(plaintext: ByteBuffer, cyphertext: ByteBuffer): Boolean {
         val kp = keyPair ?: return false
 
         val plaintext_arr = ByteArray(plaintext.limit())
@@ -134,15 +138,22 @@ class BiometricsKey(private val keyName: String) {
 
 
     fun decrypt(cyphertext: ByteBuffer): BiometricKeyDecrypt? {
-        val kp = keyPair ?: return null
-        return(BiometricKeyDecrypt(kp, cyphertext))
+
+        try {
+            val kp = keyPair // ?: return null
+            kp?.let {
+                return (BiometricKeyDecrypt(kp, cyphertext))
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception: $e")
+        }
+        return null
     }
-
-
 }
 
 
-class BiometricKeyDecrypt(val keyPair :KeyPair, cyphertext: ByteBuffer) {
+class BiometricKeyDecrypt(var keyPair: KeyPair, cyphertext: ByteBuffer) {
 
     val encryptedkey_arr: ByteArray
     val cyphertext_iv: ByteArray
@@ -150,7 +161,7 @@ class BiometricKeyDecrypt(val keyPair :KeyPair, cyphertext: ByteBuffer) {
 
     init {
         val version = cyphertext.getInt()
-        if  (version != 1) {
+        if (version != 1) {
             encryptedkey_arr = byteArrayOf()
             cyphertext_iv = byteArrayOf()
             cyphertext_arr = byteArrayOf()
@@ -169,14 +180,33 @@ class BiometricKeyDecrypt(val keyPair :KeyPair, cyphertext: ByteBuffer) {
     }
 
     fun prompt(biometrics_prompt: BiometricPrompt, info: BiometricPrompt.PromptInfo) {
-        val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
-        cipher.init(KeyProperties.PURPOSE_DECRYPT, keyPair.private)
+        val aesCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
 
-        biometrics_prompt.authenticate(info, BiometricPrompt.CryptoObject(cipher))
+        try {
+            aesCipher.init(KeyProperties.PURPOSE_DECRYPT, keyPair.private)
+            biometrics_prompt.authenticate(info, BiometricPrompt.CryptoObject(aesCipher))
+
+        } catch (ex: Exception) {
+            when (ex) {
+                is KeyPermanentlyInvalidatedException -> { // user changed fingerprints on the device
+
+                    val keyStore = KeyStore.getInstance("AndroidKeyStore")
+                    keyStore.load(null)
+                    keyStore.deleteEntry(BIOMETRIC_KEY_NAME)
+
+                    val sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+                    sharedPreferences.edit()
+                            .remove(PREF_USERNAME)
+                            .remove(PREF_ACCESS_TOKEN)
+                            .apply()
+                }
+                else -> throw ex
+            }
+        }
     }
 
 
-    fun final(crypto_object: BiometricPrompt.CryptoObject?, plaintext:ByteBuffer): Boolean {
+    fun final(crypto_object: BiometricPrompt.CryptoObject?, plaintext: ByteBuffer): Boolean {
         val cipher = crypto_object?.cipher ?: return false
 
         try {
@@ -188,9 +218,7 @@ class BiometricKeyDecrypt(val keyPair :KeyPair, cyphertext: ByteBuffer) {
             aesCipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
 
             plaintext.put(aesCipher.doFinal(cyphertext_arr))
-        }
-
-        catch (e: GeneralSecurityException) {
+        } catch (e: GeneralSecurityException) {
             plaintext.position(0)
             return false
         }
@@ -199,5 +227,9 @@ class BiometricKeyDecrypt(val keyPair :KeyPair, cyphertext: ByteBuffer) {
 
         plaintext.flip()
         return true
+    }
+
+    companion object {
+        const val TAG = "BiometricKeyDecrypt"
     }
 }
