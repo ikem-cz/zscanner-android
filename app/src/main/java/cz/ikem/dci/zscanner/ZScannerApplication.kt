@@ -28,7 +28,7 @@ class ZScannerApplication : Application() {
         WorkManager.initialize(this, configuration)
 
         // Initialize biometrics lock
-        masterKey = BiometricsKey("zScanner Master Key")
+        masterKey = BiometricsKey(BIOMETRIC_KEY_NAME)
 
     }
 

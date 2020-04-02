@@ -65,7 +65,7 @@ class JobsOverviewActivity : AppCompatActivity() {
         val username = sharedPreferences.getString(PREF_USERNAME, "")
 
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_textview)?.apply {
-            text = getString(R.string.username_prefix)+": " + (username?.toLowerCase() ?: "???")
+            text = getString(R.string.username_prefix) + ": " + (username?.toLowerCase() ?: "???")
         }
 
         nav_view.setNavigationItemSelectedListener {
@@ -127,9 +127,9 @@ class JobsOverviewActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         sharedPreferences.edit()
-            .remove(PREF_USERNAME)
-            .remove(PREF_ACCESS_TOKEN)
-            .apply()
+                .remove(PREF_USERNAME)
+                .remove(PREF_ACCESS_TOKEN)
+                .apply()
 
         val intent = Intent(this, SplashLoginActivity::class.java)
         startActivity(intent)
