@@ -75,7 +75,11 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
             mViewModel.pageActions.observe(viewLifecycleOwner, Observer<PageActionsQueue> {
                 adapter.syncActionsQueue(mViewModel)
-                    view.fab_next_send.isActivated = mViewModel.containsAtLeastOnePage()
+
+                val currentPosition = mRecyclerView.adapter?.itemCount
+                mRecyclerView.smoothScrollToPosition(currentPosition ?: 0)
+
+                view.fab_next_send.isActivated = mViewModel.containsAtLeastOnePage()
             })
         }
 
