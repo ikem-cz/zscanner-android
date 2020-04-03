@@ -5,10 +5,10 @@
     <string name="drawer_purge">Odstranit historii</string>
     <string name="drawer_logout">Odhlásit</string>
 
-    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS.\n\n© 2019-2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
+    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo Nemocničních Informačních Systémů (NIS).\n\n© 2019–2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
 
     <string name="jobs_overview_no_jobs">žádné uložené úlohy</string>
-    <string name="login_screen_username_placeholder"><i><small>login</small></i></string>
+    <string name="login_screen_username_placeholder"><i><small>uživatelské jméno</small></i></string>
     <string name="login_screen_password_placeholder"><i><small>heslo</small></i></string>
     <string name="login_screen_submit">Přihlásit</string>
     <string name="username_prefix">Přihlášený uživatel</string>
