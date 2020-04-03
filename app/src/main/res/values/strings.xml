@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">zScanner</string>
 
@@ -14,18 +15,24 @@
     <string name="username_prefix">Current user</string>
 
     <string name="fragment_patient_hint"><i><small>personal identification number</small></i></string>
-
     <string name="fragment_patient_patient">Search by NIN</string>
-    <string name="fragment_patient_mru">… choose from history … </string>
+    <string name="fragment_patient_mru">… choose from history …</string>
     <string name="fragment_patient_scan">… or scan</string>
+    <string name="fragment_patient_scan_barcode">Scan the barcode or QR code with patient ID</string>
 
     <string name="fragment_document_type">Choose document type</string>
     <string name="fragment_document_sub_type">Choose document subtype</string>
-
     <string name="fragment_document_hint_name"><i><small>description (optional)</small></i></string>
 
     <string name="fragment_pages_camera">Take a picture</string>
     <string name="fragment_pages_instruction">no pictures chosen</string>
+    <string name="fragment_pages_deleted">Deleted</string>
+    <string name="fragment_pages_back">Back</string>
+
+    <string name="fragment_jobs_overview_history">History</string>
+    <string name="fragment_jobs_overview_department">Choose the department</string>
+    <string name="fragment_jobs_description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
+    <string name="fragment_jobs_description_without_subtype">Type: %1$s, pages: %2$d</string>
 
     <string name="logout_prompt_text">Are you sure you want to log out of and erase all saved data?</string>
     <string name="logout_prompt_button_negative">LOG OUT</string>
@@ -39,22 +46,14 @@
     <string name="error_out_of_memory">Memory couldn\'t be allocated</string>
     <string name="error_no_camera">No camera available</string>
     <string name="error_no_permissions">You cannot continue without granting necessary permissions</string>
-
-    <string name="fragment_jobs_overview_history">History</string>
-    <string name="fragment_jobs_overview_department">Choose the department</string>
     
     <string name="biometric_auth">Biometric authentication</string>
     <string name="login_with_fingerprint">Login with fingerprint</string>
     <string name="login_with_password">Login with password</string>
 
-    <string name="description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
-    <string name="description_without_subtype">Type: %1$s, pages: %2$d</string>
-
     <string name="title_patient">Patient selection</string>
     <string name="title_foto">Photos</string>
     <string name="title_type">Document type</string>
     <string name="title_subtype">Document subtype</string>
-
-    <string name="scan_barcode">Scan the bacrcode or QR code with patient ID</string>
 
 </resources>
