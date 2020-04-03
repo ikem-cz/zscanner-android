@@ -123,6 +123,7 @@ class JobsOverviewActivity : AppCompatActivity() {
             }
         })
 
+        DepartmentsUtils(this).nukeAllDepartments()
         JobUtils(this).nukeAllJobs()
 
         val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
@@ -135,6 +136,5 @@ class JobsOverviewActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
 
 }

@@ -18,4 +18,9 @@ class DepartmentRepository(private val departmentDao: DepartmentDao) {
         departmentDao.updateDepartmentsTransaction(departments)
     }
 
+    @WorkerThread
+    fun deleteAllDepartments() {
+        departmentDao.deleteAll()
+    }
+
 }
