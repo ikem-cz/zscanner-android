@@ -17,7 +17,7 @@ object HttpClient {
 
     var accessToken: String? = null // In-memory access token, proof that the user is authenticated
 
-    val name = BuildConfig.VERSION_NAME
+    const val name = BuildConfig.APPLICATION_ID
     var version = BuildConfig.VERSION_CODE
     private var userAgent = "${name}/${version}"
 

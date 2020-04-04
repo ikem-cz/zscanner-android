@@ -75,14 +75,18 @@ class CreateMessagePagesFragment : androidx.fragment.app.Fragment() {
 
             mViewModel.pageActions.observe(viewLifecycleOwner, Observer<PageActionsQueue> {
                 adapter.syncActionsQueue(mViewModel)
-                    view.fab_next_send.isActivated = mViewModel.containsAtLeastOnePage()
+
+                val currentPosition = mRecyclerView.adapter?.itemCount
+                mRecyclerView.smoothScrollToPosition(currentPosition ?: 0)
+
+                view.fab_next_send.isActivated = mViewModel.containsAtLeastOnePage()
             })
         }
 
         mViewModel.undoAction.observe(viewLifecycleOwner, Observer<PageActionsQueue.PageAction> {
             if (mViewModel.undoAction.value != null) {
-                mSnackbar = Snackbar.make(view.popup_layout_buttons, "Smazáno.", Snackbar.LENGTH_INDEFINITE) //TODO: translate
-                        .setAction("Zpět") {//TODO: translate
+                mSnackbar = Snackbar.make(view.popup_layout_buttons, R.string.fragment_pages_deleted, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.fragment_pages_back) {
                             mViewModel.addPage(mViewModel.undoAction.value?.page?.path, mViewModel.undoAction.value?.target, null)
                         }
                 mSnackbar?.show()

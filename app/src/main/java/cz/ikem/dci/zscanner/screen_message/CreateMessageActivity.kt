@@ -134,7 +134,7 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     //region OnCreateMessageViewsInteractionListener implementation
     override fun onScanPatientIdButtonPress() {
         IntentIntegrator(this).apply {
-            setPrompt(applicationContext.resources.getString(R.string.scan_barcode))
+            setPrompt(applicationContext.resources.getString(R.string.fragment_patient_scan_barcode))
             initiateScan()
         }
     }

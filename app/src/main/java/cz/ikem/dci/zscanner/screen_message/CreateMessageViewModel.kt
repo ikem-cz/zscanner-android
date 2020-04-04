@@ -176,8 +176,8 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
         val dateString = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
         val numpages = filePaths.count()
 
-        val descWithSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.description_with_subtype, docType.display, docSubType?.display, numpages)
-        val descNoSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.description_without_subtype, docType.display, numpages)
+        val descWithSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.fragment_jobs_description_with_subtype, docType.display, docSubType?.display, numpages)
+        val descNoSubtype = zapplication.resources.getString(cz.ikem.dci.zscanner.R.string.fragment_jobs_description_without_subtype, docType.display, numpages)
         // create description string
         val description = if (!docSubType?.display.isNullOrEmpty()) {
             descWithSubtype

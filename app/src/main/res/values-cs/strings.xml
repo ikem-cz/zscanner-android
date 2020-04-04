@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">zScanner</string>
 
@@ -5,19 +6,19 @@
     <string name="drawer_purge">Odstranit historii</string>
     <string name="drawer_logout">Odhlásit</string>
 
-    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo NIS.\n\n© 2019-2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
+    <string name="about_text">Aplikace zScanner je určena k rychlému importu dokumentů vyšetření a fotodokumentace\ndo Nemocničních Informačních Systémů (NIS).\n\n© 2019–2020 Datové centrum IKEM\n\nCyber Security by TeskaLabs.</string>
 
     <string name="jobs_overview_no_jobs">žádné uložené úlohy</string>
-    <string name="login_screen_username_placeholder"><i><small>login</small></i></string>
+    <string name="login_screen_username_placeholder"><i><small>uživatelské jméno</small></i></string>
     <string name="login_screen_password_placeholder"><i><small>heslo</small></i></string>
     <string name="login_screen_submit">Přihlásit</string>
     <string name="username_prefix">Přihlášený uživatel</string>
 
     <string name="fragment_patient_hint"><i><small>rodné číslo</small></i></string>
-
     <string name="fragment_patient_patient">Vyhledat podle rodného čísla</string>
     <string name="fragment_patient_mru">… vybrat z historie … </string>
     <string name="fragment_patient_scan">… nebo naskenovat</string>
+    <string name="fragment_patient_scan_barcode">Naskenujte čárový kód nebo QR kód s ID pacienta</string>
 
     <string name="fragment_document_type">Vybrat typ události</string>
     <string name="fragment_document_sub_type">Vybrat specifikaci události</string>
@@ -25,6 +26,13 @@
 
     <string name="fragment_pages_camera">Vyfotit</string>
     <string name="fragment_pages_instruction">žádné vybrané fotografie</string>
+    <string name="fragment_pages_deleted">Smazáno</string>
+    <string name="fragment_pages_back">Zpět</string>
+
+    <string name="fragment_jobs_overview_history">Historie</string>
+    <string name="fragment_jobs_overview_department">Vybrat pracoviště</string>
+    <string name="fragment_jobs_description_with_subtype">Typ: %1$s, specifikace: %2$s, fotky: %3$d</string>
+    <string name="fragment_jobs_description_without_subtype">Typ: %1$s, fotky: %2$d</string>
 
     <string name="logout_prompt_text">Opravdu se chcete odhlásit z aplikace a vymazat veškerá uložená data?</string>
     <string name="logout_prompt_button_negative">ODHLÁSIT</string>
@@ -39,21 +47,13 @@
     <string name="error_no_camera">Není k dispozici fotoaparát</string>
     <string name="error_no_permissions">Bez udělení potřebných oprávnění nelze pokračovat</string>
 
-    <string name="fragment_jobs_overview_history">Historie</string>
-    <string name="fragment_jobs_overview_department">Vybrat pracoviště</string>
-
     <string name="biometric_auth">Biometrická autentizace</string>
     <string name="login_with_fingerprint">Přihlášení otiskem prstu</string>
     <string name="login_with_password">Přihlásit se pomocí hesla</string>
-
-    <string name="description_with_subtype">Typ: %1$s, specifikace: %2$s, fotky: %3$d</string>
-    <string name="description_without_subtype">Typ: %1$s, fotky: %2$d</string>
 
     <string name="title_patient">Výběr pacienta</string>
     <string name="title_foto">Fotografie</string>
     <string name="title_type">Typ události</string>
     <string name="title_subtype">Specifikace události</string>
-
-    <string name="scan_barcode">Naskenujte čárový kód nebo QR kód s ID pacienta</string>
 
 </resources>
