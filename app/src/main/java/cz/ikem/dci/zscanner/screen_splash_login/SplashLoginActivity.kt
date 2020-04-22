@@ -31,42 +31,45 @@ class SplashLoginActivity : AppCompatActivity() {
     // with the intention to forward the user to a "main" activity
     fun makeProgress() {
         val app = application as ZScannerApplication
-        // If the application is not ready, show the splash screen with a progress bar spinning
-        if (!checkIfReady(app)) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, SplashFragment())
-                    .commit()
-            return
-        }
-
-        // If we don't have an access token, then go to login fragment
         val accessToken = sharedPreferences.getString(PREF_ACCESS_TOKEN, null)
-        if ((accessToken == null) || (HttpClient.accessToken == null)) {
-            supportFragmentManager.beginTransaction()
+        val inMemoryToken = HttpClient.accessToken
+
+        when {
+            // If the application is not ready, show the splash screen with a progress bar spinning
+            !checkIfReady(app) -> {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, SplashFragment())
+                        .commit()
+
+            }
+            // If we don't have an access token, then go to login fragment
+            accessToken == null ->{
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.container, LoginFragment())
                     .commit()
-            return
-        }
-
-        // If we don't have the in-memory HttpClient access token, get it
-        if (HttpClient.accessToken == null) {
-            if (BiometricManager.from(app).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
+            }
+            // If we don't have the in-memory HttpClient access token, get it
+            inMemoryToken == null && (BiometricManager.from(app).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, BiometricsFragment(app))
-                        .commitAllowingStateLoss() // otherwise it crashes if user leaves the screen
-            } else {
-                // If biometry is not available, fallback to a username/password login dialog
+                        .commit()
+
+            }
+            // If biometry is not available, fallback to a username/password login dialog
+            inMemoryToken == null && (BiometricManager.from(app).canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS)  -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, LoginFragment())
                         .commit()
-            }
-            return
-        }
 
-        // We are done here ...
-        val intent = Intent(this, JobsOverviewActivity::class.java)
-        startActivity(intent)
-        this.finish()
+            }
+            else -> {
+                // We are done here ...
+                val intent = Intent(this, JobsOverviewActivity::class.java)
+                startActivity(intent)
+                this.finish()
+            }
+
+        }
     }
 
 }
