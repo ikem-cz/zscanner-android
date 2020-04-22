@@ -1,6 +1,7 @@
 package cz.ikem.dci.zscanner.screen_splash_login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -42,7 +43,12 @@ class BiometricsFragment(val app: ZScannerApplication) : androidx.fragment.app.F
         if (biometrics_prompt == null) {
             Log.e(TAG, "Failed to create a biometrics prompt")
         } else {
-            decryptor?.prompt(biometrics_prompt, createPromptInfo())
+            decryptor?.prompt(biometrics_prompt, createPromptInfo()) { keyPermanentlyInvalidated ->
+                if (keyPermanentlyInvalidated) {
+                    val intent = Intent(app, SplashLoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
     }
 

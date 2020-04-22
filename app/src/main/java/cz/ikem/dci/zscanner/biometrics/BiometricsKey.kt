@@ -179,7 +179,7 @@ class BiometricKeyDecrypt(var keyPair: KeyPair, cyphertext: ByteBuffer) {
         cyphertext.get(cyphertext_arr, 0, cyphertext_arr.size)
     }
 
-    fun prompt(biometrics_prompt: BiometricPrompt, info: BiometricPrompt.PromptInfo) {
+    fun prompt(biometrics_prompt: BiometricPrompt, info: BiometricPrompt.PromptInfo, onExceptionCallback: (keyPermanentlyInvalidated: Boolean) -> Unit) {
         val aesCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
 
         try {
@@ -199,6 +199,7 @@ class BiometricKeyDecrypt(var keyPair: KeyPair, cyphertext: ByteBuffer) {
                             .remove(PREF_USERNAME)
                             .remove(PREF_ACCESS_TOKEN)
                             .apply()
+                    onExceptionCallback(true)
                 }
                 else -> throw ex
             }
