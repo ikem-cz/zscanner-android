@@ -33,6 +33,7 @@
     <string name="fragment_jobs_overview_department">Choose the department</string>
     <string name="fragment_jobs_description_with_subtype">Type: %1$s, subtype: %2$s, pages: %3$d</string>
     <string name="fragment_jobs_description_without_subtype">Type: %1$s, pages: %2$d</string>
+    <string name="fragment_jobs_refresh_departments">Refresh the list of departments</string>
 
     <string name="logout_prompt_text">Are you sure you want to log out of and erase all saved data?</string>
     <string name="logout_prompt_button_negative">LOG OUT</string>
@@ -55,5 +56,6 @@
     <string name="title_foto">Photos</string>
     <string name="title_type">Document type</string>
     <string name="title_subtype">Document subtype</string>
+
 
 </resources>

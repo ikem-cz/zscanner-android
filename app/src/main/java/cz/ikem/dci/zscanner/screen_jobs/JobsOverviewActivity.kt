@@ -48,19 +48,6 @@ class JobsOverviewActivity : AppCompatActivity() {
                     .commitNow()
         }
 
-        val workManager = WorkManager.getInstance()
-        workManager.pruneWork()
-
-        // enqueue refresh departments worker
-        val refreshDepartments = PeriodicWorkRequest.Builder(RefreshDepartmentsWorker::class.java, 2, TimeUnit.HOURS) // TODO decide how often
-                .setConstraints(Constraints
-                        .Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build())
-                .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
-                .build()
-        workManager.enqueue(refreshDepartments)
-
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val username = sharedPreferences.getString(PREF_USERNAME, "")
 
@@ -68,7 +55,38 @@ class JobsOverviewActivity : AppCompatActivity() {
             text = getString(R.string.username_prefix) + ": " + (username?.toLowerCase() ?: "???")
         }
 
-        nav_view.setNavigationItemSelectedListener {
+        refreshDepartments()
+        setMenuOptions()
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawer_layout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun refreshDepartments() {
+        val workManager = WorkManager.getInstance()
+
+        // enqueue refresh departments worker
+        val refreshDepartments = OneTimeWorkRequest.Builder(RefreshDepartmentsWorker::class.java)
+                .addTag(WORKTAG_REFRESH_DEPARTMENTS)
+                .setConstraints(Constraints
+                        .Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build())
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+                .build()
+        workManager.enqueue(refreshDepartments)
+    }
+
+    private fun setMenuOptions() {
+        nav_view?.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_purge -> {
                     JobUtils(this).clearFinishedJobs()
@@ -94,18 +112,6 @@ class JobsOverviewActivity : AppCompatActivity() {
             true
         }
     }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                drawer_layout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
 
     private fun logout() {
         val app = applicationContext as ZScannerApplication
