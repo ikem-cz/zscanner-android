@@ -33,6 +33,7 @@
     <string name="fragment_jobs_overview_department">Vybrať pracovisko</string>
     <string name="fragment_jobs_description_with_subtype">Typ: %1$s, Špecifikácia: %2$s, Fotky: %3$d</string>
     <string name="fragment_jobs_description_without_subtype">Typ: %1$s, Fotky: %2$d</string>
+    <string name="fragment_jobs_refresh_departments">Načíst seznam oddělení</string> <!-- TODO: this is in Czech, needs to be updated to Slovak-->
 
     <string name="logout_prompt_text">Naozaj sa chcete odhlásiť z aplikácie a vymazať všetky uložené dáta?</string>
     <string name="logout_prompt_button_negative">ODHLÁSIŤ</string>

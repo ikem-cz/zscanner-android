@@ -10,13 +10,17 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.*
 import cz.ikem.dci.zscanner.KEY_DEPARTMENT
 import cz.ikem.dci.zscanner.R
+import cz.ikem.dci.zscanner.WORKTAG_REFRESH_DEPARTMENTS
 import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.SendJob
 import cz.ikem.dci.zscanner.screen_message.CreateMessageActivity
+import cz.ikem.dci.zscanner.workers.RefreshDepartmentsWorker
 import kotlinx.android.synthetic.main.fragment_jobs_overview.*
 import kotlinx.android.synthetic.main.fragment_jobs_overview.view.*
+import java.util.concurrent.TimeUnit
 
 class JobsOverviewFragment : androidx.fragment.app.Fragment() {
 
@@ -41,15 +45,19 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
 
         createJobsAdapter()
         createDepartmentAdapter(this.requireContext())
+
+        refresh_departments_button?.setOnClickListener {
+            JobsOverviewActivity().refreshDepartments()
+        }
     }
 
 
-    private fun createJobsAdapter(){
+    private fun createJobsAdapter() {
         val jobsAdapter = JobsOverviewAdapter()
         jobs_recycler_view?.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = jobsAdapter
-            view?.let{
+            view?.let {
                 setEmptyView(it.jobs_empty_view)
             }
         }
@@ -71,7 +79,7 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
     private fun createDepartmentAdapter(context: Context) {
         val departmentAdapter = DepartmentsAdapter(context)
 
-        departmentAdapter.onItemSelected = {department ->
+        departmentAdapter.onItemSelected = { department ->
             val intent = Intent(context, CreateMessageActivity::class.java).apply {
                 putExtras(
                         Bundle().apply {
@@ -80,14 +88,19 @@ class JobsOverviewFragment : androidx.fragment.app.Fragment() {
                 )
             }
             departmentViewModel.chosenDepartment.value = department
-             startActivity(intent)
+            startActivity(intent)
         }
 
         departments_recycler_view.adapter = departmentAdapter
         departments_recycler_view.layoutManager = LinearLayoutManager(context)
 
         departmentViewModel.storedDepartments.observe(viewLifecycleOwner, androidx.lifecycle.Observer { list: List<Department>? ->
-            departmentAdapter.submitList(list)
+            if (list.isNullOrEmpty()) {
+                refresh_departments_button?.visibility = View.VISIBLE
+            } else {
+                refresh_departments_button?.visibility = View.GONE
+                departmentAdapter.submitList(list)
+            }
         })
     }
 }
