@@ -27,7 +27,11 @@ import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.R
 import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.DocumentType
+import cz.ikem.dci.zscanner.screen_jobs.DepartmentsUtils
+import cz.ikem.dci.zscanner.screen_jobs.JobUtils
 import cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment.Companion.EXTRA_DEPARTMENT
+import cz.ikem.dci.zscanner.screen_splash_login.SplashLoginActivity
+import cz.ikem.dci.zscanner.webservices.HttpClient
 import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
 import kotlinx.android.synthetic.main.page_row.*
 import java.io.File
@@ -39,10 +43,7 @@ import java.util.concurrent.TimeUnit
 
 class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteractionListener, KeyboardCallback {
 
-    //region constants
     private val TAG = CreateMessageActivity::class.java.simpleName
-
-    //endregion
 
     private lateinit var mViewModel: CreateMessageViewModel
     private var mCurrentPhotoPath: String? = null // on photo capture result contains file uri
@@ -103,6 +104,12 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                 .enqueue()
 
 //        Log.d(TAG, "Url = ${HttpClient.ApiServiceBackend.getDocumentTypes(departmentId).request().url()}")
+
+        mViewModel.logoutOnHttpResponse.observe(this, Observer<Boolean> { value ->
+            when (value) {
+                true -> logout()
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -242,4 +249,23 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
     }
     //endregion
 
+
+    private fun logout(){
+        val app = applicationContext as ZScannerApplication
+
+        HttpClient.reset(null)
+
+        val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit()
+                .remove(PREF_USERNAME)
+                .remove(PREF_ACCESS_TOKEN)
+                .apply()
+
+        DepartmentsUtils(this).nukeAllDepartments()
+        JobUtils(this).nukeAllJobs()
+
+        val intent = Intent(this, SplashLoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }

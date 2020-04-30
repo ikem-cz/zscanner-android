@@ -113,13 +113,13 @@ class JobsOverviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun logout() {
+    fun logout() {
         val app = applicationContext as ZScannerApplication
         val access_token = HttpClient.accessToken
         HttpClient.reset(null)
 
         // Call the logout remotely ... but ignore the result (for now).
-        sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
 
         HttpClient.ApiServiceBackend.postLogout(access_token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -132,7 +132,7 @@ class JobsOverviewActivity : AppCompatActivity() {
         DepartmentsUtils(this).nukeAllDepartments()
         JobUtils(this).nukeAllJobs()
 
-        val sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        val sharedPreferences = app.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         sharedPreferences.edit()
                 .remove(PREF_USERNAME)
                 .remove(PREF_ACCESS_TOKEN)

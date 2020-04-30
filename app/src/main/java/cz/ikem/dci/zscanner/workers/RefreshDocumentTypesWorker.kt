@@ -6,9 +6,11 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.KEY_SUB_TYPE
 import cz.ikem.dci.zscanner.KEY_TYPE
+import cz.ikem.dci.zscanner.ZScannerApplication
 import cz.ikem.dci.zscanner.persistence.DocumentType
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment
+import cz.ikem.dci.zscanner.screen_message.CreateMessageViewModel
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import org.json.JSONException
 import org.json.JSONObject
@@ -18,8 +20,9 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
 
     private val TAG = RefreshDocumentTypesWorker::class.java.simpleName
 
-    val department = inputData.getString(CreateMessageTypeFragment.EXTRA_DEPARTMENT)
+    val app = applicationContext as ZScannerApplication
 
+    val department = inputData.getString(CreateMessageTypeFragment.EXTRA_DEPARTMENT)
 
     override fun doWork(): Result {
 
@@ -31,6 +34,12 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
             department?.let {
 
                 val response = HttpClient.ApiServiceBackend.getDocumentTypes(department).execute()
+
+                if (response.code() == 403) {
+                    CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
+                    return Result.failure()
+                }
+
                 if (response.code() != 200) {
                     return Result.retry()
                 }
