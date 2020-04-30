@@ -122,7 +122,6 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
             when {
                 patientInput.code != null -> {
-                    mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
                     no_patient_layout.visibility = View.INVISIBLE
@@ -160,7 +159,14 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
 
         mViewModel.noSuggestions.observe(viewLifecycleOwner, Observer<Boolean> { value ->
             when (value) {
-                true -> view.no_patient_layout.visibility = View.VISIBLE
+                true -> {
+                    if (patient_id_edittext?.hasFocus() == true) {
+                        view.no_patient_layout.visibility = View.VISIBLE
+                    } else {
+                        // this prevents displaying the exclamation mark when the user comes to the screen by going back from taking photos
+                        view.no_patient_layout.visibility = View.INVISIBLE
+                    }
+                }
                 false -> view.no_patient_layout.visibility = View.INVISIBLE
             }
         })

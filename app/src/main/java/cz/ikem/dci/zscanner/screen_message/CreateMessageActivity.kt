@@ -29,6 +29,7 @@ import cz.ikem.dci.zscanner.persistence.Department
 import cz.ikem.dci.zscanner.persistence.DocumentType
 import cz.ikem.dci.zscanner.screen_message.CreateMessageTypeFragment.Companion.EXTRA_DEPARTMENT
 import cz.ikem.dci.zscanner.workers.RefreshDocumentTypesWorker
+import kotlinx.android.synthetic.main.fragment_message_patient.*
 import kotlinx.android.synthetic.main.page_row.*
 import java.io.File
 import java.io.IOException
@@ -114,7 +115,8 @@ class CreateMessageActivity : AppCompatActivity(), OnCreateMessageViewsInteracti
                     Log.v(TAG, "Barcode scanning cancelled")
                 } else {
                     Log.v(TAG, "Scanned: ${result.contents}")
-                    mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(null, result.contents, result.contents, true))
+                    patient_id_edittext?.requestFocus()
+                    mViewModel.patientInput.postValue(CreateMessageViewModel.PatientInput(null, result.contents, null, true))
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)
