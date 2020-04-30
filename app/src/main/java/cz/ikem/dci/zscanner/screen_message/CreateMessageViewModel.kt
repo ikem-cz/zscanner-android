@@ -60,31 +60,6 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     val noSuggestions: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
     val tooManySuggestions: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
 
-    fun startDecodeJob(code: String) {
-        decodeJob?.cancel()
-        dispatchDecodeJob(code)
-    }
-
-    private var decodeJob: Job? = null
-    private fun dispatchDecodeJob(code: String) {
-        decodeJob = CoroutineScope(Dispatchers.Default).launch {
-            try {
-                val request = HttpClient.ApiServiceBackend.decodePatient(code)
-                val response = request.execute()
-                if (!isActive) {
-                    throw Exception("Cancelled")
-                }
-                noSuggestions.postValue(false)
-
-                val body = response.body() ?: throw Exception("response.body() was null")
-                patientInput.postValue(PatientInput(body, body.getDisplay(), null, false))
-            } catch (e: Exception) {
-                Log.e(TAG, "Decode job failed for $code, exception: $e")
-                noSuggestions.postValue(true)
-            }
-        }
-    }
-
     val undoAction: MutableLiveData<PageActionsQueue.PageAction> = MutableLiveData<PageActionsQueue.PageAction>().apply { value = null }
 
     private val mPageActions: PageActionsQueue = PageActionsQueue()

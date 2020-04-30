@@ -122,7 +122,6 @@ class CreateMessagePatientFragment : Fragment(), MruSelectionCallback {
         mViewModel.patientInput.observe(viewLifecycleOwner, Observer { patientInput ->
             when {
                 patientInput.code != null -> {
-                    mViewModel.startDecodeJob(patientInput.code)
                     mValidated = false
                     patient_validated_layout.visibility = View.INVISIBLE
                     no_patient_layout.visibility = View.INVISIBLE
