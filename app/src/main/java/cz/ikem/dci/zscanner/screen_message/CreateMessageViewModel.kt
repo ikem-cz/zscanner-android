@@ -59,6 +59,7 @@ class CreateMessageViewModel(private val zapplication: Application) : AndroidVie
     val loadingSuggestions: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
     val noSuggestions: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
     val tooManySuggestions: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
+    val logoutOnHttpResponse: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = false }
 
     val undoAction: MutableLiveData<PageActionsQueue.PageAction> = MutableLiveData<PageActionsQueue.PageAction>().apply { value = null }
 

@@ -6,6 +6,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Repositories
+import cz.ikem.dci.zscanner.screen_message.CreateMessageViewModel
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -16,6 +17,8 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
     @Volatile
     private var mCancelling = false
+
+    val app = applicationContext as ZScannerApplication
 
     private val TAG = SendPageWorker::class.java.simpleName
 
@@ -63,6 +66,11 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
             )
 
             val response = request.execute()
+
+            if (response.code() == 403) {
+                CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
+                return Result.failure()
+            }
 
             if (response.code() != 200) {
                 throw Exception("Non OK response: $response")

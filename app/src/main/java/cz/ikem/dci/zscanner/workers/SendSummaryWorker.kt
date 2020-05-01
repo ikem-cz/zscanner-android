@@ -6,6 +6,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Repositories
+import cz.ikem.dci.zscanner.screen_message.CreateMessageViewModel
 import cz.ikem.dci.zscanner.webservices.HttpClient
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -16,6 +17,8 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
     @Volatile
     private var mCancelling = false
+
+    val app = applicationContext as ZScannerApplication
 
     private val TAG = SendSummaryWorker::class.java.simpleName
 
@@ -54,10 +57,13 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
             val response = request.execute()
 
+            if (response.code() == 403) {
+                CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
+                return Result.failure()
+            }
+
             if (response.code() != 200) {
-                Log.e(TAG, "Response on postDocumentSummary: response: $response")
-                val code = response.code()
-                throw Exception("Non OK response, response code: $code")
+                throw Exception("Non OK response, response code: ${response.code()}")
             }
 
             if (mCancelling) {
