@@ -23,8 +23,8 @@ class FailedLoginDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val args = arguments
-        val title = args!!.getString(KEY_TITLE, "")
-        val message = args.getString(KEY_MESSAGE, "")
+        val title = args?.getString(KEY_TITLE, "")
+        val message = args?.getString(KEY_MESSAGE, "")
 
         return AlertDialog.Builder(context!!)
             .setTitle(title)

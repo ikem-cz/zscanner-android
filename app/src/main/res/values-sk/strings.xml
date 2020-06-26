@@ -47,10 +47,12 @@
     <string name="error_out_of_memory">Rezervácia priestoru na úložisku telefónu sa nepodarila</string>
     <string name="error_no_camera">Fotoaparát nie je k dizpozícii</string>
     <string name="error_no_permissions">Bez udelenia potrebných oprávnení sa nedá pokračovať</string>
+    <string name="error_login_not_successful">Přihlášení se nezdařilo</string> <!-- TODO: this is in Czech, needs to be updated to Slovak-->
 
     <string name="biometric_auth">Biometrická autentizácia</string>
     <string name="login_with_fingerprint">Prihlásenie odtlačkom prstu</string>
     <string name="login_with_password">Prihlásiť sa pomocou hesla</string>
+    <string name="no_biometry_available">Telefon nemá k dispozici biometrické ověření</string> <!-- TODO: this is in Czech, needs to be updated to Slovak-->
 
     <string name="title_patient">Výber pacienta</string>
     <string name="title_foto">Fotografie</string>

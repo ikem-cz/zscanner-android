@@ -47,10 +47,12 @@
     <string name="error_out_of_memory">Memory couldn\'t be allocated</string>
     <string name="error_no_camera">No camera available</string>
     <string name="error_no_permissions">You cannot continue without granting necessary permissions</string>
+    <string name="error_login_not_successful">Login was not successful</string>
     
     <string name="biometric_auth">Biometric authentication</string>
     <string name="login_with_fingerprint">Login with fingerprint</string>
     <string name="login_with_password">Login with password</string>
+    <string name="no_biometry_available">No biometry available</string>
 
     <string name="title_patient">Patient selection</string>
     <string name="title_foto">Photos</string>
