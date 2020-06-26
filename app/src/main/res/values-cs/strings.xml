@@ -48,6 +48,7 @@
     <string name="error_no_camera">Není k dispozici fotoaparát</string>
     <string name="error_no_permissions">Bez udělení potřebných oprávnění nelze pokračovat</string>
     <string name="error_login_not_successful">Přihlášení se nezdařilo</string>
+    <string name="error">Chyba</string>
 
     <string name="biometric_auth">Biometrická autentizace</string>
     <string name="login_with_fingerprint">Přihlášení otiskem prstu</string>

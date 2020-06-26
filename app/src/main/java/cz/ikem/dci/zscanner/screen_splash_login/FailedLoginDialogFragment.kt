@@ -3,21 +3,18 @@ package cz.ikem.dci.zscanner.screen_splash_login
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
+import cz.ikem.dci.zscanner.R
 
 
 class FailedLoginDialogFragment : DialogFragment() {
 
-    private val TITLE = "Chyba"
-    private val MESSAGE = "Přihlášení se nezdařilo"
-
-    private val KEY_TITLE = "ERR"
-    private val KEY_MESSAGE = "MSG"
+    private val title = getString(R.string.error)
+    private val message = getString(R.string.error_login_not_successful)
 
     init {
         val args = Bundle()
-        args.putString(KEY_TITLE, TITLE)
-        args.putString(KEY_MESSAGE, MESSAGE)
+        args.putString(KEY_TITLE, title)
+        args.putString(KEY_MESSAGE, message)
         arguments = args
     }
 
@@ -31,5 +28,10 @@ class FailedLoginDialogFragment : DialogFragment() {
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog?.cancel() }
             .create()
+    }
+
+    companion object{
+        const val KEY_TITLE = "ERR"
+        const val KEY_MESSAGE = "MSG"
     }
 }
