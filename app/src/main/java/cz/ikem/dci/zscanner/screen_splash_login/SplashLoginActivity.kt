@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import cz.ikem.dci.zscanner.*
@@ -42,13 +43,13 @@ class SplashLoginActivity : AppCompatActivity() {
                         .commit()
 
             }
-            // If we don't have an access token, then go to login fragment
-            accessToken == null ->{
+            // If we don't have an access token in shared preferences or in-memory -> go to login fragment
+            accessToken == null && inMemoryToken == null -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, LoginFragment())
-                    .commit()
+                        .replace(R.id.container, LoginFragment())
+                        .commit()
             }
-            // If we don't have the in-memory HttpClient access token, get it
+            // If we do have sharedPrefs token, but no in-memory HttpClient access token, get it
             inMemoryToken == null && (BiometricManager.from(app).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, BiometricsFragment(app))
@@ -56,20 +57,21 @@ class SplashLoginActivity : AppCompatActivity() {
 
             }
             // If biometry is not available, fallback to a username/password login dialog
-            inMemoryToken == null && (BiometricManager.from(app).canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS)  -> {
+            inMemoryToken == null && (BiometricManager.from(app).canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS) -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, LoginFragment())
                         .commit()
 
             }
-            else -> {
+            inMemoryToken != null -> {
                 // We are done here ...
                 val intent = Intent(this, JobsOverviewActivity::class.java)
                 startActivity(intent)
                 this.finish()
             }
-
+            else -> {
+                Toast.makeText(app, getString(R.string.error_login_not_successful), Toast.LENGTH_LONG).show()
+            }
         }
     }
-
 }

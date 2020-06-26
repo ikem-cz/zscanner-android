@@ -47,10 +47,13 @@
     <string name="error_out_of_memory">Nezdařila se rezervace prostoru v úložišti telefonu</string>
     <string name="error_no_camera">Není k dispozici fotoaparát</string>
     <string name="error_no_permissions">Bez udělení potřebných oprávnění nelze pokračovat</string>
+    <string name="error_login_not_successful">Přihlášení se nezdařilo</string>
+    <string name="error">Chyba</string>
 
     <string name="biometric_auth">Biometrická autentizace</string>
     <string name="login_with_fingerprint">Přihlášení otiskem prstu</string>
     <string name="login_with_password">Přihlásit se pomocí hesla</string>
+    <string name="no_biometry_available">Telefon nemá k dispozici biometrické ověření</string>
 
     <string name="title_patient">Výběr pacienta</string>
     <string name="title_foto">Fotografie</string>
