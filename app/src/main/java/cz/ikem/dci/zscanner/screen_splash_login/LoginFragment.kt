@@ -17,6 +17,7 @@ import cz.ikem.dci.zscanner.webservices.HttpClient
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import okhttp3.ResponseBody
 import java.nio.ByteBuffer
+import java.util.*
 
 //TODO: If (BiometricManager.from(app).canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS), display the info message about that
 
@@ -27,7 +28,7 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
     private val TAG = LoginFragment::class.java.simpleName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentView  = inflater.inflate(R.layout.fragment_login, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_login, container, false)
 
         val applicationContext = context?.applicationContext
         if (applicationContext != null) {
@@ -39,8 +40,8 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
             val password = fragmentView.password_edit_text.text.toString()
 
             HttpClient.ApiServiceBackend.postLogin(
-                username,
-                password
+                    username,
+                    password
             ).enqueue(this)
 
             fragmentView.submit_button.visibility = INVISIBLE
@@ -70,6 +71,7 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
 
                 val app = context?.applicationContext as ZScannerApplication
                 val cyphertext = ByteBuffer.allocate(access_token.size + 4096)
+                val sharedPreferences = sharedPreferences
 
                 // Try to encrypt the token and save it in shared preferences
                 if (app.masterKey.encrypt(ByteBuffer.wrap(access_token), cyphertext)) {
@@ -77,17 +79,24 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
                     val cyphertext_array = ByteArray(cyphertext.limit())
                     cyphertext.get(cyphertext_array)
 
-                    val sharedPreferences = sharedPreferences
                     if (sharedPreferences != null) {
                         val username = fragmentView.username_edit_text.text.toString()
                         sharedPreferences.edit()
-                            .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
-                            .putString(PREF_USERNAME, username)
-                            .apply()
+                                .putString(PREF_ACCESS_TOKEN, Base64.encodeToString(cyphertext_array, Base64.DEFAULT))
+                                .putString(PREF_USERNAME, username)
+                                .apply()
                     }
                 } else { // encryption failed. Allow to login, but without possibility to use biometry
                     Log.w(TAG, "Token encryption failed")
                     Toast.makeText(context, getString(R.string.no_biometry_available), Toast.LENGTH_SHORT).show()
+                }
+
+                // save the timestamp of last successful login so we can logout the user after the timeout on the server side
+                if (sharedPreferences != null) {
+                    val lastSuccessfulLogin = System.currentTimeMillis()
+                    sharedPreferences.edit()
+                            .putLong(PREF_LAST_SUCCESSFUL_LOGIN, lastSuccessfulLogin)
+                            .apply()
                 }
 
                 HttpClient.reset(access_token)

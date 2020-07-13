@@ -1,10 +1,12 @@
 package cz.ikem.dci.zscanner.screen_jobs
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.AlarmManager
+import android.app.AlarmManager.RTC
+import android.app.PendingIntent
+import android.content.*
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -22,12 +24,16 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 class JobsOverviewActivity : AppCompatActivity() {
 
     private val TAG = JobsOverviewActivity::class.java.simpleName
+
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -51,13 +57,15 @@ class JobsOverviewActivity : AppCompatActivity() {
         sharedPreferences = application.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
         val username = sharedPreferences.getString(PREF_USERNAME, "")
 
+
+
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_textview)?.apply {
             text = getString(R.string.username_prefix) + ": " + (username?.toLowerCase() ?: "???")
         }
 
         refreshDepartments()
         setMenuOptions()
-
+        scheduleAutomaticLogout()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -143,4 +151,24 @@ class JobsOverviewActivity : AppCompatActivity() {
         finish()
     }
 
+    /** send intent to logout automatically after [SERVER_SIDE_LOGOUT_TIMEOUT] */
+    private fun scheduleAutomaticLogout() {
+        val serverLogoutTime = sharedPreferences.getLong(PREF_LAST_SUCCESSFUL_LOGIN, System.currentTimeMillis()) + SERVER_SIDE_LOGOUT_TIMEOUT
+
+        // Creating the pending intent to send to the BroadcastReceiver
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, LogoutReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // Starts the alarm manager
+        alarmManager.setExact(
+                RTC,
+                serverLogoutTime,
+                pendingIntent
+        )
+    }
+
+    companion object {
+        val REQUEST_CODE = 100
+    }
 }

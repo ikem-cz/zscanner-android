@@ -71,6 +71,8 @@
 
         <activity android:name=".screen_about.AboutActivity"></activity>
 
+        <receiver android:name=".LogoutReceiver"/>
+
     </application>
 
 </manifest>

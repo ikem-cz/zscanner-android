@@ -14,7 +14,6 @@ import cz.ikem.dci.zscanner.workers.DirectoryCleanupWorker
 import cz.ikem.dci.zscanner.workers.PageFilesCleanupWorker
 import cz.ikem.dci.zscanner.workers.SendPageWorker
 import cz.ikem.dci.zscanner.workers.SendSummaryWorker
-import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 class JobUtils(private val context: Context) {
