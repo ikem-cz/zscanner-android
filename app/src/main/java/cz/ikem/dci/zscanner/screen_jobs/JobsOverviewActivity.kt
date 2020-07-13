@@ -158,7 +158,8 @@ class JobsOverviewActivity : AppCompatActivity() {
         // Creating the pending intent to send to the BroadcastReceiver
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, LogoutReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        intent.action = BROADCAST_ACTION_LOGOUT
+        pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE_LOGOUT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         // Starts the alarm manager
         alarmManager.setExact(
@@ -166,9 +167,5 @@ class JobsOverviewActivity : AppCompatActivity() {
                 serverLogoutTime,
                 pendingIntent
         )
-    }
-
-    companion object {
-        val REQUEST_CODE = 100
     }
 }

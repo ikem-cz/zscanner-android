@@ -46,6 +46,6 @@ const val PREF_TUTORIAL_NEXT_STEP = "TUTORIAL_NEXT"
 const val PREF_LAST_SUCCESSFUL_LOGIN = "PREF_LAST_SUCCESSFUL_LOGIN"
 
 const val BIOMETRIC_KEY_NAME = "zScanner Master Key"
-const val SERVER_SIDE_LOGOUT_TIMEOUT = 20000 //TODO!!! !!! !!! set to 8 hours
+const val SERVER_SIDE_LOGOUT_TIMEOUT = 8*60*1000 // 8h as this is logout time on the server side
 const val BROADCAST_ACTION_LOGOUT = "ACTION_LOGOUT"
-const val BROADCAST_EXTRA_SHOULD_LOGOUT = "SHOULD_LOGOUT"
+const val REQUEST_CODE_LOGOUT = 123 // can be whatever, just unique for the app
