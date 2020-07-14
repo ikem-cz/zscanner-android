@@ -40,6 +40,7 @@
     <string name="no_i_dont_want_to_button">ne, nechci</string>
     <string name="finish_prompt_text">Opravdu chcete ukončit tvorbu záznamu a vrátit se?</string>
     <string name="finish_prompt_button_negative">UKONČIT</string>
+    <string name="log_out_credentials_expired">Vypršela platnost přihlašovacích údajů. Prosím, přihlašte se znovu pomocí Vašeho jména a hesla.</string>
 
     <string name="err_invalid_patient">Není vybrán platný pacient.</string>
     <string name="err_no_photo">Není vytvořena ani jedna fotografie.</string>
