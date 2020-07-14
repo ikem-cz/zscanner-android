@@ -1,15 +1,16 @@
 package cz.ikem.dci.zscanner.screen_splash_login
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import cz.ikem.dci.zscanner.R
 
 
-class FailedLoginDialogFragment : DialogFragment() {
+class FailedLoginDialogFragment(context: Context) : DialogFragment() {
 
-    private val title = getString(R.string.error)
-    private val message = getString(R.string.error_login_not_successful)
+    private val title = context.resources.getString(R.string.error)
+    private val message = context.resources.getString(R.string.error_login_not_successful)
 
     init {
         val args = Bundle()
