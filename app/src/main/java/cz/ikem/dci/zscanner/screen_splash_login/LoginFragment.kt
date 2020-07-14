@@ -58,7 +58,9 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
         fragmentView.login_progress_bar.visibility = INVISIBLE
         fragmentView.submit_button.visibility = VISIBLE
 
-        FailedLoginDialogFragment().show(fragmentManager!!, "failedLogin")
+        parentFragmentManager?.let{
+            FailedLoginDialogFragment().show(it, FailedLoginDialogFragment.TAG)
+        }
     }
 
     // Retrofit callback for a successful HTTP call
@@ -108,6 +110,8 @@ class LoginFragment : androidx.fragment.app.Fragment(), retrofit2.Callback<Respo
         fragmentView.login_progress_bar.visibility = INVISIBLE
         fragmentView.submit_button.visibility = VISIBLE
 
-        FailedLoginDialogFragment().show(fragmentManager!!, "failedLogin")
+        parentFragmentManager?.let{
+            FailedLoginDialogFragment().show(it, FailedLoginDialogFragment.TAG)
+        }
     }
 }

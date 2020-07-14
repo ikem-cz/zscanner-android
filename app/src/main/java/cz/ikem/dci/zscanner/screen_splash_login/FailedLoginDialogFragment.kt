@@ -31,6 +31,7 @@ class FailedLoginDialogFragment : DialogFragment() {
     }
 
     companion object{
+        const val TAG = "FailedLoginFragment"
         const val KEY_TITLE = "ERR"
         const val KEY_MESSAGE = "MSG"
     }
