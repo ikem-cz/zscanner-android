@@ -26,7 +26,7 @@ class RefreshDepartmentsWorker(context: Context, workerParams: WorkerParameters)
 
             val response = HttpClient.ApiServiceBackend.departments.execute()
 
-            if (response.code() == 403) {
+            if (response.code() == 403 || response.code() == 401) {
                 CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
                 return Result.failure()
             }

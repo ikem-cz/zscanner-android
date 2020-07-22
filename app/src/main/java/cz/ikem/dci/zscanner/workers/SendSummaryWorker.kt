@@ -57,7 +57,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
 
             val response = request.execute()
 
-            if (response.code() == 403) {
+            if (response.code() == 403 || response.code() == 401) {
                 CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
                 return Result.failure()
             }

@@ -35,7 +35,7 @@ class RefreshDocumentTypesWorker(context: Context, workerParams: WorkerParameter
 
                 val response = HttpClient.ApiServiceBackend.getDocumentTypes(department).execute()
 
-                if (response.code() == 403) {
+                if (response.code() == 403 || response.code() == 401) {
                     CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
                     return Result.failure()
                 }

@@ -60,7 +60,7 @@ class PatientAdapter(private val mContext: Context, val mViewModel: CreateMessag
                     val query = constraint.toString()
                     val response = HttpClient.ApiServiceBackend.searchPatients(query).execute()
 
-                    if (response.code() == 403) {
+                    if (response.code() == 403 || response.code() == 401) {
                         mViewModel.logoutOnHttpResponse.postValue(true)
                         throw Exception("Non OK response: ${response.code()}")
                     }
