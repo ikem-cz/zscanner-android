@@ -41,6 +41,7 @@
     <string name="finish_prompt_text">Naozaj chcete ukončiť tvorbu záznamov a vrátiť sa?</string>
     <string name="finish_prompt_button_negative">UKONČIŤ</string>
     <string name="log_out_credentials_expired">Vypršela platnost přihlašovacích údajů. Prosím, přihlašte se znovu pomocí Vašeho jména a hesla.</string><!-- TODO: this is in Czech, needs to be updated to Slovak-->
+    <string name="automatic_log_out_notification">Byli jste odhlášeni ze zScanner, pro pokračování se prosím znovu přihlašte.</string><!-- TODO: this is in Czech, needs to be updated to Slovak-->
 
     <string name="err_invalid_patient">Nie je vybraný platný pacient.</string>
     <string name="err_no_photo">Nie je vytvorená ani jedna fotografia.</string>

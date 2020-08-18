@@ -17,7 +17,7 @@ class LogoutReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
 
         if(intent.action == BROADCAST_ACTION_LOGOUT){
-            Toast.makeText(context, "Logging out due to the end of shift", Toast.LENGTH_LONG).show() // TODO: translate
+            Toast.makeText(context, context.resources.getString(R.string.automatic_log_out_notification), Toast.LENGTH_LONG).show()
             Log.v(TAG, "Logout due to end of shift. Time: ${System.currentTimeMillis()}")
 
             logout(context)
