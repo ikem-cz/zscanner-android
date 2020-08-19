@@ -19,8 +19,8 @@ android {
         applicationId "cz.ikem.dci.zscanner"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 200801
-        versionName "20.08.01"
+        versionCode 200802
+        versionName "20.08.02"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
