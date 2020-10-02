@@ -7,7 +7,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -18,9 +18,9 @@ android {
     defaultConfig {
         applicationId "cz.ikem.dci.zscanner"
         minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 200802
-        versionName "20.08.02"
+        targetSdkVersion 30
+        versionCode 201001
+        versionName "20.10.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     // room
-    def room_version = '2.2.4'
+    def room_version = '2.2.5'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // use kapt for Kotlin
@@ -93,8 +93,9 @@ dependencies {
     implementation "androidx.biometric:biometric:1.0.1"
 
     // Crashlytics
-    implementation 'com.google.firebase:firebase-core:17.2.3'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
 
     // drawer
     implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
