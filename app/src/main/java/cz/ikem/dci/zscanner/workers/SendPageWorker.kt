@@ -43,6 +43,10 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
         val note = inputData.getString(KEY_DOCUMENT_NOTE) ?: ""
         val description = RequestBody.create(MediaType.parse("text/plain"), note)
 
+        val fireBaseLogger = FireBaseLogger()
+        // log firebase event
+        fireBaseLogger.logEvent(PHOTO, SENDING_STARTED)
+
 
         try {
 
@@ -69,14 +73,17 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
             if (response.code() == 403 || response.code() == 401) {
                 CreateMessageViewModel(app).logoutOnHttpResponse.postValue(true)
+                fireBaseLogger.logEvent(SENDING_PHOTO_FAILED, "response code: ${response.code()}")
                 return Result.failure()
             }
 
             if (response.code() != 200) {
+                fireBaseLogger.logEvent(SENDING_PHOTO_FAILED, "response code: ${response.code()}")
                 throw Exception("Non OK response: $response")
             }
 
             if (mCancelling) {
+                fireBaseLogger.logEvent(SENDING_PHOTO_FAILED, "cancelled")
                 throw Exception("Cancelling")
             }
 
@@ -86,11 +93,15 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
             Log.d(TAG, "SendPageWorker $taskid ends")
 
+            // log firebase event
+            fireBaseLogger.logEvent(PHOTO, "Successfully sent $pageInt photos")
+
             return Result.success()
 
         } catch (e: Exception) {
             Log.d(TAG, "SendPageWorker $taskid caught exception !")
             Log.e(TAG, e.toString())
+            fireBaseLogger.logEvent(SENDING_PHOTO_FAILED, "Exception: $e")
             return Result.retry()
         }
     }
@@ -98,5 +109,11 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
     override fun onStopped() {
         mCancelling = true
         super.onStopped()
+    }
+
+    companion object {
+        const val PHOTO = "photo"
+        const val SENDING_PHOTO_FAILED = "sending_photo_failed"
+        const val SENDING_STARTED = "sending_started"
     }
 }

@@ -3,6 +3,7 @@ package cz.ikem.dci.zscanner
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.teskalabs.seacat.SeaCat
 import cz.ikem.dci.zscanner.biometrics.BiometricsKey
 import cz.ikem.dci.zscanner.webservices.HttpClient
@@ -30,6 +31,19 @@ class ZScannerApplication : Application() {
         // Initialize biometrics lock
         masterKey = BiometricsKey(BIOMETRIC_KEY_NAME)
 
+        initializeFirebaseLoggers()
     }
 
+    private fun initializeFirebaseLoggers() {
+        val crashlytics = FirebaseCrashlytics.getInstance()
+        try {
+            // Setup firebase user id to the seacat identity
+            crashlytics.setUserId(seacat.identity.toString())
+
+            val fireBaseLogger = FireBaseLogger()
+            fireBaseLogger.initialize()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
 }
