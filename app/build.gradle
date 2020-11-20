@@ -66,8 +66,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.stepstone.stepper:material-stepper:4.3.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-    // Anko commons
-    //implementation "org.jetbrains.anko:anko-commons:0.10.4"
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -93,9 +91,9 @@ dependencies {
     implementation "androidx.biometric:biometric:1.0.1"
 
     // Crashlytics
-    implementation 'com.google.firebase:firebase-core:17.5.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
+    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.3.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
 
     // drawer
     implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
