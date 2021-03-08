@@ -8,8 +8,8 @@ import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.screen_message.CreateMessageViewModel
 import cz.ikem.dci.zscanner.webservices.HttpClient
-import okhttp3.MediaType
-import okhttp3.RequestBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 
@@ -48,8 +48,7 @@ class SendSummaryWorker(ctx: Context, workerParams: WorkerParameters) : Worker(c
             paramObject.put("datetime", inputData.getString(KEY_DATE_STRING))
             paramObject.put("name", "") // TODO: maybe add some name or else remove this from iOS as well
 
-
-            val reqBody = RequestBody.create(MediaType.parse("application/json"), paramObject.toString())
+            val reqBody = paramObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
             val request = HttpClient.ApiServiceBackend.postDocumentSummary(
                     reqBody
