@@ -8,9 +8,10 @@ import cz.ikem.dci.zscanner.*
 import cz.ikem.dci.zscanner.persistence.Repositories
 import cz.ikem.dci.zscanner.screen_message.CreateMessageViewModel
 import cz.ikem.dci.zscanner.webservices.HttpClient
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx, workerParams) {
@@ -31,17 +32,17 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
 
         Log.d(TAG, "SendPageWorker ${taskid} starts")
 
-        val correlation = RequestBody.create(MediaType.parse("text/plain"), instance)
+        val correlation = instance.toRequestBody("text/plain".toMediaTypeOrNull())
         val pageInt = inputData.getInt(KEY_PAGE_INDEX, -1)
 
         if (pageInt == -1) {
             throw Exception("Assertion error")
         }
-        val pagenum = RequestBody.create(MediaType.parse("text/plain"), pageInt.toString())
+        val pagenum = pageInt.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
 
         val note = inputData.getString(KEY_DOCUMENT_NOTE) ?: ""
-        val description = RequestBody.create(MediaType.parse("text/plain"), note)
+        val description = note.toRequestBody("text/plain".toMediaTypeOrNull())
 
         val fireBaseLogger = FireBaseLogger()
         // log firebase event
@@ -55,18 +56,16 @@ class SendPageWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ctx,
                     MultipartBody.Part.createFormData(
                             "page",
                             pageFilename?.substringAfterLast("/"),
-                            RequestBody.create(
-                                    MediaType.parse("image/jpeg"),
-                                    File(pageFilename?: "image")
-                            )
+                            File(pageFilename
+                                    ?: "image").asRequestBody("image/jpeg".toMediaTypeOrNull())
                     )
             val filePartList = listOf(filePart)
 
             val request = HttpClient.ApiServiceBackend.postDocumentPage(
-                filePartList,
-                correlation,
-                pagenum,
-                description
+                    filePartList,
+                    correlation,
+                    pagenum,
+                    description
             )
 
             val response = request.execute()
